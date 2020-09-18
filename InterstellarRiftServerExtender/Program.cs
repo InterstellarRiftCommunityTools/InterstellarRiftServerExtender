@@ -183,8 +183,8 @@ namespace InterstellarRiftServerExtender
                             }
                             
                             MainWindow.Activate();
-                            MainWindow.Topmost = true; 
-                            MainWindow.Topmost = false; 
+                            MainWindow.Topmost = true; //required, resets topwindow
+                            MainWindow.Topmost = false; //required, resets topwindow
                             MainWindow.Focus();                          
                         }));
                         flag = true;
