@@ -6,14 +6,29 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{62FB3518-F1BB-4D73-A51A-6360C7330C27}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>InterstellarRiftServerExtender</RootNamespace>
-    <AssemblyName>InterstellarRiftServerExtender</AssemblyName>
+    <RootNamespace>IRSE</RootNamespace>
+    <AssemblyName>IRSE</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -34,7 +49,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>IRSE.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\Log4Net.Async.dll" />
+    <EmbeddedResource Include="Resources\log4net.dll" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
+    <EmbeddedResource Include="Resources\NLog.dll" />
+    <EmbeddedResource Include="Resources\Octokit.dll" />
     <None Include="App.config" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -43,21 +71,81 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <EmbeddedResource Include="Resources\log4net.config" />
+    <EmbeddedResource Include="Resources\NLog.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Chat.cs" />
+    <Compile Include="API\Players.cs" />
+    <Compile Include="API\Server.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\ServerController.cs" />
+    <Compile Include="Controllers\UniverseController.cs" />
+    <Compile Include="Globals.cs" />
+    <Compile Include="Managers\HandlerManager.cs" />
+    <Compile Include="Managers\Handlers\ChatHandler.cs" />
+    <Compile Include="Managers\Handlers\NetworkHandler..cs" />
+    <Compile Include="Managers\Handlers\PlayerHandler..cs" />
+    <Compile Include="Managers\InstanceManager.cs" />
+    <Compile Include="Managers\PluginManager.cs" />
+    <Compile Include="Managers\UpdateManager.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Modules\CrashDump.cs" />
+    <Compile Include="Modules\FolderStructure.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Localization.cs" />
+    <Compile Include="Modules\SteamCMD.cs" />
+    <Compile Include="Plugins\IPlugin.cs" />
+    <Compile Include="Plugins\PluginBase.cs" />
+    <Compile Include="Plugins\PluginInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ReflectionWrappers\ReflectionAssemblyWrapper.cs" />
+    <Compile Include="ReflectionWrappers\ReflectionClassWrapper.cs" />
+    <Compile Include="ReflectionWrappers\ServerWrappers\Program.cs" />
+    <Compile Include="ReflectionWrappers\ServerWrappers\ServerWrapper.cs" />
+    <Compile Include="ResultObjects\BaseResult.cs" />
+    <Compile Include="ResultObjects\ChatResult.cs" />
+    <Compile Include="ResultObjects\PlayerResult.cs" />
+    <Compile Include="ResultObjects\ServerStatusResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="AlunaNetFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>I:\steam\steamapps\common\Interstellar Rift\Build\AlunaNetFramework.dll</HintPath>
+    </Reference>
     <Reference Include="IR">
       <HintPath>..\GameLibraries\IR.exe</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\GameLibraries\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Log4Net.Async, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Log4Net.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GameLibraries\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.7.4\lib\net45\NLog.dll</HintPath>
@@ -70,12 +158,20 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
-    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
@@ -87,7 +183,22 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <Folder Include="API\Events\Chat\" />
+    <Folder Include="API\Events\Players\" />
+    <Folder Include="API\Events\Server\" />
+    <Folder Include="API\Objects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\GitInfo.2.0.34\build\GitInfo.targets" Condition="Exists('..\packages\GitInfo.2.0.34\build\GitInfo.targets')" />
