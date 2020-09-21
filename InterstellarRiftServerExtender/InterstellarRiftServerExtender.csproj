@@ -87,6 +87,9 @@
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\UniverseController.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="GUI\Controls\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Managers\HandlerManager.cs" />
     <Compile Include="Managers\Handlers\ChatHandler.cs" />
     <Compile Include="Managers\Handlers\NetworkHandler..cs" />
@@ -139,8 +142,7 @@
       <HintPath>..\GameLibraries\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Log4Net.Async, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\GameLibraries\Log4Net.Async.dll</HintPath>
+      <HintPath>..\packages\Log4Net.Async.2.0.4\lib\net40\Log4Net.Async.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -177,6 +179,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="GUI\Controls\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +193,7 @@
     <Folder Include="API\Events\Players\" />
     <Folder Include="API\Events\Server\" />
     <Folder Include="API\Objects\" />
+    <Folder Include="Assets\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
