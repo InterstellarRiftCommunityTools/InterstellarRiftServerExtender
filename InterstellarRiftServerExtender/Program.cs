@@ -316,11 +316,11 @@ namespace IRSE
                         flag = true;
                     }
 
-                    //if (stringList[1] == "restart")
-                   // {
-                      //  Restart();
-                       // flag = true;
-                   // }
+                    if (stringList[1] == "restart")
+                    {
+                        Restart();
+                        flag = true;
+                    }
 
                     if (stringList[1] == "forceupdate")
                     {
