@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Threading;
 using IRSE.Managers;
@@ -11,9 +13,11 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
         #region Fields
         private static NLog.Logger mainLog; //mainLog.Error
 
-        private const String Class = "Program";
+        private const String EntryClass = "Program";
 		private const String InitMethod = "Init";
 		private const String StopMethod = "Stop";
+
+		private Assembly assembly;
 
 		private ReflectionField m_startupArgsField;
 		private ReflectionMethod m_startupMethod;
@@ -63,8 +67,9 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
 		#region Methods
 		public IR(Assembly Assembly, String Namespace)
-			: base(Assembly, Namespace, Class)
+			: base(Assembly, Namespace, EntryClass)
 		{
+			assembly = Assembly;
             mainLog = NLog.LogManager.GetCurrentClassLogger();
             SetupReflection(Assembly);
 			m_waitEvent = new ManualResetEvent(false);
@@ -106,7 +111,6 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
 			mainLog.Info("IRSE: Waiting for server....");
 
-			isRunning = true;
 
 			return serverThread;
 		}
@@ -128,7 +132,24 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 		private void Start(Object[] args)
 		{
 			m_startupArgsField.SetValue(null, args as String[]);
+
+			//Activator.CreateInstance(assembly.GetType("Game.Program"));
+
 			m_startupMethod.Call(null, null);
+
+			object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
+
+			while (gameServer == null)
+			{
+				Thread.Sleep(1000);
+				if (gameServer != null)
+				{
+					break;
+				}
+			}
+
+
+			isRunning = true;
 		}
 		#endregion
 	}

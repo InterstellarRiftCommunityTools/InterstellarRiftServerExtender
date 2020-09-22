@@ -114,7 +114,7 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
 			LogManager.MainLog.WriteLineAndConsole("IRSE: Waiting for server....");
 
-			isRunning = true;
+			
 
 			return serverThread;
 		}
@@ -137,7 +137,13 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 		{
 			m_startupArgsField.SetValue(null, args as String[]);
 			m_startupMethod.Call(null, null);
+
+
+
+			isRunning = true;
 		}
 		#endregion
+
+
 	}
 }

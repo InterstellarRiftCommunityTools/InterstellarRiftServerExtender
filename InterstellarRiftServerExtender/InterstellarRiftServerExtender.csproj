@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="Managers\HandlerManager.cs" />
     <Compile Include="Managers\Handlers\ChatHandler.cs" />
+    <Compile Include="Managers\Handlers\UniverseHandler.cs" />
     <Compile Include="Managers\Handlers\NetworkHandler..cs" />
     <Compile Include="Managers\Handlers\PlayerHandler..cs" />
     <Compile Include="Managers\InstanceManager.cs" />
@@ -100,9 +101,6 @@
     <Compile Include="Config.cs" />
     <Compile Include="Modules\CrashDump.cs" />
     <Compile Include="Modules\FolderStructure.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Modules\Localization.cs" />
     <Compile Include="Modules\SteamCMD.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
@@ -134,8 +132,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>I:\steam\steamapps\common\Interstellar Rift\Build\AlunaNetFramework.dll</HintPath>
     </Reference>
-    <Reference Include="IR">
-      <HintPath>..\GameLibraries\IR.exe</HintPath>
+    <Reference Include="AlunaNETWrapper, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GameLibraries\AlunaNETWrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="IR, Version=0.2.15.40, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\IR.exe</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -180,10 +183,6 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="GUI\Controls\MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

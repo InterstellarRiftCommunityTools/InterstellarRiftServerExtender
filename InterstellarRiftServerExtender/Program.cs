@@ -72,7 +72,7 @@ namespace IRSE
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
 
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
 
 
             string configPath = Globals.GetFilePath(IRSEFileName.NLogConfig);
@@ -217,7 +217,7 @@ namespace IRSE
                 Console.WriteLine("holy shit");
                 GUI = new Application();
                 GUI.StartupUri = new Uri("MainWindow.xaml", System.UriKind.Relative);
-                GUI.Run();    
+                //GUI.Run();    
             }
         }
 
@@ -272,7 +272,7 @@ namespace IRSE
             {
                 string line = Console.ReadLine();
 
-                if (line.Length > 1)
+                if (!string.IsNullOrEmpty(line) && line.Length > 1)
                 {
                     if (!line.StartsWith("/"))
                     {

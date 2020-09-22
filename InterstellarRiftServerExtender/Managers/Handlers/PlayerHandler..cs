@@ -30,13 +30,10 @@ namespace IRSE.Managers.Handlers
 
         #endregion
 
-        public PlayerHandler()
-        {
-            mainLog = NLog.LogManager.GetCurrentClassLogger();
-        }
 
         public PlayerController Players
 		{
+			
 			get
 			{
 				return m_playerController;
@@ -51,6 +48,8 @@ namespace IRSE.Managers.Handlers
 
 		public PlayerHandler(Game.Server.ControllerManager controllerManager)
 		{
+			mainLog = NLog.LogManager.GetCurrentClassLogger();
+
 			try
 			{
 				mainLog.Info("IRSE: Loading PlayerHandler...");
