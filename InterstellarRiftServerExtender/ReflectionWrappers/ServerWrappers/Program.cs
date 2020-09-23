@@ -92,7 +92,7 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
 		public void StopServer()
 		{
-			m_stopMethod.Call(null, null);
+			//m_stopMethod.Call(null, null);
 			isRunning = false;
 		}
 
@@ -133,21 +133,33 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 		{
 			m_startupArgsField.SetValue(null, args as String[]);
 
+			Type type = assembly.GetType("Game.Program");
+			var obj = Activator.CreateInstance(type);
+
+			type.InvokeMember("Init",
+							  BindingFlags.Default | BindingFlags.InvokeMethod,
+							  null,
+							  obj,
+							  null);
+			//m_startupMethod.Call(null, null);
+
+
 			//Activator.CreateInstance(assembly.GetType("Game.Program"));
 
-			m_startupMethod.Call(null, null);
+			
 
-			object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
+			//object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
 
-			while (gameServer == null)
-			{
-				Thread.Sleep(1000);
-				if (gameServer != null)
-				{
-					break;
-				}
-			}
+			//while (gameServer == null)
+			//{
+			//Thread.Sleep(1000);
+			//if (gameServer != null)
+			//{
+			//	break;
+			//}
+			//}
 
+			Thread.Sleep(10000);
 
 			isRunning = true;
 		}

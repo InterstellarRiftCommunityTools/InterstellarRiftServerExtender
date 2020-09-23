@@ -45,8 +45,12 @@ namespace IRSE.Managers
 			m_serverThread = null;
 			m_serverInstance = this;
 
-			m_assembly = Assembly.LoadFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IR.exe"));
 
+			//AssemblyName an = AssemblyName.GetAssemblyName(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IR.exe"));
+
+			m_assembly = Assembly.UnsafeLoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IR.exe")); 
+
+			
 			m_serverWrapper = new ServerWrapper(m_assembly);
 
             mainLog = NLog.LogManager.GetCurrentClassLogger();
@@ -64,17 +68,17 @@ namespace IRSE.Managers
 			
 			try
 			{
-				m_controllerManager = new HandlerManager(m_assembly);
+				//m_controllerManager = new HandlerManager(m_assembly);
 
 
-				while (m_controllerManager.GetHandlers() == null) 
-				{
-					Thread.Sleep(1000);
-					if (m_controllerManager.GetHandlers() != null)
-					{
-						break;
-					}
-				}
+				//while (m_controllerManager.GetHandlers() == null) 
+				//{
+					//Thread.Sleep(1000);
+					//if (m_controllerManager.GetHandlers() != null)
+					//{
+					//	break;
+					//}
+				//}
 
 				IsRunning = true;
 

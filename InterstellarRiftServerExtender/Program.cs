@@ -35,7 +35,8 @@ namespace IRSE
         private static Logger mainLog;
         private static string[] CommandLineArgs;
         private static bool debugMode = true;
- 
+        private static bool handleConsoleCommands = true;
+
         #endregion
 
         #region Properties
@@ -48,6 +49,17 @@ namespace IRSE
             }
         }
 
+        public Boolean HandleConsoleCommands
+        {
+            get
+            {
+                return handleConsoleCommands;
+            }
+            set
+            {
+                handleConsoleCommands = value;
+            }
+        }
 
         public static Localization Localization => m_localization;
         public static Program Instance { get; private set; }
@@ -78,8 +90,6 @@ namespace IRSE
             string configPath = Globals.GetFilePath(IRSEFileName.NLogConfig);
 
             LogManager.Configuration = new XmlLoggingConfiguration(configPath);
-
-           // new Log();
 
             mainLog = LogManager.GetCurrentClassLogger();
 
@@ -186,7 +196,10 @@ namespace IRSE
             SetupGUI();
 
 
+
             ReadConsoleCommands(args);
+            //ServerInstance.Instance.Start();
+            //Console.ReadLine();
         }
 
 
@@ -252,7 +265,7 @@ namespace IRSE
         public static void PrintHelp()
         {
             mainLog.Warn("------------------------------------------------------------");
-            mainLog.Warn(m_localization.Sentences["DescHelp"]);
+           // mainLog.Warn(m_localization.Sentences["DescHelp"]);
             mainLog.Warn(m_localization.Sentences["HelpCommand"]);
             mainLog.Warn(m_localization.Sentences["SaveCommand"]);
             mainLog.Warn(m_localization.Sentences["StartCommand"]);
@@ -270,7 +283,17 @@ namespace IRSE
         {
             while (true)
             {
+
+
                 string line = Console.ReadLine();
+
+                if (!HandleConsoleCommands)
+                {
+                    line = null;
+                    System.Windows.Forms.SendKeys.SendWait("{ENTER}");
+                    break;
+                }
+
 
                 if (!string.IsNullOrEmpty(line) && line.Length > 1)
                 {

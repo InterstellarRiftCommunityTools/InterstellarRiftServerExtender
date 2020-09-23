@@ -41,13 +41,14 @@ namespace IRSE.Managers.Handlers
 		public UniverseHandler(Game.Server.ControllerManager controllerManager)
 		{
 
-			var test = controllerManager.Universe as Game.Server.UniverseController;
+			//var test = controllerManager.Universe as Game.Server.UniverseController;
 
-			Console.WriteLine(test.ActiveSystems.FirstOrDefault());
+
+			//Console.WriteLine(test.ActiveSystems.FirstOrDefault());
 
 			try
 			{
-                NLog.LogManager.GetCurrentClassLogger().Info("IRSE: Loading NetworkHandler...");
+                NLog.LogManager.GetCurrentClassLogger().Info("IRSE: Loading UniverseHandler...");
 			}
 			catch (Exception ex)
 			{
