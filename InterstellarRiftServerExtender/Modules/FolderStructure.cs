@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using NLog;
+
 namespace IRSE.Modules
 {
     public class FolderStructure
     {
-        private const string RootFolderName = "IRSE";
+        public static string RootFolderPath => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        public static string IRSEFolderPath => Path.Combine(RootFolderPath, "IRSE");
+
+
         private Assembly _assembly;
         private static NLog.Logger mainLog; //mainLog.Error
 
         public FolderStructure()
         {
+
             mainLog = NLog.LogManager.GetCurrentClassLogger();
 
             _assembly = Assembly.GetExecutingAssembly();
@@ -25,12 +29,12 @@ namespace IRSE.Modules
             directories.Add("logs");
             directories.Add("updates");
 
-            if (!Directory.Exists(RootFolderName))
-                Directory.CreateDirectory(RootFolderName);
+            if (!Directory.Exists(IRSEFolderPath))
+                Directory.CreateDirectory(IRSEFolderPath);
 
             foreach (string directory in directories)
-                if (!Directory.Exists(Path.Combine(RootFolderName, directory)))
-                    Directory.CreateDirectory(Path.Combine(RootFolderName, directory));
+                if (!Directory.Exists(Path.Combine(IRSEFolderPath, directory)))
+                    Directory.CreateDirectory(Path.Combine(IRSEFolderPath, directory));
         }
 
         public void Build()
@@ -64,7 +68,6 @@ namespace IRSE.Modules
 
                         if (!Directory.Exists(path))
                             Directory.CreateDirectory(path);
-
 
                         //TODO if a config file already exists
                         if (!File.Exists(Path.Combine(path, fileName)))

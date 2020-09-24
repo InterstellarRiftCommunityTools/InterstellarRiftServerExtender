@@ -12,7 +12,7 @@ namespace IRSE.Modules
     {
         private static NLog.Logger mainLog;
 
-        private const string SteamCMDDir = "IRSE\\steamcmd";
+        private static  string SteamCMDDir = Path.Combine(FolderStructure.IRSEFolderPath, "steamcmd");
         private static string SteamCMDExe = $"{SteamCMDDir}\\steamcmd.exe";
         private static string SteamCMDZip = $"{SteamCMDDir}\\steamcmd.zip";
 
@@ -27,15 +27,14 @@ namespace IRSE.Modules
         public bool GetSteamCMD()
         {
             if (!AutoUpdateIR)
-            {              
-                if (!File.Exists("IR.exe"))
+            {
+                if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "IR.exe")))
                 {
                     mainLog.Warn("Interstellar Rift EXE wasn't found.");
                     mainLog.Info("Make sure IRSE.exe is in the same folder as IR.exe.");
                     mainLog.Info("Press enter to close.");
                     Console.ReadLine();
                     Environment.Exit(0);
-
                 }
 
                 return false;
@@ -64,7 +63,6 @@ namespace IRSE.Modules
                     return false;
                 }
             }
-
 
             string script = @"+force_install_dir ../../ +app_update 363360 validate +quit";
 

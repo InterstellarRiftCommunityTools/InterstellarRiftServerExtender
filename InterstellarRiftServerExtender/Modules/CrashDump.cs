@@ -1,8 +1,9 @@
-﻿using System;
+﻿using IRSE.Modules;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace IRSE
+namespace IRSE.Modules
 {
     public static class CrashDump
     {
@@ -44,20 +45,20 @@ namespace IRSE
 
         private static void CreateMiniDump(UnhandledExceptionEventArgs e)
         {
-           Console.WriteLine("Creating Dump");
+            Console.WriteLine("Creating Dump");
             //Back Slashes for windows and C# right???
             //Bug... Maybe
-            
-            String path = @"IRSE\Dump";
+
+            String path = Path.Combine(FolderStructure.IRSEFolderPath, "dump");
             if (!Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             String now = DateTime.UtcNow.ToString("yyyy_MM_dd__HH_mm_ss");
-            using (FileStream fs = new FileStream(String.Format( "IRSE\\Dump\\UnhandledDump_{0}.dmp",now), FileMode.Create))
+            using (FileStream fs = new FileStream(String.Format("IRSE\\Dump\\UnhandledDump_{0}.dmp", now), FileMode.Create))
             {
                 using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
                 {
                     //TODO later remove Try Statement
                     try
-                    { 
+                    {
                         MiniDumpWriteDump(process.Handle,
                             process.Id,
                             fs.SafeFileHandle.DangerousGetHandle(),
@@ -73,7 +74,7 @@ namespace IRSE
                 }
             }
 
-            Console.WriteLine("Dump File Created at > "+ String.Format("IRSE\\Dump\\UnhandledDump_{0}.dmp", now));
+            Console.WriteLine("Dump File Created at > " + String.Format("IRSE\\Dump\\UnhandledDump_{0}.dmp", now));
         }
     }
 }

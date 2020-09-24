@@ -1,14 +1,14 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 
 namespace IRSE
 {
     #region Server Name Enums
+
     public enum ServerFolderName
     {
         Base,
-        Data       
+        Data
     }
 
     /// <summary>
@@ -18,9 +18,11 @@ namespace IRSE
     {
         IRConfig
     }
-    #endregion
+
+    #endregion Server Name Enums
 
     #region IRSE Name Enums
+
     public enum IRSEFolderName
     {
         IRSE,
@@ -40,25 +42,34 @@ namespace IRSE
         NLogConfig,
         Config
     }
-    #endregion
+
+    #endregion IRSE Name Enums
 
     public static class Globals
     {
         #region Server Folder Name Fields
+
         public static readonly string ServerBaseFolderName = "";
         public static readonly string ServerDataFolderName = "%APPDATA%/InterstellarRift";
-        #endregion
 
-        #region Server File Name Fields 
+        #endregion Server Folder Name Fields
+
+        #region Server File Name Fields
+
         public static readonly string IRConfigFileName = "server.json";
-        #endregion
+
+        #endregion Server File Name Fields
 
         #region IRSE File Name Fields
+
         public static readonly string IRSEConfigFileName = "Config.cfg";
         public static readonly string NLogConfigFileName = "NLog.config";
-        #endregion
+
+        #endregion IRSE File Name Fields
 
         #region IRSE Folder Names Fields
+
+
         public static readonly string IRSERootFolderName = "IRSE";
         public static readonly string IRSEBinariesFolderName = "bin";
         public static readonly string IRSEConfigFolderName = "config";
@@ -66,9 +77,11 @@ namespace IRSE
         public static readonly string IRSELogsFolderName = "logs";
         public static readonly string IRSEPluginsFolderName = "plugins";
         public static readonly string IRSEUpdatesFolderName = "updates";
-        #endregion
+
+        #endregion IRSE Folder Names Fields
 
         #region FilePath Methods
+
         public static string GetFilePath(ServerFileName serverFileName, bool fullPath = true)
         {
             string file = "";
@@ -96,12 +109,13 @@ namespace IRSE
             }
             return file;
         }
-        #endregion
+
+        #endregion FilePath Methods
 
         #region FolderPath Methods
+
         public static string GetFolderPath(ServerFolderName serverFolderName, bool fullPath = false)
         {
-            string fullBasePath = Environment.CurrentDirectory;
 
             string path = "";
             switch (serverFolderName)
@@ -155,6 +169,7 @@ namespace IRSE
             }
             return fullPath ? Path.Combine(fullBasePath, path) : path;
         }
-        #endregion
+
+        #endregion FolderPath Methods
     }
 }

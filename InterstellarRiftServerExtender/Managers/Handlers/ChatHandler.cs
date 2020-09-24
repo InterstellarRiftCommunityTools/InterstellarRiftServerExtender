@@ -1,95 +1,72 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.IO;
-
-
-using Game.ClientServer.Packets;
-using Game.Configuration;
+﻿using Game.ClientServer.Packets;
 using Game.Framework.Networking;
 using Game.Server;
-
-using System.Text.RegularExpressions;
-
-using System.Xml.Serialization;
-
-using System.Timers;
-
-using Game.ClientServer;
-using Game.ClientServer.Classes;
-
-using IRSE;
-
-using IRSE.API;
 using IRSE.ResultObjects;
-
 using NLog;
+using System;
+using System.Collections.Generic;
 
 namespace IRSE.Managers.Handlers
 {
-
-	public class ChatHandler
-	{
+    public class ChatHandler
+    {
         #region Fields
+
         private static Logger mainLog; //mainLog.Error
         private RPCDelegate m_delegate;
 
-		private List<ChatMessage> m_chatMessageList;
+        private List<ChatMessage> m_chatMessageList;
 
-		private ChatController m_chatController;
-		#endregion
+        private ChatController m_chatController;
 
-		public List<ChatMessage> ChatMessages
-		{
-			get
-			{
-				if (m_chatMessageList == null)
-					m_chatMessageList = new List<ChatMessage>();
+        #endregion Fields
 
-				return m_chatMessageList;
-			}
-			set
-			{
-				m_chatMessageList = value;
-			}
-		}
+        public List<ChatMessage> ChatMessages
+        {
+            get
+            {
+                if (m_chatMessageList == null)
+                    m_chatMessageList = new List<ChatMessage>();
 
+                return m_chatMessageList;
+            }
+            set
+            {
+                m_chatMessageList = value;
+            }
+        }
 
-		public ChatHandler(Game.Server.ControllerManager controllerManager)
-		{
+        public ChatHandler(Game.Server.ControllerManager controllerManager)
+        {
             mainLog = NLog.LogManager.GetCurrentClassLogger();
 
             try
-			{
-				mainLog.Info("IRSE: Loading ChatManager...");
-				m_chatController = controllerManager.Chat;
-			}
-			catch (Exception ex)
-			{
-				mainLog.Error(ex.ToString());
-			}
+            {
+                mainLog.Info("IRSE: Loading ChatManager...");
+                m_chatController = controllerManager.Chat;
+            }
+            catch (Exception ex)
+            {
+                mainLog.Error(ex.ToString());
+            }
+        }
 
-		}
+        public void SetupChatMessageHandler(NetworkHandler networkHandler)
+        {
+            try
+            {
+                Dictionary<Type, RPCDelegate> m_dict = networkHandler.Network.Net.RpcDispatcher.Functions;
+                m_dict.TryGetValue(typeof(ClientChatMessage), out m_delegate);
+                m_dict[typeof(ClientChatMessage)] = new RPCDelegate(OnPacketChatMessage);
+            }
+            catch (Exception ex)
+            {
+                mainLog.Error(ex.ToString());
+            }
+        }
 
-		public void SetupChatMessageHandler(NetworkHandler networkHandler)
-		{
-			try
-			{
-
-                Dictionary<Type, RPCDelegate> m_dict = networkHandler.Network.Net.RpcDispatcher.Functions; 
-				m_dict.TryGetValue(typeof(ClientChatMessage), out m_delegate);
-				m_dict[typeof(ClientChatMessage)] = new RPCDelegate(OnPacketChatMessage);
-
-			}
-			catch (Exception ex)
-			{
-				mainLog.Error(ex.ToString());
-			}
-			
-		}
-
-		public bool ParseCommand(Player ply, string msg)
-		{
+        public bool ParseCommand(Player ply, string msg)
+        {
             /*
 			// Motd request
 			Match motdmatch = Regex.Match(msg, "^/[mM]otd");
@@ -106,16 +83,14 @@ namespace IRSE.Managers.Handlers
 
 				return true;
 			}
-			
+
 			// Admin commands
 			if (Config.Settings.GameAdminsSteamID.Contains(ply.ID))
 			{
-                
 				// Give
 				Match givematch = Regex.Match(msg, "^/[gG]ive \"([^\"]+)\" \"([^\"]+)\" (\\d+)");
 				if (givematch.Success && givematch.Groups.Count == 4)
 				{
-
 					string name = givematch.Groups[1].Value.ToLower();
 					string str = givematch.Groups[2].Value;
 					int num = Convert.ToInt32(givematch.Groups[3].Value);
@@ -200,72 +175,52 @@ namespace IRSE.Managers.Handlers
 
 					return true;
 				}
-                
         }
 				*/
-            return false;		
-		}
-				
-		#region Event Handlers
-		// This method intercepts a server side event handler then activates the original, nothing is lost
-		// if IRSE were to bug out, it will probally kill all chat on the game
-		//
-		protected void OnPacketChatMessage(RPCData data)
-		{
-			try
-			{
-				Player player =	ServerInstance.Instance.Handlers
-					.PlayerHandler.Players.GetPlayerByConnectionId((long)data.OriginalMessage.SenderConnectionId);
+            return false;
+        }
 
-				string name = player.Name;
-				string message = ((ClientChatMessage)data.DeserializedObject).message;
+        #region Event Handlers
 
+        // This method intercepts a server side event handler then activates the original, nothing is lost
+        // if IRSE were to bug out, it will probally kill all chat on the game
+        //
+        protected void OnPacketChatMessage(RPCData data)
+        {
+            try
+            {
+                Player player = ServerInstance.Instance.Handlers
+                    .PlayerHandler.Players.GetPlayerByConnectionId((long)data.OriginalMessage.SenderConnectionId);
 
-				if (ParseCommand(player, message))
-				{
-					mainLog.Info("'" + name + "' used command " + message );
-					return;
-				}
-					
-				m_delegate.Invoke(data);
+                string name = player.Name;
+                string message = ((ClientChatMessage)data.DeserializedObject).message;
 
-				ChatMessages.Add(new ChatMessage(name, message));
-				mainLog.Info(String.Format("[Chat]{0}: {1}", name, message));
+                if (ParseCommand(player, message))
+                {
+                    mainLog.Info("'" + name + "' used command " + message);
+                    return;
+                }
 
-				
-			}
-			catch (Exception ex)
-			{
-				mainLog.Error(ex.ToString());
-			}	
-		}
-		#endregion
+                m_delegate.Invoke(data);
 
-		#region Methods
-		// this sends a message to everyone on the server, it isn't formatted. So this can be formatted php side
-		// on ettna to have them go to everyone any way!
-		public void SendMessageFromServer(string messageToSend)
-		{
-            /*
-			try
-			{
-				ServerChatMessage message = new ServerChatMessage();
+                ChatMessages.Add(new ChatMessage(name, message));
+                mainLog.Info(String.Format("[Chat]{0}: {1}", name, message));
+            }
+            catch (Exception ex)
+            {
+                mainLog.Error(ex.ToString());
+            }
+        }
 
-				message.chatMessage = messageToSend;
-				message.fromName = "~-C" + Game.Configuration.Config.Singleton.AllChatColor + " ";
+        #endregion Event Handlers
 
-				ServerInstance.Instance.Handlers
-					.PlayerHandler.Players.SendRPCToAll((object)message, (Player)null);
+        #region Methods
 
-				LogManager.ChatLog.WriteLineAndConsole(messageToSend);
-			}
-			catch (Exception ex)
-			{
-				mainLog.Error(ex.ToString());
-			}
-            */
-		}
-        
-		#endregion
-	}
+        public void SendMessageFromServer(string messageToSend)
+        {
+
+        }
+
+        #endregion Methods
+    }
 }

@@ -1,4 +1,5 @@
-﻿using IRSE.Managers;
+﻿using IRSE.GUI.Forms;
+using IRSE.Managers;
 using IRSE.Modules;
 using NLog;
 using NLog.Config;
@@ -9,13 +10,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using Localization = IRSE.Modules.Localization;
+
 namespace IRSE
 {
     public class Program
@@ -30,16 +29,20 @@ namespace IRSE
         private static Localization m_localization;
         private static ServerInstance m_serverInstance;
         private static EventHandler _handler;
+
         //private static Boolean m_useGui = true;
         private static Thread uiThread;
+
         private static Logger mainLog;
         private static string[] CommandLineArgs;
         private static bool debugMode = true;
         private static bool handleConsoleCommands = true;
+        private static ExtenderGui m_form;
 
-        #endregion
+        #endregion Fields
 
         #region Properties
+
         public static bool Dev
         {
             get
@@ -63,36 +66,32 @@ namespace IRSE
 
         public static Localization Localization => m_localization;
         public static Program Instance { get; private set; }
-        public static Application GUI { get; private set; }
-        public static Window MainWindow => GUI.MainWindow; 
+        public static ExtenderGui GUI { get; private set; }
+        //public static Window MainWindow => GUI.MainWindow;
         public static Version Version => Assembly.GetEntryAssembly().GetName().Version;
         public static String VersionString => Version.ToString(4) + $" Branch: {ThisAssembly.Git.Branch}";
         public static String WindowTitle => string.Format("INTERSTELLAR RIFT SERVER EXTENDER V{0} - Game Version: v{1} - This Game Version: v{2}", VersionString, ForGameVersion, ThisGameVersion);
 
         public static Config Config => m_config;
 
+        public static bool WPFGUI { get; private set; }
 
         //public static Server CurrentServer => m_serverInstance .Server;
 
-
-        #endregion
+        #endregion Properties
 
         public Program()
         {
-            
-
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
 
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
-
 
             string configPath = Globals.GetFilePath(IRSEFileName.NLogConfig);
 
             LogManager.Configuration = new XmlLoggingConfiguration(configPath);
 
             mainLog = LogManager.GetCurrentClassLogger();
-
 
             mainLog.Info($"Git Branch: {ThisAssembly.Git.Branch}");
 
@@ -111,7 +110,7 @@ namespace IRSE
         }
 
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             debugMode = true;
             Console.Title = WindowTitle;
@@ -120,7 +119,7 @@ namespace IRSE
 
             m_config = new Config();
             debugMode = m_config.Settings.DebugMode;
-            
+
             AppDomain.CurrentDomain.AssemblyResolve += (sender, rArgs) =>
             {
                 string assemblyName = new AssemblyName(rArgs.Name).Name;
@@ -135,7 +134,6 @@ namespace IRSE
 
                 // get binaries in plugin
 
-
                 using (Stream s = Assembly.GetCallingAssembly().GetManifestResourceStream("IRSE.Resources." + dllName))
                 {
                     byte[] data = new byte[s.Length];
@@ -146,7 +144,6 @@ namespace IRSE
 
                 return Assembly.LoadFrom(dllFullPath);
             };
-            
 
             // This is for args that should be used before HES loads
             bool noUpdateIRSE = false;
@@ -193,29 +190,29 @@ namespace IRSE
         // this is where stuff goes!
         private void Run(string[] args)
         {
-            SetupGUI();
+            //SetupGUI();
 
-
-
-            ReadConsoleCommands(args);
             //ServerInstance.Instance.Start();
+            ReadConsoleCommands(args);
+           
             //Console.ReadLine();
         }
-
 
         /// <summary>
         /// The UI Thread
         /// </summary>
         private static void SetupGUI()
         {
+            return;
+
             if (uiThread != null)
                 return;
-           
+
             uiThread = new Thread(LoadGUI);
             uiThread.SetApartmentState(ApartmentState.STA);
             uiThread.Start();
-        }
 
+        }
 
         /// <summary>
         /// Loads the gui into its own thread
@@ -223,20 +220,28 @@ namespace IRSE
         [STAThread]
         private static void LoadGUI()
         {
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+
+            if (m_form == null || m_form.IsDisposed)
+            {
+                m_form = new ExtenderGui();
+            }
+            else if (m_form.Visible)
+                return;
+
+            m_form.Text = WindowTitle + " GUI";
+
+            GUI = m_form;
+
+            System.Windows.Forms.Application.Run(m_form);
+
             Console.WriteLine("Loading GUI");
 
-            if (GUI == null)
-            {
-                Console.WriteLine("holy shit");
-                GUI = new Application();
-                GUI.StartupUri = new Uri("MainWindow.xaml", System.UriKind.Relative);
-                //GUI.Run();    
-            }
         }
 
         internal static void Restart(bool stopServer = true)
         {
-
             if (ServerInstance.Instance != null)
 
             {
@@ -247,7 +252,6 @@ namespace IRSE
                         ServerInstance.Instance.Stop();
                         SpinWait.SpinUntil(() => !ServerInstance.Instance.IsRunning, 2000);
                     }
-
                 }
             }
 
@@ -265,7 +269,7 @@ namespace IRSE
         public static void PrintHelp()
         {
             mainLog.Warn("------------------------------------------------------------");
-           // mainLog.Warn(m_localization.Sentences["DescHelp"]);
+            // mainLog.Warn(m_localization.Sentences["DescHelp"]);
             mainLog.Warn(m_localization.Sentences["HelpCommand"]);
             mainLog.Warn(m_localization.Sentences["SaveCommand"]);
             mainLog.Warn(m_localization.Sentences["StartCommand"]);
@@ -283,8 +287,6 @@ namespace IRSE
         {
             while (true)
             {
-
-
                 string line = Console.ReadLine();
 
                 if (!HandleConsoleCommands)
@@ -293,7 +295,6 @@ namespace IRSE
                     System.Windows.Forms.SendKeys.SendWait("{ENTER}");
                     break;
                 }
-
 
                 if (!string.IsNullOrEmpty(line) && line.Length > 1)
                 {
@@ -325,8 +326,6 @@ namespace IRSE
                     }
                     bool flag = false;
 
-                 
-
                     if (stringList[1] == "help")
                     {
                         Program.PrintHelp();
@@ -350,7 +349,7 @@ namespace IRSE
                         updateManager.CheckForUpdates(true).GetAwaiter().GetResult();
                         flag = true;
                     }
-               
+
                     if (stringList[1] == "start")
                     {
                         if (!ServerInstance.Instance.IsRunning)
@@ -368,27 +367,10 @@ namespace IRSE
                             Console.WriteLine("The server is not running");
                         flag = true;
                     }
-                    
+
                     if (stringList[1] == "opengui")
                     {
-                        GUI.Dispatcher.BeginInvoke((Action)(()=>
-                        {
-
-                            if (!MainWindow.IsVisible)
-                            {
-                                Console.WriteLine("Reopening GUI...");
-                                MainWindow.Show();
-                            }
-
-                            if (MainWindow.WindowState == WindowState.Minimized) {
-                                MainWindow.WindowState = WindowState.Normal;
-                            }
-                            
-                            MainWindow.Activate();
-                            MainWindow.Topmost = true; //required, resets topwindow
-                            MainWindow.Topmost = false; //required, resets topwindow
-                            MainWindow.Focus();                          
-                        }));
+                        SetupGUI();
                         flag = true;
                     }
 
@@ -427,6 +409,5 @@ namespace IRSE
             }
             return false;
         }
-
     }
 }

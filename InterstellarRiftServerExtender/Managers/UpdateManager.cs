@@ -1,5 +1,4 @@
-﻿using IRSE;
-using IRSE.Modules;
+﻿using IRSE.Modules;
 using Octokit;
 using System;
 using System.Collections.Generic;
@@ -9,13 +8,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-
 namespace IRSE.Managers
 {
     public class UpdateManager
     {
         private static NLog.Logger mainLog; //mainLog.Error
-
 
         private GitHubClient _git = new GitHubClient(new ProductHeaderValue("InterstellarRiftServerExtender"));
         private const string UpdateFileName = "update.zip";
@@ -75,7 +72,7 @@ namespace IRSE.Managers
             catch (Exception ex)
             {
                 Console.WriteLine("IRSE:  Update Failed (CheckForUpdates)" + ex.ToString());
-            }       
+            }
         }
 
         public bool DownloadLatestRelease(bool getDevelopmentVersion = false)
@@ -87,11 +84,11 @@ namespace IRSE.Managers
                 WebClient client = new WebClient();
                 client.DownloadDataCompleted += new DownloadDataCompletedEventHandler(ReleaseDownloaded);
 
-                if(getDevelopmentVersion)
+                if (getDevelopmentVersion)
                     client.DownloadDataAsync(new Uri(m_developmentRelease.Assets.FirstOrDefault().BrowserDownloadUrl));
                 else
                     client.DownloadDataAsync(new Uri(m_currentRelease.Assets.FirstOrDefault().BrowserDownloadUrl));
-                
+
                 return true;
             }
             catch (Exception ex)
@@ -124,7 +121,7 @@ namespace IRSE.Managers
                 {
                     ApplyUpdate();
                     Console.WriteLine("IRSE:  Update has been applied. Please restart IRSE.exe to finish the update!");
-                }                                
+                }
             }
             catch (Exception ex)
             {
@@ -161,7 +158,7 @@ namespace IRSE.Managers
                 }
 
                 //if (Config.Instance.Settings.AutoRestartsEnable && !GUIMode)
-                   // IRSE.Restart();
+                // IRSE.Restart();
 
                 OnUpdateApplied?.Invoke(m_useDevRelease ? m_developmentRelease : m_currentRelease);
 
@@ -201,7 +198,7 @@ namespace IRSE.Managers
                 }
 
                 if (checkedVersion > Program.Version || forceUpdate)
-                {                                       
+                {
                     Console.WriteLine($"IRSE:  A new {devText} version of Hellion Extended Server has been detected.\r\n");
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Name: { localRelease.Assets.First().Name }");
@@ -210,14 +207,12 @@ namespace IRSE.Managers
                     Console.WriteLine($"Published Date: { localRelease.Assets.First().CreatedAt }\r\n");
                     Console.ResetColor();
 
-
                     if (!EnableAutoUpdates)
-                    {                     
+                    {
                         Console.WriteLine("Would you like to see the changes? (y/n)");
 
                         if (Console.ReadKey().Key == ConsoleKey.Y)
                         {
-
                             Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("\r\nChanges:\r\n" + localRelease.Body);
                             Console.ResetColor();
@@ -241,13 +236,12 @@ namespace IRSE.Managers
                                     DownloadLatestRelease(true);
                                     return true;
                                 }
-
-                            }else if( Console.ReadKey().Key == ConsoleKey.N)
+                            }
+                            else if (Console.ReadKey().Key == ConsoleKey.N)
                             {
                                 Console.WriteLine($"Canceling this {devText} update for now");
                                 return false;
                             }
-
                         }
                         else
                         {
@@ -260,7 +254,7 @@ namespace IRSE.Managers
                                 return true;
                             }
                         }
-                     
+
                         Console.WriteLine("IRSE:  Skipping update.. We'll ask next time you restart HES!");
                     }
                     else
@@ -283,7 +277,7 @@ namespace IRSE.Managers
         }
 
         public async Task GetLatestReleaseInfo()
-        {        
+        {
             try
             {
                 m_currentRelease = await _git.Repository.Release.GetLatest("TheServerExtenders", "InterstellarRiftServerExtender").ConfigureAwait(false);
@@ -292,10 +286,7 @@ namespace IRSE.Managers
                 {
                     var releases = await _git.Repository.Release.GetAll("TheServerExtenders", "InterstellarRiftServerExtender").ConfigureAwait(false);
                     m_developmentRelease = releases.FirstOrDefault(x => x.Prerelease == true);
-                    
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -304,8 +295,11 @@ namespace IRSE.Managers
         }
 
         public delegate void UpdateEventHandler(Release release);
+
         public event UpdateEventHandler OnUpdateChecked;
+
         public event UpdateEventHandler OnUpdateDownloaded;
+
         public event UpdateEventHandler OnUpdateApplied;
     }
 }

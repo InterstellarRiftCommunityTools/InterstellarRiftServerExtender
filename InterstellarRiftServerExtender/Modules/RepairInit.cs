@@ -1,15 +1,6 @@
-﻿using Aluna;
-using Game.ClientServer;
-using Game.ClientServer.Classes;
-using Game.Server;
-using Game.Universe;
+﻿using Game.Universe;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IRSE.Modules
 {
@@ -31,11 +22,9 @@ namespace IRSE.Modules
             _server = server;
         }
 
-        public void ApplyServerRepairs() 
+        public void ApplyServerRepairs()
         {
-           
         }
-    
 
         public void ApplyUniverseRepairs()
         {
@@ -52,8 +41,6 @@ namespace IRSE.Modules
             Process.Start(@"F:\IRSE2020\InterstellarRiftServerExtender\InterstellarRiftServerExtender\bin\Debug\IRGhostClient.exe", $"-ghostclient -ip 127.0.0.1 -port {port} -GhostSystemName {system2.Identifier}");
             Process.Start(@"F:\IRSE2020\InterstellarRiftServerExtender\InterstellarRiftServerExtender\bin\Debug\IRGhostClient.exe", $"-ghostclient -ip 127.0.0.1 -port {port} -GhostSystemName {system3.Identifier}");
             Process.Start(@"F:\IRSE2020\InterstellarRiftServerExtender\InterstellarRiftServerExtender\bin\Debug\IRGhostClient.exe", $"-ghostclient -ip 127.0.0.1 -port {port} -GhostSystemName {system4.Identifier}");
-
         }
-
     }
 }

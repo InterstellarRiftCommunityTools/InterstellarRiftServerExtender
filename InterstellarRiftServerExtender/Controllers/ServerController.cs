@@ -1,32 +1,23 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
+﻿using IRSE.Managers;
 using IRSE.ResultObjects;
-using IRSE.Managers;
+using System;
+using System.Web.Http;
 
 namespace IRSE.Controllers
 {
-
-
-	public class ServerController : ApiController
-	{
-
-		[HttpGet]
-		public ServerStatusResult GetStatus()
-		{
-			try
-			{
-				return new ServerStatusResult(false, "Hai Ettna! Here are some juicy status updates for you!", ServerInstance.Instance.Uptime);
-			}
-			catch (Exception ex)
-			{
-				return new ServerStatusResult(true, "GetStatus() Exception:" + ex.ToString(), new TimeSpan());
-			}
-		}
-
-	}
+    public class ServerController : ApiController
+    {
+        [HttpGet]
+        public ServerStatusResult GetStatus()
+        {
+            try
+            {
+                return new ServerStatusResult(false, "Hai Ettna! Here are some juicy status updates for you!", ServerInstance.Instance.Uptime);
+            }
+            catch (Exception ex)
+            {
+                return new ServerStatusResult(true, "GetStatus() Exception:" + ex.ToString(), new TimeSpan());
+            }
+        }
+    }
 }

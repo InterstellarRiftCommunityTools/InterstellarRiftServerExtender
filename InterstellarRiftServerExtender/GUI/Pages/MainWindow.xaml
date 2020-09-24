@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="IRSE.GUI.Controls.MainWindow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:IRSE.GUI.Controls"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800" Background="Black" Foreground="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="3*" />
+        </Grid.ColumnDefinitions>
+        <Grid HorizontalAlignment="Left" Height="450" VerticalAlignment="Top" Width="200">
+            <Label Content="IsR Extender" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="Bold" FontSize="24" FontFamily="Segoe UI Black" Foreground="#FF8ECDCD" />
+        </Grid>
+        <Grid Grid.Column="1" HorizontalAlignment="Left" Height="257" Margin="141,82,0,0" VerticalAlignment="Top" Width="217">
+            <Button Content="Button" HorizontalAlignment="Left" Margin="68,60,0,0" VerticalAlignment="Top" Width="75" />
+            <Button Content="Button" HorizontalAlignment="Left" Margin="68,110,0,0" VerticalAlignment="Top" Width="75" />
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,34 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.IO;
 
 namespace IRSE.Plugins
 {
-	public interface IPlugin
-	{
-		#region Fields
-		#endregion
+    public interface IPlugin
+    {
+        #region Properties
 
-		#region Events
-		#endregion
+        Guid Id
+        { get; }
 
-		#region Properties
-		Guid Id
-		{ get; }
-		string Name
-		{ get; }
-		string Version
-		{ get; }
-		#endregion
+        string Name
+        { get; }
 
-		#region Methods
-		void Init(String ModDirectory);
-		void Shutdown();
-		#endregion
-	}
+        string Version
+        { get; }
+
+        #endregion Properties
+
+        #region Methods
+
+        void Init(String ModDirectory);
+
+        void Shutdown();
+
+        #endregion Methods
+    }
 }
