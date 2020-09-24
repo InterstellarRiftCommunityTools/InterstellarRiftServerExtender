@@ -19,7 +19,7 @@ namespace IRSE
 {
     public class Program
     {
-        public static string ForGameVersion = "0.2.15.40";
+        public static string ForGameVersion = "1.0.0.60";
         public static string ThisGameVersion;
 
         #region Fields
@@ -111,8 +111,7 @@ namespace IRSE
 
         [STAThread]
         private static void Main(string[] args)
-        {
-            debugMode = true;
+        {           
             Console.Title = WindowTitle;
 
             new FolderStructure().Build();
@@ -127,7 +126,7 @@ namespace IRSE
                     return null;
 
                 string dllName = assemblyName + ".dll";
-                string dllFullPath = Path.Combine(Path.GetFullPath("IRSE\\bin"), dllName);
+                string dllFullPath = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), dllName);
 
                 if (debugMode)
                     Console.WriteLine($"The assembly '{dllName}' is missing or has been updated. Adding/Updating missing assembly.");
