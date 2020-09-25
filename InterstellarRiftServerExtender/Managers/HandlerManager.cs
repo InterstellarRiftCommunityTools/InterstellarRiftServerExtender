@@ -83,7 +83,6 @@ namespace IRSE.Managers
                     }
                 }
                 
-
                 mainLog.Info("IRSE: Loading Handlers..");
 
                 NetworkHandler = new NetworkHandler(m_controllerManager);

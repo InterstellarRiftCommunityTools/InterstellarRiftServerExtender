@@ -45,7 +45,7 @@ namespace IRSE
 
     #endregion IRSE Name Enums
 
-    public static class Globals
+    public static class ExtenderGlobals
     {
         #region Server Folder Name Fields
 

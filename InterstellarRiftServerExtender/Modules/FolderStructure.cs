@@ -24,6 +24,7 @@ namespace IRSE.Modules
             List<string> directories = new List<string>();
             directories.Add("bin");
             directories.Add("config");
+            directories.Add("worlddata");
             directories.Add("localization");
             directories.Add("plugins");
             directories.Add("logs");
@@ -56,7 +57,7 @@ namespace IRSE.Modules
                             case ".ini":
                             case ".config":
                             case ".json":
-                                path = Globals.GetFolderPath(IRSEFolderName.Config, false);
+                                path = ExtenderGlobals.GetFolderPath(IRSEFolderName.Config, false);
                                 break;
 
                             default:

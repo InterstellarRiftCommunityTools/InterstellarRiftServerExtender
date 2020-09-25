@@ -43,7 +43,7 @@ namespace IRSE.Managers
 
             ServicePointManager.DefaultConnectionLimit = 10;
 
-            foreach (string file in Directory.GetFiles(Globals.GetFolderPath(IRSEFolderName.Updates), "*", SearchOption.AllDirectories))
+            foreach (string file in Directory.GetFiles(ExtenderGlobals.GetFolderPath(IRSEFolderName.Updates), "*", SearchOption.AllDirectories))
                 FileList.Add(new FileInfo(file));
 
             foreach (string file in Directory.GetFiles(Environment.CurrentDirectory, "*", SearchOption.AllDirectories))
@@ -105,7 +105,7 @@ namespace IRSE.Managers
                 FileList.ForEach((file) => file.Delete());
                 FileList.Clear();
 
-                string updatePath = Globals.GetFolderPath(IRSEFolderName.Updates);
+                string updatePath = ExtenderGlobals.GetFolderPath(IRSEFolderName.Updates);
 
                 File.WriteAllBytes(Path.Combine(updatePath, UpdateFileName), e.Result);
                 ZipFile.ExtractToDirectory(Path.Combine(updatePath, UpdateFileName), updatePath);
@@ -135,8 +135,8 @@ namespace IRSE.Managers
             {
                 Console.WriteLine("IRSE:  Applying Update...");
 
-                string updatePath = Globals.GetFolderPath(IRSEFolderName.Updates);
-                string hesPath = Globals.GetFolderPath(IRSEFolderName.IRSE);
+                string updatePath = ExtenderGlobals.GetFolderPath(IRSEFolderName.Updates);
+                string hesPath = ExtenderGlobals.GetFolderPath(IRSEFolderName.IRSE);
 
                 // for all of the files already in the server folder
                 foreach (var file in CurrentFileList)

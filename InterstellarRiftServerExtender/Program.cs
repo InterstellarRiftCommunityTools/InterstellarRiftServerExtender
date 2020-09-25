@@ -1,9 +1,12 @@
-﻿using IRSE.GUI.Forms;
+﻿using Game.Server;
+using IRSE.GUI.Forms;
 using IRSE.Managers;
 using IRSE.Modules;
+using IRSE.Modules.GameConfig;
 using NLog;
 using NLog.Config;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,14 +15,14 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Windows;
 using Localization = IRSE.Modules.Localization;
+
 
 namespace IRSE
 {
     public class Program
     {
-        public static string ForGameVersion = "1.0.0.60";
+        public static string ForGameVersion = "1.0.0.0";
         public static string ThisGameVersion;
 
         #region Fields
@@ -38,6 +41,7 @@ namespace IRSE
         private static bool debugMode = true;
         private static bool handleConsoleCommands = true;
         private static ExtenderGui m_form;
+        private static IEnumerator ConsoleCoroutine;
 
         #endregion Fields
 
@@ -74,7 +78,7 @@ namespace IRSE
 
         public static Config Config => m_config;
 
-        public static bool WPFGUI { get; private set; }
+    public static bool WPFGUI { get; private set; }
 
         //public static Server CurrentServer => m_serverInstance .Server;
 
@@ -87,7 +91,7 @@ namespace IRSE
 
             //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
 
-            string configPath = Globals.GetFilePath(IRSEFileName.NLogConfig);
+            string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
 
             LogManager.Configuration = new XmlLoggingConfiguration(configPath);
 
@@ -135,16 +139,20 @@ namespace IRSE
 
                 using (Stream s = Assembly.GetCallingAssembly().GetManifestResourceStream("IRSE.Resources." + dllName))
                 {
-                    byte[] data = new byte[s.Length];
-                    s.Read(data, 0, data.Length);
+                    if (s != null) 
+                    {
+                        byte[] data = new byte[s.Length];
+                        s.Read(data, 0, data.Length);
 
-                    File.WriteAllBytes(dllFullPath, data);
+                        File.WriteAllBytes(dllFullPath, data);
+                    }
+                        
                 }
 
                 return Assembly.LoadFrom(dllFullPath);
             };
 
-            // This is for args that should be used before HES loads
+            // This is for args that should be used before IRSE loads
             bool noUpdateIRSE = false;
             bool noUpdateIR = false;
             bool usePrereleaseVersions = false;
@@ -169,7 +177,7 @@ namespace IRSE
             if (noUpdateIRSE || !Config.Settings.EnableAutomaticUpdates)
             {
                 UpdateManager.EnableAutoUpdates = false;
-                Console.WriteLine("IRSE: (Arg: -noupdateirse is set or option in HES config is enabled) HES will not be auto-updated.\r\n");
+                Console.WriteLine("IRSE: (Arg: -noupdate is set or option in IRSE config is enabled) HES will not be auto-updated.\r\n");
             }
 
             if (noUpdateIR || !Config.Settings.EnableHellionAutomaticUpdates)
@@ -189,12 +197,25 @@ namespace IRSE
         // this is where stuff goes!
         private void Run(string[] args)
         {
-            //SetupGUI();
+            //Build IR's paths so we can use the Localization system
+            Game.Program.InitFileSystems();
+            Game.Program.InitGameDirectory("InterstellarRift");
 
-            //ServerInstance.Instance.Start();
-            ReadConsoleCommands(args);
-           
-            //Console.ReadLine();
+            new ServerConfigConverter().BuildAndUpdateConfigProperties();
+
+            SetupGUI();
+
+            // They initialize it as (string[])null, not good for us trying to use their static classes, this fixes it
+            Game.Program.CommandLineArgs = new string[1];
+
+            SvCommands.InitCommands(null);
+            Program.ConsoleCoroutine = Game.Framework.CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete);
+            SvCommands.InitCommandHooks();
+
+
+
+            //while (true) { }
+            ReadConsoleCommands(args);          
         }
 
         /// <summary>
@@ -202,7 +223,6 @@ namespace IRSE
         /// </summary>
         private static void SetupGUI()
         {
-            return;
 
             if (uiThread != null)
                 return;
@@ -210,6 +230,7 @@ namespace IRSE
             uiThread = new Thread(LoadGUI);
             uiThread.SetApartmentState(ApartmentState.STA);
             uiThread.Start();
+
 
         }
 
@@ -219,15 +240,18 @@ namespace IRSE
         [STAThread]
         private static void LoadGUI()
         {
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
+
 
             if (m_form == null || m_form.IsDisposed)
             {
+                System.Windows.Forms.Application.EnableVisualStyles();
+                System.Windows.Forms.Application.SetCompatibleTextRenderingDefault(false);
                 m_form = new ExtenderGui();
             }
             else if (m_form.Visible)
                 return;
+
+
 
             m_form.Text = WindowTitle + " GUI";
 
@@ -267,16 +291,16 @@ namespace IRSE
 
         public static void PrintHelp()
         {
-            mainLog.Warn("------------------------------------------------------------");
-            // mainLog.Warn(m_localization.Sentences["DescHelp"]);
-            mainLog.Warn(m_localization.Sentences["HelpCommand"]);
-            mainLog.Warn(m_localization.Sentences["SaveCommand"]);
-            mainLog.Warn(m_localization.Sentences["StartCommand"]);
-            mainLog.Warn(m_localization.Sentences["StopCommand"]);
-            mainLog.Warn(m_localization.Sentences["OpenGUICommand"]);
+            //mainLog.Warn("------------------------------------------------------------");
+            //mainLog.Warn(m_localization.Sentences["DescHelp"]);
+            //mainLog.Warn(m_localization.Sentences["HelpCommand"]);
+            //mainLog.Warn(m_localization.Sentences["SaveCommand"]);
+            //mainLog.Warn(m_localization.Sentences["StartCommand"]);
+            //mainLog.Warn(m_localization.Sentences["StopCommand"]);
+            //mainLog.Warn(m_localization.Sentences["OpenGUICommand"]);
             //mainLog.Warn(m_localization.Sentences["PlayersCommand"]);
 
-            mainLog.Warn("-------------------------------------------------------------");
+            //mainLog.Warn("-------------------------------------------------------------");
         }
 
         /// <summary>
@@ -287,23 +311,16 @@ namespace IRSE
             while (true)
             {
                 string line = Console.ReadLine();
-
-                if (!HandleConsoleCommands)
-                {
-                    line = null;
-                    System.Windows.Forms.SendKeys.SendWait("{ENTER}");
-                    break;
-                }
-
+           
                 if (!string.IsNullOrEmpty(line) && line.Length > 1)
                 {
                     if (!line.StartsWith("/"))
                     {
-                        // if (Server.IsRunning)
-                        //if (NetworkManager.Instance != null)
-                        //    NetworkManager.Instance.MessageAllClients(cmd);
-                        //else
-                        // Console.WriteLine("The Server must be running to message connected clients!");
+                        if (ServerInstance.Instance.IsRunning)
+                            if (Instance != null)
+                                ServerInstance.Instance.Handlers.ChatHandler.SendMessageFromServer(line);
+                            else
+                                Console.WriteLine("The Server must be running to message connected clients!");
 
                         continue;
                     }
@@ -353,6 +370,7 @@ namespace IRSE
                     {
                         if (!ServerInstance.Instance.IsRunning)
                             ServerInstance.Instance.Start();
+                      
                         else
                             Console.WriteLine("The server is already running.");
                         flag = true;

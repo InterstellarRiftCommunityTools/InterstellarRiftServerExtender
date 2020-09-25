@@ -9,7 +9,7 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
     {
         #region Fields
 
-        private static NLog.Logger mainLog; //mainLog.Error
+        private static NLog.Logger mainLog;
 
         private const String EntryClass = "Program";
         private const String InitMethod = "Init";
@@ -150,8 +150,6 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
                     break;
                 }
             }
-
-            //Thread.Sleep(10000);
 
             isRunning = true;
         }

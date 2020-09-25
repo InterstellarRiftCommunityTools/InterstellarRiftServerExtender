@@ -215,16 +215,11 @@
             // 
             // serverconfig_properties
             // 
-            this.serverconfig_properties.CommandsBorderColor = System.Drawing.SystemColors.ControlLight;
             this.serverconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.serverconfig_properties.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.serverconfig_properties.LineColor = System.Drawing.SystemColors.ControlDark;
             this.serverconfig_properties.Location = new System.Drawing.Point(3, 3);
             this.serverconfig_properties.Name = "serverconfig_properties";
-            this.serverconfig_properties.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.serverconfig_properties.Size = new System.Drawing.Size(752, 337);
-            this.serverconfig_properties.TabIndex = 1;
-            this.serverconfig_properties.ViewBorderColor = System.Drawing.SystemColors.ControlLight;
+            this.serverconfig_properties.TabIndex = 0;
             // 
             // ExtenderConfig
             // 
@@ -239,16 +234,11 @@
             // 
             // extenderconfig_properties
             // 
-            this.extenderconfig_properties.CommandsBorderColor = System.Drawing.SystemColors.ControlLight;
             this.extenderconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extenderconfig_properties.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.extenderconfig_properties.LineColor = System.Drawing.SystemColors.ControlDark;
             this.extenderconfig_properties.Location = new System.Drawing.Point(3, 3);
             this.extenderconfig_properties.Name = "extenderconfig_properties";
-            this.extenderconfig_properties.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.extenderconfig_properties.Size = new System.Drawing.Size(752, 337);
-            this.extenderconfig_properties.TabIndex = 2;
-            this.extenderconfig_properties.ViewBorderColor = System.Drawing.SystemColors.ControlLight;
+            this.extenderconfig_properties.TabIndex = 0;
             // 
             // serverconfig_checkForUpdates
             // 
@@ -271,7 +261,7 @@
             this.groupBox1.Size = new System.Drawing.Size(373, 78);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "News About HES";
+            this.groupBox1.Text = "Extender News";
             // 
             // server_hesNewsLabel
             // 
@@ -791,7 +781,7 @@
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.Size = new System.Drawing.Size(0, 17);
             // 
-            // HESGui
+            // ExtenderGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -800,7 +790,7 @@
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "HESGui";
+            this.Name = "ExtenderGui";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "-";
             this.Tabs.ResumeLayout(false);
@@ -916,12 +906,12 @@
         private System.Windows.Forms.TabPage plugins_pluginManager_tab;
         private System.Windows.Forms.TabControl server_server_Tabs;
         private System.Windows.Forms.TabPage ServerConfig;
-        private System.Windows.Forms.PropertyGrid serverconfig_properties;
         private System.Windows.Forms.TabPage ExtenderConfig;
-        private System.Windows.Forms.PropertyGrid extenderconfig_properties;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label server_hesNewsLabel;
         private System.Windows.Forms.Button serverconfig_checkForUpdates;
+        private System.Windows.Forms.PropertyGrid serverconfig_properties;
+        private System.Windows.Forms.PropertyGrid extenderconfig_properties;
     }
 }
 

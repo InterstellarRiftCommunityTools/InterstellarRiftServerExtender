@@ -9,9 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Game.Server;
-
-
-
+using IRSE.Modules.GameConfig;
 
 namespace IRSE.GUI.Forms
 {
@@ -19,6 +17,7 @@ namespace IRSE.GUI.Forms
     {
         private Timer ObjectManipulationRefreshTimer = new Timer();
         private Timer PlayersRefreshTimer = new Timer();
+      
 
         public ExtenderGui()
         {
@@ -29,10 +28,9 @@ namespace IRSE.GUI.Forms
             ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
             ServerInstance.Instance.OnServerStopped += Instance_OnServerStopped;
 
-           
 
-            //ServerInstance.Instance.GameServerConfig.Load();
-            //serverconfig_properties.SelectedObject = ServerInstance.Instance.GameServerConfig;
+            new ServerConfigProperties();
+            serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
             extenderconfig_properties.SelectedObject = Config.Instance.Settings;
 
             serverconfig_properties.Refresh();
@@ -50,14 +48,14 @@ namespace IRSE.GUI.Forms
                     
                 }
             }
-
+            
             //UpdateManager.Instance.OnUpdateChecked += new UpdateManager.UpdateEventHandler(Instance_OnUpdateChecked);
             //UpdateManager.Instance.OnUpdateDownloaded += new UpdateManager.UpdateEventHandler(Instance_OnUpdateDownloaded);
             //UpdateManager.Instance.OnUpdateApplied += new UpdateManager.UpdateEventHandler(Instance_OnUpdateApplied);
 
             server_hesNewsLabel.Text = 
-                @"Welcome to IRSE! Auto updates have now been implemented!\r\n" +
-                "Check out the enabled Options under Extender Config!";
+                "Welcome to IRSE!\nIt's Almost Ready!!\n" +
+                "Woot!";
 
         }
 
@@ -277,10 +275,9 @@ namespace IRSE.GUI.Forms
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
             {
-                //if (ServerInstance.Instance.GameServerConfig.Save())
-                //{
-                //    StatusBar.Text = "Config Saved.";
-                //}
+                Game.Configuration.ServerConfig.Singleton.Save();               
+                StatusBar.Text = "Server Config Saved.";
+                
             }
             else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
             {
@@ -295,20 +292,20 @@ namespace IRSE.GUI.Forms
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
             {
-                //ServerInstance.Instance.GameServerConfig.Load();
-                serverconfig_properties.SelectedObject = ServerInstance.Instance.GameServerConfig;
+                Game.Configuration.ServerConfig.Load();
+                serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
 
                 serverconfig_properties.Refresh();
-                StatusBar.Text = "Reloaded the config from the GameServer.ini.";
+                StatusBar.Text = "Reloaded the config from appdata server.json";
             }
-            else if (server_server_Tabs.SelectedTab.Name == "HESConfig")
+            else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
             {
                 if (Config.Instance.LoadConfiguration())
                 {
                     extenderconfig_properties.SelectedObject = Config.Instance.Settings;
                     extenderconfig_properties.Refresh();
 
-                    StatusBar.Text = "Reloaded the config from the GameServer.ini.";
+                    StatusBar.Text = "Reloaded extender config.";
                 }
             }
         }
@@ -328,12 +325,12 @@ namespace IRSE.GUI.Forms
                     StatusBar.Text = "Config defaults loaded. Don't forget to save!";
                 }
             }
-            else if (server_server_Tabs.SelectedTab.Name == "HESConfig")
+            else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
             {
                 Config.Instance.Settings = new Settings();
                 extenderconfig_properties.SelectedObject = Config.Instance.Settings;
                 extenderconfig_properties.Refresh();
-                StatusBar.Text = "HES Config Defaults loaded. Don't forget to save!";              
+                StatusBar.Text = "Extender Config Defaults loaded. Don't forget to save!";              
             }
         }
 

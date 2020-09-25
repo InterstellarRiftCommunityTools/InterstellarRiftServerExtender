@@ -87,18 +87,21 @@ namespace IRSE.Managers
 
         public ServerInstance()
         {
+            mainLog = NLog.LogManager.GetCurrentClassLogger();
+
             m_launchedTime = DateTime.MinValue;
             m_serverThread = null;
             m_serverInstance = this;
 
+            // Wrap IR.exe
             m_assembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IR.exe"));
 
+            // Wrap Aluna Framework as GameState was moved here.
             m_frameworkAssembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AlunaNetFramework.dll"));
 
+
             m_serverWrapper = new ServerWrapper(m_assembly, m_frameworkAssembly);
-
-            mainLog = NLog.LogManager.GetCurrentClassLogger();
-
+           
             ServerWrapper.Program.OnServerStarted += Program_OnServerStarted;
             ServerWrapper.Program.OnServerStopped += Program_OnServerStopped;
         }
@@ -108,22 +111,34 @@ namespace IRSE.Managers
         public void Program_OnServerStarted()
         {
             m_launchedTime = DateTime.Now;
-
             try
             {
                 m_controllerManager = new HandlerManager(m_assembly, m_frameworkAssembly);
 
+
+                // Get the Handlers from the Controller
                 while (m_controllerManager.GetHandlers() == null)
                 {
-                    Thread.Sleep(1000);
-                    if (m_controllerManager.GetHandlers() != null)
+                    try
                     {
+                        Thread.Sleep(1000);
+                        if (m_controllerManager.GetHandlers() != null)
+                        {
+                            break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+
                         break;
                     }
+
                 }
 
-                m_isRunning = true;
+                // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
+                Thread.Sleep(5000);
 
+                m_isRunning = true;
                 mainLog.Info("IRSE: Startup Procedure Complete!");
             }
             catch (Exception ex)

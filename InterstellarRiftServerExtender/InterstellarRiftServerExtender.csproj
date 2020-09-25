@@ -108,12 +108,14 @@
     <Compile Include="Managers\InstanceManager.cs" />
     <Compile Include="Managers\PluginManager.cs" />
     <Compile Include="Managers\UpdateManager.cs" />
-    <Compile Include="Config.cs" />
+    <Compile Include="Modules\Config.cs" />
     <Compile Include="Modules\CrashDump.cs" />
     <Compile Include="Modules\FolderStructure.cs" />
     <Compile Include="Managers\GhostClientManager.cs" />
     <Compile Include="Modules\Localization.cs" />
     <Compile Include="Modules\RepairInit.cs" />
+    <Compile Include="Modules\GameConfig\ServerConfig.cs" />
+    <Compile Include="Modules\GameConfig\ServerConfigProperties.cs" />
     <Compile Include="Modules\SteamCMD.cs" />
     <Compile Include="Plugins\IPlugin.cs" />
     <Compile Include="Plugins\PluginBase.cs" />
@@ -193,6 +195,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
+    <Reference Include="TelerikCommon, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
