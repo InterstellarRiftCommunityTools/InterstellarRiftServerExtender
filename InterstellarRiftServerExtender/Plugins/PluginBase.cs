@@ -2,6 +2,7 @@
 using System;
 using Game.Server;
 using IRSE.Managers;
+using Game.Framework.Networking;
 
 namespace IRSE.Managers.Plugins
 {
@@ -19,10 +20,11 @@ namespace IRSE.Managers.Plugins
         protected String[] m_aillias;
         protected Guid m_id;
         protected PluginHelper m_plugin_helper;
+        protected RPCDispatcher m_dispatcher;
         protected Boolean isenabled = false;
 
-        //protected LogInstance m_log;
-        //protected PluginBaseConfig m_config;
+        protected Logger m_log;
+        protected PluginBaseConfig m_config;
 
         #endregion Fields
 
@@ -37,11 +39,13 @@ namespace IRSE.Managers.Plugins
         public virtual String Directory { get { return m_directory; } internal set { m_directory = value; } }
         public virtual String API { get { return m_api; } internal set { m_api = value; } }
         public virtual String[] Aillias { get { return m_aillias; } internal set { m_aillias = value; } }
-        public virtual ControllerManager Controllers { get { return m_controllers; } }
+        public virtual ControllerManager GetControllers { get { return m_controllers; } }
+
+        public virtual RPCDispatcher EventDispatcher { get { return m_dispatcher; } }
         public virtual PluginHelper GetPluginHelper { get { return m_plugin_helper; } }
 
-        //public virtual LogInstance PluginLog { get { return m_log; } }
-        //public virtual PluginBaseConfig Config { get { return m_config; } }
+        public virtual Logger PluginLog { get { return m_log; } }
+        public virtual PluginBaseConfig Config { get { return m_config; } }
 
         public Logger GetLogger { get { return LogManager.GetCurrentClassLogger(); ; } }
 
@@ -64,6 +68,10 @@ namespace IRSE.Managers.Plugins
             //Version = asmName.Version.ToString(); Console.WriteLine("ssssss2222ssss");
 
             m_plugin_helper = new PluginHelper(m_controllers);
+
+            m_log = NLog.LogManager.GetCurrentClassLogger();
+
+            m_dispatcher = m_controllers.Network.Net.RpcDispatcher;
         }
 
         public virtual void Init(String modDirectory)

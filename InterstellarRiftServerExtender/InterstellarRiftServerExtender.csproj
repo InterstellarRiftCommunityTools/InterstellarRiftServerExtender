@@ -53,6 +53,12 @@
     <StartupObject>IRSE.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\TelerikCommon.dll" />
+    <EmbeddedResource Include="Resources\System.Net.Http.Formatting.dll" />
+    <EmbeddedResource Include="Resources\System.Web.Http.dll" />
+    <EmbeddedResource Include="Resources\Telerik.WinControls.Themes.FluentDark.dll" />
+    <EmbeddedResource Include="Resources\Telerik.WinControls.Themes.Office2013Dark.dll" />
+    <EmbeddedResource Include="Resources\Telerik.WinControls.UI.dll" />
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -224,10 +230,18 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="Telerik.WinControls, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e" />
-    <Reference Include="Telerik.WinControls.Themes.FluentDark, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e" />
-    <Reference Include="Telerik.WinControls.Themes.Office2013Dark, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e" />
-    <Reference Include="Telerik.WinControls.UI, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e" />
-    <Reference Include="TelerikCommon, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e" />
+    <Reference Include="Telerik.WinControls.Themes.FluentDark, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Telerik.WinControls.Themes.Office2013Dark, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Telerik.WinControls.UI, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TelerikCommon, Version=2019.2.508.40, Culture=neutral, PublicKeyToken=5bb2a467cbec794e">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>

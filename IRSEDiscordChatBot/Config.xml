@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <DiscordToken>imnotatoken</DiscordToken>
+  <BotClientID>0</BotClientID>
+  <MainChannelID>0</MainChannelID>
+  <PrintDiscordLogToConsole>true</PrintDiscordLogToConsole>
+  <PrintDiscordChatToConsole>true</PrintDiscordChatToConsole>
+  <PlayerSpawningMessage>(%PlayerName%) connected to the game server at (%CurrentDateTime%)</PlayerSpawningMessage>
+  <PlayerRespawningMessage>(%PlayerName%) has respawned at (%CurrentDateTime%)</PlayerRespawningMessage>
+  <PlayerLeavingMessage>(%PlayerName%) has left the game server at (%CurrentDateTime%)</PlayerLeavingMessage>
+  <MessageSentToDiscord>HES Server - (%PlayerName%): (%ChatMessage%) </MessageSentToDiscord>
+  <MessageSentToGameServer>Discord [(%DiscordChannelName%)]- [(%DiscordUserName%)]: (%DiscordChatMessage%)</MessageSentToGameServer>
+  <NewPlayerSpawningMessage>A new Player has connected! Welcome (%PlayerName%)!</NewPlayerSpawningMessage>
+  <DebugMode>true</DebugMode>
+</Settings>

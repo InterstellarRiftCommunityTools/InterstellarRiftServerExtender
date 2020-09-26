@@ -124,7 +124,7 @@ namespace IRSE.Managers
         {
             List<PluginInfo> foundPlugins = new List<PluginInfo>();
 
-            String modPath = Path.Combine(Environment.CurrentDirectory, "Plugins");
+            String modPath = Path.Combine(IRSE.Modules.FolderStructure.IRSEFolderPath, "plugins");
             String[] subDirectories = Directory.GetDirectories(modPath);
 
             foreach (String subDirectory in subDirectories)
@@ -166,6 +166,7 @@ namespace IRSE.Managers
             {
                 bytes = File.ReadAllBytes(library);
                 libraryAssembly = Assembly.Load(bytes);
+
                 Guid guid = new Guid(((GuidAttribute)libraryAssembly.GetCustomAttributes(typeof(GuidAttribute), true)[0]).Value);
 
                 PluginInfo Plugin = new PluginInfo();

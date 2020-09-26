@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IRSE.Managers;
+using System;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
@@ -21,18 +22,13 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
         private ReflectionMethod m_startupMethod;
         private ReflectionMethod m_stopMethod;
 
-        private Boolean m_isRunning;
+
         private ManualResetEvent m_waitEvent;
 
         #endregion Fields
 
         #region Events
 
-        public delegate void ServerRunningEvent();
-
-        public event ServerRunningEvent OnServerStarted;
-
-        public event ServerRunningEvent OnServerStopped;
 
         #endregion Events
 
@@ -40,35 +36,6 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
         public override String ClassName { get { return "Program"; } }
         public override String AssemblyName { get { return "InterstellarRift"; } }
-
-        private Boolean isRunning
-        {
-            get { return m_isRunning; }
-            set
-            {
-                if (m_isRunning == value)
-                {
-                    return;
-                }
-                m_isRunning = value;
-                if (m_isRunning)
-                {
-                    if (OnServerStarted != null)
-                    {
-                        OnServerStarted();
-                    }
-                }
-                else
-                {
-                    if (OnServerStopped != null)
-                    {
-                        OnServerStopped();
-                    }
-                }
-            }
-        }
-
-        public Boolean IsRunning { get { return isRunning; } }
 
         #endregion Properties
 
@@ -100,7 +67,7 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
         public void StopServer()
         {
             //m_stopMethod.Call(null, null);
-            isRunning = false;
+            ServerInstance.Instance.Stop();
         }
 
         public Thread StartServer(Object args)
@@ -131,7 +98,6 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
             {
                 mainLog.Error("Unhandled Exception caused server to crash. Exception: " + ex.ToString());
             }
-            isRunning = false;
         }
 
         private void Start(Object[] args)
@@ -151,7 +117,8 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
                 }
             }
 
-            isRunning = true;
+            ServerInstance.Instance.StartInstance();
+
         }
 
         #endregion Methods

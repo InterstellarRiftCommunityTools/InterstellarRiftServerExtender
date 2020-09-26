@@ -42,20 +42,19 @@ namespace IRSE.Managers
 
         public Assembly Assembly { get { return m_assembly; } }
 
-        public Boolean IsRunning => isRunning;
-
         public TimeSpan Uptime { get { return DateTime.Now - m_launchedTime; } }
 
 
-        private Boolean isRunning
+        public Boolean IsRunning
         {
             get { return m_isRunning; }
-            set
+            private set
             {
                 if (m_isRunning == value)
                 {
                     return;
                 }
+
                 m_isRunning = value;
                 if (m_isRunning)
                 {
@@ -102,16 +101,14 @@ namespace IRSE.Managers
             // Wrap Aluna Framework as GameState was moved here.
             m_frameworkAssembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AlunaNetFramework.dll"));
 
-
+            // Wrap both assemblies
             m_serverWrapper = new ServerWrapper(m_assembly, m_frameworkAssembly);
-           
-            ServerWrapper.Program.OnServerStarted += Program_OnServerStarted;
-            ServerWrapper.Program.OnServerStopped += Program_OnServerStopped;
+
         }
 
         #region Methods
 
-        public void Program_OnServerStarted()
+        public void StartInstance()
         {
             m_launchedTime = DateTime.Now;
             try
@@ -138,10 +135,13 @@ namespace IRSE.Managers
 
                 }
 
+                m_pluginManager = new PluginManager();
+                PluginManager.InitializeAllPlugins();
+
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
                 Thread.Sleep(5000);
 
-                m_isRunning = true;
+                IsRunning = true;
                 mainLog.Info("IRSE: Startup Procedure Complete!");
             }
             catch (Exception ex)
@@ -155,10 +155,6 @@ namespace IRSE.Managers
             }
         }
 
-        private void Program_OnServerStopped()
-        {
-            m_isRunning = false;
-        }
 
         public void Start()
         {
@@ -179,28 +175,12 @@ namespace IRSE.Managers
         {
             ServerWrapper.Program.StopServer();
             m_serverThread.Abort();
-        }
-
-        public void ForceGalaxySave()
-        {
-            if (!Instance.IsRunning)
-                return;
-
-            try
-            {
-                mainLog.Info("Attempting to Force a save!!!!");
-
-                mainLog.Info("Saved Galaxy!");
-            }
-            catch (Exception ex)
-            {
-                mainLog.Error("Save Failed! Exception Info: " + ex.ToString());
-            }
+            IsRunning = false;
         }
 
         internal void Save(bool v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         #endregion Methods

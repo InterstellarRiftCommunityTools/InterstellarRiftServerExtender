@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -75,13 +76,13 @@ namespace IRSE.Managers
 
                 mainLog.Info("IRSE: Waiting for Universe To Populate..");
 
-                //SpawnGhostClients(m_controllerManager);
+                SpawnGhostClients(m_controllerManager);
 
                
-                while (universe.Galaxy.GetActiveSystemCount() != 4)
+                while (m_controllerManager.Players.AllPlayers().Count() < 1)
                 {
                     Thread.Sleep(1000);
-                    if (universe.Galaxy.GetActiveSystemCount() == 4)
+                    if (m_controllerManager.Players.AllPlayers().Count() <= 1)
                     {
                         break;
                     }
