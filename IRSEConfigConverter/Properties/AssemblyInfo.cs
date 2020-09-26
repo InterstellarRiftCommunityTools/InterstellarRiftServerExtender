@@ -1,16 +1,17 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("IsR Server Extender")]
-[assembly: AssemblyDescription("Interstellar Rift Server Extender")]
-[assembly: AssemblyConfiguration("DEV")]
-[assembly: AssemblyCompany("The Server Extenders")]
-[assembly: AssemblyProduct("These")]
-[assembly: AssemblyCopyright("The Server Extenders © 2020")]
-[assembly: AssemblyTrademark("TSE")]
+[assembly: AssemblyTitle("IRSEConfigConverter")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("IRSEConfigConverter")]
+[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8e635858-b6bb-49e4-a8c0-54a636d0725e")]
+[assembly: Guid("0cae4545-b74b-4152-a4ce-abd17fb7010b")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -28,5 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.0.3.10")]
-[assembly: AssemblyFileVersion("0.0.3.10")]
+// You can specify all the values or you can default the Build and Revision Numbers
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

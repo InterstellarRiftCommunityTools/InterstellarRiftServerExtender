@@ -1,28 +1,33 @@
 ﻿using System;
 
-namespace IRSE.Plugins
+namespace IRSE.Managers.Plugins
 {
     public interface IPlugin
     {
-        #region Properties
+        #region Fields
+        #endregion
 
+        #region Events
+        #endregion
+
+        #region Properties
         Guid Id
         { get; }
-
-        string Name
+        string GetName
         { get; }
-
         string Version
         { get; }
-
-        #endregion Properties
+        string Description
+        { get; }
+        string Author
+        { get; }
+        string API
+        { get; }
+        #endregion
 
         #region Methods
-
-        void Init(String ModDirectory);
-
+        void Init();
         void Shutdown();
-
-        #endregion Methods
+        #endregion
     }
 }

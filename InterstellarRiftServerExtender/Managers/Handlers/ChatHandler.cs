@@ -1,4 +1,5 @@
 ﻿using Game.ClientServer.Packets;
+using Game.Configuration;
 using Game.Framework.Networking;
 using Game.Server;
 using IRSE.ResultObjects;
@@ -218,8 +219,8 @@ namespace IRSE.Managers.Handlers
 
         public void SendMessageFromServer(string messageToSend)
         {
-
-        }
+			m_chatController.SendToAll(Config.Singleton.AllChatColor, messageToSend, "Server");
+		}
 
         #endregion Methods
     }

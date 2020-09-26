@@ -1,4 +1,5 @@
 ﻿using System;
+using NLog;
 using System.Reflection;
 
 namespace IRSE.Managers.Handlers
@@ -6,9 +7,8 @@ namespace IRSE.Managers.Handlers
     public class NetworkHandler
     {
         #region Fields
-
+        private Logger mainLog;
         private Game.Server.NetworkController m_networkController;
-        private static NLog.Logger mainLog; //mainLog.Error
 
         #endregion Fields
 
@@ -22,9 +22,11 @@ namespace IRSE.Managers.Handlers
 
         public NetworkHandler(Game.Server.ControllerManager controllerManager)
         {
+
             try
             {
-                NLog.LogManager.GetCurrentClassLogger().Info("IRSE: Loading NetworkHandler...");
+                mainLog = NLog.LogManager.GetCurrentClassLogger();
+               mainLog.Info("IRSE: Loading NetworkHandler...");
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
-﻿using Game.ClientServer.Packets;
+﻿using Game.Client;
+using Game.ClientServer.Packets;
 using Game.Configuration;
 using Game.Framework;
 using Game.Framework.Networking;
@@ -37,6 +38,8 @@ namespace IRSE.Managers
         public PlayerHandler PlayerHandler { get; private set; }
         public UniverseHandler UniverseHandler { get; private set; }
 
+        public Game.Server.ControllerManager ControllerManager => m_controllerManager;
+
         #endregion Properties
 
         public HandlerManager(Assembly assembly, Assembly frameworkAssembly)
@@ -65,6 +68,7 @@ namespace IRSE.Managers
                 FieldInfo m_controllerManagerField = server.GetType().GetField("m_controllers", BindingFlags.NonPublic | BindingFlags.Instance);
 
                 m_controllerManager = m_controllerManagerField.GetValue(server) as Game.Server.ControllerManager;
+
 
 
                 var universe = m_controllerManager.Universe as Game.Server.UniverseController;

@@ -1,4 +1,5 @@
-﻿using IRSE.Plugins;
+﻿
+using IRSE.Managers.Plugins;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,7 +53,7 @@ namespace IRSE.Managers
 
             try
             {
-                Plugin.MainClass = (IPlugin)Activator.CreateInstance(Plugin.MainClassType);
+                Plugin.MainClass = (PluginBase)Activator.CreateInstance(Plugin.MainClassType);
                 if (Plugin.MainClass != null)
                 {
                     try

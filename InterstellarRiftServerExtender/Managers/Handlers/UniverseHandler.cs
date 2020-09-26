@@ -1,32 +1,29 @@
 ﻿using System;
-
+using NLog;
 namespace IRSE.Managers.Handlers
 {
     public class UniverseHandler
     {
         #region Fields
 
-        private Game.Server.UniverseController m_universeController;
-        private static NLog.Logger mainLog; //mainLog.Error
+        private Logger mainLog = NLog.LogManager.GetCurrentClassLogger();
 
         #endregion Fields
 
         public Game.Server.UniverseController Universe
         {
-            get
-            {
-                return m_universeController;
-            }
+            get;
+
         }
 
         public UniverseHandler(Game.Server.ControllerManager controllerManager)
         {
-            //var test = controllerManager.Universe as Game.Server.UniverseController;
+            var test = controllerManager.Universe as Game.Server.UniverseController;
 
             //Console.WriteLine(test.ActiveSystems.FirstOrDefault());
-
             try
             {
+                mainLog = NLog.LogManager.GetCurrentClassLogger();
                 NLog.LogManager.GetCurrentClassLogger().Info("IRSE: Loading UniverseHandler...");
             }
             catch (Exception ex)

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InterstellarRiftServerExten
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zoldirseref", "oldirseref\zoldirseref.csproj", "{E0693C1A-AAFB-4B82-AF59-BDFB21C1352E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRSEConfigConverter", "IRSEConfigConverter\IRSEConfigConverter.csproj", "{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,17 @@ Global
 		{E0693C1A-AAFB-4B82-AF59-BDFB21C1352E}.Release|x64.Build.0 = Release|Any CPU
 		{E0693C1A-AAFB-4B82-AF59-BDFB21C1352E}.Release|x86.ActiveCfg = Release|x86
 		{E0693C1A-AAFB-4B82-AF59-BDFB21C1352E}.Release|x86.Build.0 = Release|x86
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Debug|x64.Build.0 = Debug|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Release|x64.ActiveCfg = Release|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Release|x64.Build.0 = Release|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Release|x86.ActiveCfg = Release|Any CPU
+		{0CAE4545-B74B-4152-A4CE-ABD17FB7010B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,19 +1,31 @@
-﻿using System;
+﻿using Game.Configuration;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Dynamic;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Game.Configuration;
-using Game.Framework;
 
-namespace IRSE.Modules.GameConfig
-{ 
+namespace IRSEConfigConverter
+{
     public class ServerConfigConverter
     {
-        #region Fields
+        public class Result
+        {
+            public bool NeedsDialog;
+            public bool Completed;
+            public int Count; 
+            public string Message = null;
 
+            public Result(bool completed, string message = "")
+            {
+                NeedsDialog = false;
+                Completed = completed;
+                Message = message;
+        }
+        }
+
+
+        #region Fields
 
         private static ServerConfigConverter m_instance;
 
@@ -23,24 +35,23 @@ namespace IRSE.Modules.GameConfig
 
         public ServerConfigConverter()
         {
-
         }
 
         #region Methods
 
- 
-
-        public bool BuildAndUpdateConfigProperties() 
+        public Result BuildConfig(string outPath)
         {
+           
+            if (String.IsNullOrEmpty(outPath)) return new Result(false, "Path not set! Set a path first!");
+
             // get all the public properties from the class
             ServerConfig serverConfig = new ServerConfig();
 
             FieldInfo[] fieldInfos = serverConfig.GetType().GetFields();
 
-
             string scriptTop =
-            $"//gv{Program.ForGameVersion}\r\n" +
-            $"//ev{Program.VersionString}\r\n" +
+            $"//gv{IRSE.Program.ForGameVersion}\r\n" +
+            $"//ev{IRSE.Program.VersionString}\r\n" +
             "// This file was generated with ServerConfigConverter class\r\n" +
             "// To allow a PropertyGrid to use IRs fields as properties.\r\n" +
             "using System;\r\n" +
@@ -99,17 +110,18 @@ namespace IRSE.Modules.GameConfig
             "        #endregion\r\n" +
             "        //---<STARTGEN>---";
 
-
-
-
-
             string code = "";
-            foreach (FieldInfo field in fieldInfos) {
 
+            Result result = new Result(true);
+
+
+            foreach (FieldInfo field in fieldInfos)
+            {
+                
 
                 if (field == null)
                     continue;
-                
+
                 ConfigOptionAttribute attribute = field.GetCustomAttribute<ConfigOptionAttribute>();
                 if (attribute == null)
                     continue;
@@ -124,34 +136,39 @@ namespace IRSE.Modules.GameConfig
                 string commentOut = "";
                 if (type.Contains("Dictionary") || type.Contains("List") || type.Contains("UInt32[]"))
                 {
-                    Console.WriteLine($"Manual Edit Item. Name: {name}, Commenting Out Lines");
+                    result.Message += $"Manual Edit Item. Name: {name}, Commenting Out Lines\r\n";
                     commentOut = @"//";
+                    result.NeedsDialog = true;
                 }
 
-                    
-              
-                code += 
+                code +=
                     "\n" +
                     $"      {commentOut}[DisplayName(\"{AddSpacesToSentence(name, true)}\")]\n" +
                     $"      {commentOut}[Category(\"{category}\")]\n" +
                     $"      {commentOut}[Description(\"{description}\")]\n" +
                     $"      {commentOut}public {type} {name} \n" +
-                    $"      {commentOut}{{get{{return ServerConfig.Singleton.{name};}} set {{ServerConfig.Singleton.{name} = value;}}}}\n"+
+                    $"      {commentOut}{{get{{return ServerConfig.Singleton.{name};}} set {{ServerConfig.Singleton.{name} = value;}}}}\n" +
                     "\n";
             }
 
             string scriptBottom =
                 "      //---<ENDGEN>---\n" +
                 "  }\n" +
-                "}\n"+
+                "}\n" +
                 "\n";
 
-            File.WriteAllText(@"F:\Wrex\Desktop\New folder\ServerConfigProperties.cs", scriptTop + code + scriptBottom);
 
-            return false;
+
+            Directory.CreateDirectory(outPath);
+            File.WriteAllText(Path.Combine(outPath, "ServerConfigProperties.cs"), scriptTop + code + scriptBottom);
+
+            result.Count += 1;
+
+
+            return result;
         }
 
-        string AddSpacesToSentence(string text, bool preserveAcronyms)
+        private string AddSpacesToSentence(string text, bool preserveAcronyms)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return string.Empty;
@@ -168,8 +185,6 @@ namespace IRSE.Modules.GameConfig
             }
             return newText.ToString();
         }
-
-
 
         #endregion Methods
     }

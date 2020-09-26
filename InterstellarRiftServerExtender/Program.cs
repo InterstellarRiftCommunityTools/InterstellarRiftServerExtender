@@ -22,7 +22,7 @@ namespace IRSE
 {
     public class Program
     {
-        public static string ForGameVersion = "1.0.0.0";
+        public static string ForGameVersion = "1.0.0.10";
         public static string ThisGameVersion;
 
         #region Fields
@@ -51,20 +51,8 @@ namespace IRSE
         {
             get
             {
-                if (ThisAssembly.Git.Branch.ToLower() == "master") return true;
+                if (ThisAssembly.Git.Branch.ToLower() != "master") return true;
                 return false;
-            }
-        }
-
-        public Boolean HandleConsoleCommands
-        {
-            get
-            {
-                return handleConsoleCommands;
-            }
-            set
-            {
-                handleConsoleCommands = value;
             }
         }
 
@@ -74,13 +62,11 @@ namespace IRSE
         //public static Window MainWindow => GUI.MainWindow;
         public static Version Version => Assembly.GetEntryAssembly().GetName().Version;
         public static String VersionString => Version.ToString(4) + $" Branch: {ThisAssembly.Git.Branch}";
-        public static String WindowTitle => string.Format("INTERSTELLAR RIFT SERVER EXTENDER V{0} - Game Version: v{1} - This Game Version: v{2}", VersionString, ForGameVersion, ThisGameVersion);
+        public static String WindowTitle => string.Format("IsR Server Extender V{0} - Game Version: v{1} - This Game Version: v{2}", VersionString, ForGameVersion, ThisGameVersion);
 
         public static Config Config => m_config;
 
-    public static bool WPFGUI { get; private set; }
-
-        //public static Server CurrentServer => m_serverInstance .Server;
+        public static bool WPFGUI { get; private set; }
 
         #endregion Properties
 
@@ -89,7 +75,8 @@ namespace IRSE
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
 
-            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
+            if(!Dev)
+                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
 
             string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
 
@@ -97,15 +84,18 @@ namespace IRSE
 
             mainLog = LogManager.GetCurrentClassLogger();
 
+            mainLog.Info("Interstellar Rift Dedicated Server Initializing....");
+
             mainLog.Info($"Git Branch: {ThisAssembly.Git.Branch}");
 
-            if (debugMode)
+            if (Dev)
             {
+
                 mainLog.Info($"Git Commit: {ThisAssembly.Git.Commit}");
                 mainLog.Info($"Git SHA: {ThisAssembly.Git.Sha}");
             }
 
-            mainLog.Info("Interstellar Rift Dedicated Server Initializing....");
+            
 
             m_serverInstance = new ServerInstance();
 
@@ -201,7 +191,9 @@ namespace IRSE
             Game.Program.InitFileSystems();
             Game.Program.InitGameDirectory("InterstellarRift");
 
-            new ServerConfigConverter().BuildAndUpdateConfigProperties();
+            //new ServerConfigConverter().BuildAndUpdateConfigProperties();
+
+            m_localization = new Localization();
 
             SetupGUI();
 

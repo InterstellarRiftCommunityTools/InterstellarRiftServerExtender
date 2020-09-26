@@ -22,12 +22,17 @@ namespace IRSE.Managers
         private static NLog.Logger mainLog; //mainLog.Error
         private bool m_isRunning;
 
+        private PluginManager m_pluginManager = null;
+
+
         #endregion Fields
 
 
 
 
         #region Properties
+
+        public PluginManager PluginManager { get { return m_pluginManager; } }
 
         public HandlerManager Handlers { get { return m_controllerManager; } }
 
@@ -41,8 +46,6 @@ namespace IRSE.Managers
 
         public TimeSpan Uptime { get { return DateTime.Now - m_launchedTime; } }
 
-
-        public object GameServerConfig { get; internal set; }
 
         private Boolean isRunning
         {

@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 
+using IRSE.ResultObjects;
+using Game.ClientServer.Packets;
+
 namespace IRSE.Managers.Handlers
 {
     public class PlayerHandler
@@ -45,8 +48,7 @@ namespace IRSE.Managers.Handlers
         {
             try
             {
-                //m_playerController.OnAddPlayer += m_playerController_OnAddPlayer;
-                //m_playerController.OnRemovePlayer += m_playerController_OnRemovePlayer;
+
             }
             catch (Exception ex)
             {
@@ -54,16 +56,6 @@ namespace IRSE.Managers.Handlers
             }
         }
 
-        //void m_playerController_OnRemovePlayer(Player obj)
-        //{
-        //	ServerInstance.Instance.Controllers.ChatManager.ChatMessages.Add(new ChatMessage("", "/all " + obj.Name + " has left the server."));
-        //}
 
-        //void m_playerController_OnAddPlayer(Player obj)
-        //{
-        //	obj.SendRPC((object)new ServerChatMessage("~-C" + (object)Game.Configuration.Config.Singleton.NotificationChatColor + " " + Config.Settings.OnJoinMotd.Replace("#name#", obj.Name), ""));
-        //
-        //	ServerInstance.Instance.Controllers.ChatManager.ChatMessages.Add(new ChatMessage("", "/all " + obj.Name + " has joined the server."));
-        //}
     }
 }

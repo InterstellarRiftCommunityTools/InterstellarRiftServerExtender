@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Game.Server;
 using IRSE.Modules.GameConfig;
+using Telerik.WinControls.Data;
 
 namespace IRSE.GUI.Forms
 {
@@ -32,6 +33,12 @@ namespace IRSE.GUI.Forms
             new ServerConfigProperties();
             serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
             extenderconfig_properties.SelectedObject = Config.Instance.Settings;
+
+
+            //serverconfig_properties.PropertyGridElement.ToolbarElement.Filt //.FilterPropertyName = "Category";
+
+            //FilterDescriptor filter = new FilterDescriptor("Category", FilterOperator.Contains, "server");
+            //serverconfig_properties.FilterDescriptors.Add(filter);
 
             serverconfig_properties.Refresh();
 
@@ -310,6 +317,7 @@ namespace IRSE.GUI.Forms
             }
         }
 
+        /*
         private void server_config_setdefaults_Click(object sender, EventArgs e)
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
@@ -333,23 +341,23 @@ namespace IRSE.GUI.Forms
                 StatusBar.Text = "Extender Config Defaults loaded. Don't forget to save!";              
             }
         }
-
+        */
         private void server_config_reload_Click(object sender, EventArgs e)
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
             {
-                DialogResult result = MessageBox.Show("Are you sure you want to reload the settings from the GameServer.Ini?",
+                DialogResult result = MessageBox.Show("Are you sure you want to reload the settings from the server.json?",
                  "2. Server Settings Error",
                  MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 if (result == DialogResult.Yes)
                 {
-                    //ServerInstance.Instance.GameServerConfig.Load();
-                    serverconfig_properties.SelectedObject = ServerInstance.Instance.GameServerConfig;
+                    Game.Configuration.ServerConfig.Load();
+                    serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
                     serverconfig_properties.Refresh();
-                    StatusBar.Text = "Config reloaded from GameServer.ini";
+                    StatusBar.Text = "Config reloaded from server.json";
                 }
             }
-            else if (server_server_Tabs.SelectedTab.Name == "HESConfig")
+            else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
             {
                 if (Config.Instance.LoadConfiguration())
                 {
