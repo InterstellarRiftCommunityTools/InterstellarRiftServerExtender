@@ -241,6 +241,7 @@ namespace HellionExtendedServer
             mainLogger.Info("HellionExtendedServer: Ready! Use /help for commands to use with HES.");
            
             ReadConsoleCommands(args);
+            test(args);
         }
 
         /// <summary>

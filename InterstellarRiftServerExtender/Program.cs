@@ -1,4 +1,5 @@
-﻿using Game.Server;
+﻿using Game.Framework;
+using Game.Server;
 using IRSE.GUI.Forms;
 using IRSE.Managers;
 using IRSE.Modules;
@@ -13,8 +14,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using Localization = IRSE.Modules.Localization;
 
 
@@ -36,12 +39,12 @@ namespace IRSE
         //private static Boolean m_useGui = true;
         private static Thread uiThread;
 
-        private static Logger mainLog;
+        private static NLog.Logger mainLog;
         private static string[] CommandLineArgs;
         private static bool debugMode = true;
         private static bool handleConsoleCommands = true;
         private static ExtenderGui m_form;
-        private static IEnumerator ConsoleCoroutine;
+        public static IEnumerator ConsoleCoroutine;
 
         #endregion Fields
 
@@ -200,14 +203,93 @@ namespace IRSE
             // They initialize it as (string[])null, not good for us trying to use their static classes, this fixes it
             Game.Program.CommandLineArgs = new string[1];
 
-            SvCommands.InitCommands(null);
+            InitCommands(null);           
             Program.ConsoleCoroutine = Game.Framework.CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete);
-            SvCommands.InitCommandHooks();
+
+            while (true) { 
+            
+                if(Program.ConsoleCoroutine != null)
+                { Program.ConsoleCoroutine.MoveNext(); }
+
+                Thread.Sleep(50);
+            }
+            //ReadConsoleCommands(args);          
+        }
+
+        [SvCommandMethod("start", "Start the server", 4, new SvCommandMethod.ArgumentID[] { })]
+        public static void c_start(object caller, List<string> parameters)
+        {
+            ConsoleCoroutine = null;
+            Console.WriteLine("   ");
+            ServerInstance.Instance.Start();
+         
+            SendKeys.SendWait("{ENTER}");
+            
 
 
+        }
 
-            //while (true) { }
-            ReadConsoleCommands(args);          
+        public static void InitCommands(ControllerManager controllers)
+        {
+            InitCommandHooks();
+
+            if (controllers != null) SvCommandMethod.UpdateControllers(controllers);
+
+            foreach (MethodInfo method in typeof(Program).GetMethods(BindingFlags.Static | BindingFlags.Public))
+            {
+                object[] customAttributes1 = method.GetCustomAttributes(typeof(SvCommandMethod), false);
+                if (((IEnumerable<object>)customAttributes1).Count<object>() != 0)
+                {
+                    object[] customAttributes2 = null;
+                    SvCommandMethod svCommandMethod = customAttributes1[0] as SvCommandMethod;
+                    EventHandler<List<string>> handler = (EventHandler<List<string>>)Delegate.CreateDelegate(typeof(EventHandler<List<string>>), method);
+                    CommandSystem.Singleton.AddCommand(new Command(svCommandMethod.Names, svCommandMethod.Description, svCommandMethod.Arguments, handler, svCommandMethod.RequiredRight, customAttributes2 != null && ((IEnumerable<object>)customAttributes2).Any<object>(), method.GetCustomAttribute<TalkCommandAttribute>() != null), true);
+                }
+            }
+            CommandSystem.Singleton.SortCommands();
+        }
+
+
+        public static void InitCommandHooks()
+        {
+            CommandSystem.Singleton.SecurityHandler = new Func<object, int, bool>(i_securityHandler);
+            CommandSystem.Singleton.OutputHandler += new EventHandler<string>(i_outputHandler);
+            CommandSystem.Singleton.ErrorHandler += new CommandSystem.ErrorHandlerDelegate(i_errorHandler);
+            CommandSystem.Singleton.InputHandler += new CommandSystem.InputDelegate(i_inputHandler);
+            CommandSystem.Singleton.ExecuteHandler += new CommandSystem.ExecuteHandlerDelegate(i_executeHandler);
+        }
+
+
+        private static bool i_securityHandler(object sender, int requiredRights)
+        {
+            return true;
+        }
+
+        private static void i_errorHandler(object caller, string command, string message)
+        {
+            i_outputHandler(caller, message);
+        }
+        private static bool blockOutput = false;
+        private static void i_outputHandler(object caller, string msg)
+        {
+            if(msg != "No command entered")
+                Console.WriteLine(msg);
+        }
+
+        private static void i_executeHandler(object caller, string command)
+        {
+            Console.WriteLine("Executed the following command: " + command, "Admin Commands");
+        }
+
+        private static void i_inputHandler(object caller, Game.Framework.CommandSystem.InputResultDelegate callback)
+        {
+            byte[] buf = new byte[256];
+            Stream inputStream = Console.OpenStandardInput();
+            inputStream.BeginRead(buf, 0, buf.Length, (AsyncCallback)(ar =>
+            {
+                inputStream.EndRead(ar);
+                callback(Encoding.UTF8.GetString(buf));
+            }), (object)null);
         }
 
         /// <summary>

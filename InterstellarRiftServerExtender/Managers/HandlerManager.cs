@@ -4,6 +4,7 @@ using Game.Configuration;
 using Game.Framework;
 using Game.Framework.Networking;
 using Game.Framework.Threading;
+using Game.Server;
 using Game.Universe;
 using IRSE.Managers.Handlers;
 using System;
@@ -103,6 +104,12 @@ namespace IRSE.Managers
                 m_universeHandler = new UniverseHandler(m_controllerManager);
                 m_universeHandler.SetupHandler(Server);
 
+
+                mainLog.Info("IRSE: Loading Game Commands..");
+
+
+                Program.ConsoleCoroutine = CommandSystem.Singleton.Logic(m_controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete);
+                SvCommandMethod.UpdateControllers(m_controllerManager);
 
                 mainLog.Info("IRSE: Loaded Universe!");
 

@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace IRSE.ReflectionWrappers.ServerWrappers
 {
@@ -104,7 +105,12 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
         {
             m_startupArgsField.SetValue(null, args as String[]);
 
+
             m_startupMethod.Call(null, null);
+
+
+            
+
 
             object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
 

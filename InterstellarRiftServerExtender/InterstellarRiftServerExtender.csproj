@@ -129,6 +129,9 @@
     <Compile Include="GUI\Pages\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Managers\ConCommandManager.cs" />
+    <Compile Include="Managers\ConsoleCommands\IRExtendedCommands.cs" />
+    <Compile Include="Managers\ConsoleCommands\IRSECommands.cs" />
     <Compile Include="Managers\HandlerManager.cs" />
     <Compile Include="Managers\Handlers\ChatHandler.cs" />
     <Compile Include="Managers\Handlers\UniverseHandler.cs" />

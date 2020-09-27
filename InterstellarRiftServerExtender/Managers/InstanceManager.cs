@@ -135,8 +135,8 @@ namespace IRSE.Managers
 
                 }
 
-                m_pluginManager = new PluginManager();
-                PluginManager.InitializeAllPlugins();
+               // m_pluginManager = new PluginManager();
+                //PluginManager.InitializeAllPlugins();
 
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
                 Thread.Sleep(5000);
