@@ -25,7 +25,7 @@ namespace IRSEDiscordChatBot
         public PluginMain()
         {
            
-
+              
         }
  
         public override void Init(string modDirectory)
