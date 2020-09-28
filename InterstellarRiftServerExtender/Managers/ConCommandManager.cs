@@ -12,11 +12,10 @@ namespace IRSE.Managers
         public static ConCommandManager Singleton = new ConCommandManager();
 
 
-        public static void HookControllers(ControllerManager controllers)
+        public void HookControllers(ControllerManager controllers)
         {
 
         }
-
 
 
 

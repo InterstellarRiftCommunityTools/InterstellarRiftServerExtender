@@ -7,8 +7,8 @@
     <ProjectGuid>{0CD0E1DD-068A-4A35-AAF1-9BCD7AF14241}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HESDiscordChatBot</RootNamespace>
-    <AssemblyName>HESDiscordChatBot</AssemblyName>
+    <RootNamespace>IRSEDiscordChatBot</RootNamespace>
+    <AssemblyName>IRSEDiscordChatBot</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\InterstellarRiftServerExtender\InterstellarRiftServerExtender\bin\Debug\IRSE\plugins\DiscordChatPlugin\</OutputPath>
+    <OutputPath>..\InterstellarRiftServerExtender\bin\Debug\IRSE\plugins\DiscordChatPlugin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>

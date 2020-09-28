@@ -132,6 +132,7 @@
     <Compile Include="Managers\ConCommandManager.cs" />
     <Compile Include="Managers\ConsoleCommands\IRExtendedCommands.cs" />
     <Compile Include="Managers\ConsoleCommands\IRSECommands.cs" />
+    <Compile Include="Managers\EventManager.cs" />
     <Compile Include="Managers\HandlerManager.cs" />
     <Compile Include="Managers\Handlers\ChatHandler.cs" />
     <Compile Include="Managers\Handlers\UniverseHandler.cs" />
@@ -258,6 +259,7 @@
     <Folder Include="API\Events\Players\" />
     <Folder Include="API\Events\Server\" />
     <Folder Include="API\Objects\" />
+    <Folder Include="Managers\Events\" />
     <Folder Include="Plugins\Helpers\" />
   </ItemGroup>
   <ItemGroup>

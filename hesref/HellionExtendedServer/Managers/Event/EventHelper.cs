@@ -191,8 +191,7 @@ namespace HellionExtendedServer.Managers.Event
             else if (data is ManeuverCourseResponse) ExecuteEvent(new GenericEvent(EventID.ManeuverCourseResponse, data));
             //else if (data is MarkAsLoggedInRequest) ExecuteEvent(new GenericEvent(EventID.MarkAsLoggedInRequest, data));
             //else if (data is MarkAsLoggedOutRequest) ExecuteEvent(new GenericEvent(EventID.MarkAsLoggedOutRequest, data));
-            //else if (data is MoveCharacterToLimboRequest)
-                //ExecuteEvent(new GenericEvent(EventID.MoveCharacterToLimboRequest, data));
+            //else if (data is MoveCharacterToLimboRequest)ExecuteEvent(new GenericEvent(EventID.MoveCharacterToLimboRequest, data));
             else if (data is MoveCorpseObectMessage) ExecuteEvent(new GenericEvent(EventID.MoveCorpseObectMessage, data));
             else if (data is MoveDynamicObectMessage) ExecuteEvent(new GenericEvent(EventID.MoveDynamicObectMessage, data));
             else if (data is MovementMessage) ExecuteEvent(new GenericEvent(EventID.MovementMessage, data));

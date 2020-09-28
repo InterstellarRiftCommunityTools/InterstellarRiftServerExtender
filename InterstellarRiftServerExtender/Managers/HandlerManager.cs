@@ -29,12 +29,12 @@ namespace IRSE.Managers
         private readonly Assembly m_serverAssembly;
         private Assembly m_frameworkAssembly;
         private Type m_gameStateType;
+        private Object server;
 
         #endregion Fields
 
         #region Properties
 
-        public Object Server { get; set; }
         public ChatHandler ChatHandler { get; private set; }
         public NetworkHandler NetworkHandler { get; private set; }
         public PlayerHandler PlayerHandler { get; private set; }
@@ -63,7 +63,6 @@ namespace IRSE.Managers
                 if (server == null)
                     return null;
 
-                Server = server;
 
                 mainLog.Info("IRSE: Loaded GameServer Instance!");
 
@@ -72,14 +71,13 @@ namespace IRSE.Managers
                 m_controllerManager = m_controllerManagerField.GetValue(server) as Game.Server.ControllerManager;
 
 
-
                 var universe = m_controllerManager.Universe as Game.Server.UniverseController;
 
                 mainLog.Info("IRSE: Waiting for Universe To Populate..");
 
-                SpawnGhostClients(m_controllerManager);
+                // will be removed when they fix the ghost client spawner
+                ServerInstance.Instance.SpawnGhostClients(m_controllerManager);
 
-               
                 while (m_controllerManager.Players.AllPlayers().Count() < 1)
                 {
                     Thread.Sleep(1000);
@@ -88,29 +86,20 @@ namespace IRSE.Managers
                         break;
                     }
                 }
-                
+
                 mainLog.Info("IRSE: Loading Handlers..");
-
                 NetworkHandler = new NetworkHandler(m_controllerManager);
-                NetworkHandler.SetupNetworkHandler(Server);
-
+                NetworkHandler.SetupNetworkHandler(server);
 
                 PlayerHandler = new PlayerHandler(m_controllerManager);
-                PlayerHandler.SetupPlayerHandler(Server);
+                PlayerHandler.SetupPlayerHandler(server);
 
                 ChatHandler = new ChatHandler(m_controllerManager);
                 ChatHandler.SetupChatMessageHandler(NetworkHandler);
 
                 m_universeHandler = new UniverseHandler(m_controllerManager);
-                m_universeHandler.SetupHandler(Server);
-
-
-                mainLog.Info("IRSE: Loading Game Commands..");
-
-
-                Program.ConsoleCoroutine = CommandSystem.Singleton.Logic(m_controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete);
-                SvCommandMethod.UpdateControllers(m_controllerManager);
-
+                m_universeHandler.SetupHandler(server);
+                     
                 mainLog.Info("IRSE: Loaded Universe!");
 
                 return true;
@@ -132,96 +121,7 @@ namespace IRSE.Managers
 
         // todo move to class
 
-        private ReaderWriterLockObject m_startingGhostClientsLock = new ReaderWriterLockObject(LockRecursionPolicy.NoRecursion);
-        private ReaderWriterLockObject m_delayedAddUpdatablesLock = new ReaderWriterLockObject(LockRecursionPolicy.NoRecursion);
-        private ReaderWriterLockObject m_ghostClientsLock = new ReaderWriterLockObject(LockRecursionPolicy.NoRecursion);
 
-        private UpdatableCollection m_updatables = new UpdatableCollection();
-        private List<IUpdatable> m_delayedAddUpdatables = new List<IUpdatable>();
-
-        private HashSet<string> m_startingGhostClients = new HashSet<string>();
-
-        private Dictionary<string, GhostClientState> m_ghostClients = new Dictionary<string, GhostClientState>();
-
-        public void SpawnGhostClients(Game.Server.ControllerManager controllers)
-        {
-
-
-            ServerInstance.SystemNames.ForEach((systemIdent) =>
-            {
-                
-                Task.Run((Action)(() =>
-                {
-
-                    SolarSystem system = controllers.Universe.Galaxy.GetSystem(systemIdent);
-
-                    using (WriteLock.CreateLock(m_startingGhostClientsLock))
-                        m_startingGhostClients.Add(systemIdent);
-
-                    GhostClientState ghostClientState;
-
-                    //if(m_ghostClients.Count() != 5)
-
-                    this.m_ghostClients.TryGetValue(systemIdent, out ghostClientState);
-                    if (ghostClientState == null || !ghostClientState.PreventStart)
-                    {
-                        string str1 = ServerConfig.Singleton.GhostClientConsoleVisible ? "-console " : "";
-                        string str2 = "-ip 127.0.0.1 ";
-                        string str3 = "-port " + controllers.Network.NetGeneric.GetPort().ToString();
-                        string str4 = " -GhostSystemName " + systemIdent;
-                        try
-                        {
-                            if (ghostClientState == null)
-                            {
-                                ghostClientState = new GhostClientState(controllers);
-                                using (WriteLock.CreateLock(m_delayedAddUpdatablesLock))
-                                    m_delayedAddUpdatables.Add((IUpdatable)ghostClientState);
-                            }
-                            ghostClientState.Process = Process.Start(new ProcessStartInfo(Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "IRGhostClient.exe"), "-ghostclient " + str1 + str2 + str3 + str4)
-                            {
-                                UseShellExecute = false,
-                                CreateNoWindow = !ServerConfig.Singleton.GhostClientConsoleVisible
-                            });
-                            ghostClientState.SystemName = systemIdent;
-                            ghostClientState.ResetHeartbeat();
-                            ++ghostClientState.StartCount;
-                            using (WriteLock.CreateLock(m_ghostClientsLock))
-                                this.m_ghostClients[systemIdent] = ghostClientState;
-                            if (ServerConfig.Singleton.GhostClientStartCountThresholdEnabled && ghostClientState.StartCount >= ServerConfig.Singleton.GhostClientStartCountThreshold)
-                            {
-                                Console.WriteLine(string.Format("Ghost client for '{0}' started {1} in {2} seconds! Preventing start for {3}.", new object[4]
-                                {
-                (object) systemIdent,
-                (object) ghostClientState.StartCount,
-                (object) ServerConfig.Singleton.GhostClientStartCountResetDurationInSeconds,
-                (object) ServerConfig.Singleton.GhostClientPreventStartDurationInSeconds
-                                }), "Saving", (Exception)null);
-                                ghostClientState.PreventStart = true;
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(string.Format("Failed to start ghost client. Path: {0}, Arguments: {1}", (object)Assembly.GetEntryAssembly().Location, (object)("-ghostclient " + str1 + str2 + str3 + str4)), "Exceptions", ex);
-                        }
-                    }
-                    using (WriteLock.CreateLock(this.m_startingGhostClientsLock))
-                        this.m_startingGhostClients.Remove(systemIdent);
-                }));
-            });
-
-            //Process.Start(@"F:\IRSE2020\InterstellarRiftServerExtender\InterstellarRiftServerExtender\bin\Debug\IRGhostClient.exe", $"-ghostclient -ip 127.0.0.1 -port {controllers.Network.NetGeneric.GetPort()} -GhostSystemName {system1.Identifier}");
-            //Process.Start(@"F:\IRSE2020\InterstellarRiftServerExtender\InterstellarRiftServerExtender\bin\Debug\IRGhostClient.exe", $"-ghostclient -ip 127.0.0.1 -port {controllers.Network.NetGeneric.GetPort()} -GhostSystemName {system2.Identifier}");
-            //Process.Start(@"F:\IRSE2020\InterstellarRiftServerExtender\InterstellarRiftServerExtender\bin\Debug\IRGhostClient.exe", $"-ghostclient -ip 127.0.0.1 -port {controllers.Network.NetGeneric.GetPort()} -GhostSystemName {system3.Identifier}");
-            //Process.Start(@"F:\IRSE2020\InterstellarRiftServerExtender\InterstellarRiftServerExtender\bin\Debug\IRGhostClient.exe", $"-ghostclient -ip 127.0.0.1 -port {controllers.Network.NetGeneric.GetPort()} -GhostSystemName {system4.Identifier}");
-
-            // dont remove this, its for after SP fixes a bug
-            //MethodInfo clientMethod = server.GetType().GetMethod("StartGhostClient", BindingFlags.Instance | BindingFlags.Public);
-            //clientMethod.Invoke(server, new object[] { system1 });
-            //clientMethod.Invoke(server, new object[] { system2 });
-            //clientMethod.Invoke(server, new object[] { system3 });
-            //clientMethod.Invoke(server, new object[] { system4 });
-        }
 
         public void ForceGalaxySave()
         {

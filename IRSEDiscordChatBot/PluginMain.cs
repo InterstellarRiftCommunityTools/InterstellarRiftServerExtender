@@ -8,6 +8,8 @@ using Game.Server;
 using IRSE.Managers;
 using Game.ClientServer.Packets;
 using Game.Framework.Networking;
+using System.Linq.Expressions;
+using System.Configuration;
 
 namespace IRSEDiscordChatBot
 {
@@ -24,7 +26,7 @@ namespace IRSEDiscordChatBot
            
 
         }
-
+ 
         public override void Init(string modDirectory)
         {
             try
@@ -57,9 +59,14 @@ namespace IRSEDiscordChatBot
                 Console.WriteLine("HESDiscordChatBot - Registering Events:");
                 // the text chat message
 
-                EventDispatcher.Functions[typeof(ClientChatMessage)] = new RPCDelegate(OnPacketChatMessage);
-                Console.Write(" [ChatMessage]");
 
+
+                EventDispatcher.Functions.Add(typeof(ClientChatMessage), new RPCDelegate(OnPacketChatMessage));
+
+               // d_clientChatMessage = EventDispatcher.Functions[typeof(ClientChatMessage)];
+               EventDispatcher.Functions[typeof(ClientChatMessage)] = new RPCDelegate(OnPacketChatMessage);
+                Console.Write(" [ChatMessage]");
+                
                 GetControllers.Players.OnAddPlayer += Players_OnAddPlayer;
                 Console.Write(" [AddPlayer]");
 
@@ -99,13 +106,14 @@ namespace IRSEDiscordChatBot
             await(DiscordClient.SocketClient.GetChannel(MyConfig.Instance.Settings.MainChannelID) as Discord.IMessageChannel).SendMessageAsync(outMsg);
         }
 
-        private async void Players_OnAddPlayer(Player player)
+        private async void Players_OnAddPlayer(Player data)
         {
             if (MyConfig.Instance.Settings.NewPlayerSpawningMessage.StartsWith("null")) return;
 
             if (debugMode)
                 Console.WriteLine($"<- Sending Player Spawn Message To Discord");
 
+            Player player = GetControllers.Players.GetPlayerByConnectionId(data.OriginalMessage.SenderConnectionId);
 
             if (player == null)
                 return;
@@ -182,13 +190,13 @@ namespace IRSEDiscordChatBot
                         outMsg = MyConfig.Instance.Settings.MessageSentToGameServer
                             .Replace("(%DiscordChannelName%)", message.Channel.Name)
                             .Replace("(%DiscordUserName%)", message.Author.Username)
-                            .Replace("(%DiscordChatMessage%)", message.Content)
+                            .Replace("(%ChatMessage%)", message.Content)
                             .Replace("(%CurrentDateTime%)", new DateTime().ToString())
                             ?? $"Discord - {message.Author.Username}: {message.Content}";
 
-                        GetControllers.Players.SendRPCToAll((object)new ServerChatMessage(outMsg, "", 0UL, Game.Configuration.Config.Singleton.AllChatColor, "Server", -1), (Player)null);
+                        GetControllers.Chat.SendToAll(Game.Configuration.Config.Singleton.AllChatColor, outMsg);
 
-
+                        
                         if (debugMode)
                             Console.WriteLine($"-> Got Message From Discord: {outMsg}");
                     }
@@ -197,6 +205,7 @@ namespace IRSEDiscordChatBot
 
             return Task.Run(() => Console.WriteLine(!MyConfig.Instance.Settings.PrintDiscordChatToConsole ? String.Empty : outMsg));
         }
+
 
     }
 }

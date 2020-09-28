@@ -67,8 +67,14 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
         public void StopServer()
         {
-            //m_stopMethod.Call(null, null);
-            ServerInstance.Instance.Stop();
+            try
+            {
+                m_stopMethod.Call(null, null);
+            }
+            catch (Exception)
+            {
+            }
+            
         }
 
         public Thread StartServer(Object args)
@@ -105,13 +111,8 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
         {
             m_startupArgsField.SetValue(null, args as String[]);
 
-
             m_startupMethod.Call(null, null);
-
-
-            
-
-
+          
             object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
 
             while (gameServer == null)

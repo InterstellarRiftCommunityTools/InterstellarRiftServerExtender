@@ -161,19 +161,39 @@ namespace IRSE.Managers
         private PluginInfo ValidatePlugin(String library)
         {
             byte[] bytes;
-            Assembly libraryAssembly;
+            Assembly libraryAssembly = null;
+            Guid guid;
+
             try
             {
                 bytes = File.ReadAllBytes(library);
                 libraryAssembly = Assembly.Load(bytes);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to load assembly: " + library + " Error: " + ex.ToString());
+            }
 
-                Guid guid = new Guid(((GuidAttribute)libraryAssembly.GetCustomAttributes(typeof(GuidAttribute), true)[0]).Value);
 
+            try
+            {
+                guid = new Guid(((GuidAttribute)libraryAssembly.GetCustomAttributes(typeof(GuidAttribute), true)[0]).Value);
+            }
+            catch (Exception)
+            {
+                guid = new Guid();
+            }
+
+
+            try
+            {
                 PluginInfo Plugin = new PluginInfo();
                 Plugin.Guid = guid;
                 Plugin.Assembly = libraryAssembly;
 
-                Type[] PluginTypes = libraryAssembly.GetExportedTypes();
+                Type[] PluginTypes = libraryAssembly?.GetExportedTypes();
+
+                if (PluginTypes.Length < 1) return null;
 
                 foreach (Type PluginType in PluginTypes)
                 {
@@ -186,7 +206,7 @@ namespace IRSE.Managers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to load assembly: " + library + " Error: " + ex.ToString());
+                Console.WriteLine("Failed to load plugin assembly " + library + " Error: " + ex.ToString());
             }
             return null;
         }
