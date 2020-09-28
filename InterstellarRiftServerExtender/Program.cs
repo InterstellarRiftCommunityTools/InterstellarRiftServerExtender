@@ -135,12 +135,22 @@ namespace IRSE
 
                     if (File.Exists(path))
                     {
-                        if (debugMode)
-                            Console.WriteLine($"The plugin assembly '{dllName}' was loaded.");
-
                         return Assembly.LoadFrom(path);
                     }
+
+                    foreach (String subDirectory2 in Directory.GetDirectories(subDirectory))
+                    {
+                        string path2 = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), "plugins", subDirectory2, "bin", dllName);
+
+                        if (File.Exists(path2))
+                        {
+                            return Assembly.LoadFrom(path2);
+                        }
+                    }
+
                 }
+
+
 
                 using (Stream s = Assembly.GetCallingAssembly().GetManifestResourceStream("IRSE.Resources." + dllName))
                 {
@@ -201,24 +211,21 @@ namespace IRSE
         // this is where stuff goes!
         private void Run(string[] args)
         {
+            m_localization = new Localization();
+            m_localization.Load(m_config.Settings.CurrentLanguage.ToString().Substring(0, 2));
+
+
             //Build IR's paths so we can use the Localization system
             Game.Program.InitFileSystems();
             Game.Program.InitGameDirectory("InterstellarRift");
 
             //new ServerConfigConverter().BuildAndUpdateConfigProperties();
 
-            m_localization = new Localization();
 
             SetupGUI();
 
             // They initialize it as (string[])null, not good for us trying to use their static classes, this fixes it
             Game.Program.CommandLineArgs = new string[1];
-
-            
-
-
-
-
 
             //console logic for commands
             ReadConsoleCommands(args);
@@ -237,7 +244,6 @@ namespace IRSE
 
         public static void InitCommands(ControllerManager controllers)
         {
-
             if (controllers != null) SvCommandMethod.UpdateControllers(controllers);
 
             foreach (MethodInfo method in typeof(Program).GetMethods(BindingFlags.Static | BindingFlags.Public))
@@ -253,50 +259,7 @@ namespace IRSE
             }
             CommandSystem.Singleton.SortCommands();
         }
-
-        public static void InitCommandHooks()
-        {
-            CommandSystem.Singleton.SecurityHandler = new Func<object, int, bool>(i_securityHandler);
-            CommandSystem.Singleton.OutputHandler += new EventHandler<string>(i_outputHandler);
-            CommandSystem.Singleton.ErrorHandler += new CommandSystem.ErrorHandlerDelegate(i_errorHandler);
-            CommandSystem.Singleton.InputHandler += new CommandSystem.InputDelegate(i_inputHandler);
-            CommandSystem.Singleton.ExecuteHandler += new CommandSystem.ExecuteHandlerDelegate(i_executeHandler);
-        }
-
-        private static bool i_securityHandler(object sender, int requiredRights)
-        {
-            return true;
-        }
-
-        private static void i_errorHandler(object caller, string command, string message)
-        {
-            i_outputHandler(caller, message);
-        }
-
-        private static void i_outputHandler(object caller, string msg)
-        {
-            // needed until start starts without pressing enter after starting it ..
-            if (msg != "No command entered")
-                Console.WriteLine(msg);
-        }
-
-        private static void i_executeHandler(object caller, string command)
-        {
-            Console.WriteLine("Executed the following command: " + command, "Admin Commands");
-        }
-
-        private static void i_inputHandler(object caller, Game.Framework.CommandSystem.InputResultDelegate callback)
-        {
-            byte[] buf = new byte[256];
-            Stream inputStream = Console.OpenStandardInput();
-            inputStream.BeginRead(buf, 0, buf.Length, (AsyncCallback)(ar =>
-            {
-                inputStream.EndRead(ar);
-                callback(Encoding.UTF8.GetString(buf));
-            }), (object)null);
-        }
-
-        #endregion Will Be Moved To Own Class
+        #endregion
 
         /// <summary>
         /// The UI Thread
@@ -361,7 +324,6 @@ namespace IRSE
             thisProcess.Kill();
         }
 
-
         /// <summary>
         /// This contains the console commands
         /// </summary>
@@ -369,15 +331,14 @@ namespace IRSE
         {
             while (true)
             {
-
-                if (ServerInstance.Instance.IsRunning) {
+                if (ServerInstance.Instance.IsRunning)
+                {
                     if (Program.ConsoleCoroutine != null)
                     {
                         Program.ConsoleCoroutine.MoveNext();
-
                     }
                     Thread.Sleep(50);
-                }              
+                }
                 else
                 {
                     string line = Console.ReadLine();
@@ -412,7 +373,6 @@ namespace IRSE
                         }
                         bool flag = false;
 
-
                         if (stringList[1] == "checkupdate")
                         {
                             updateManager.CheckForUpdates().GetAwaiter().GetResult();
@@ -433,14 +393,13 @@ namespace IRSE
 
                         if (stringList[1] == "start")
                         {
-                            if (!ServerInstance.Instance.IsRunning) {                              
+                            if (!ServerInstance.Instance.IsRunning)
+                            {
                                 CommandSystem.Singleton = new CommandSystem();
                                 InitCommands(null);
                                 Program.ConsoleCoroutine = CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete);
                                 ServerInstance.Instance.Start();
                             }
-                                
-
                             else
                                 Console.WriteLine("The server is already running.");
                             flag = true;
@@ -465,7 +424,6 @@ namespace IRSE
                             Console.WriteLine("bad syntax");
                     }
                 }
-                
             }
         }
 

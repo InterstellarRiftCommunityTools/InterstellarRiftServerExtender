@@ -1,16 +1,13 @@
-﻿
-
+﻿using Game.Server;
 using IRSE.Managers;
 using IRSE.Modules;
+using IRSE.Modules.GameConfig;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Game.Server;
-using IRSE.Modules.GameConfig;
-using Telerik.WinControls.Data;
 
 namespace IRSE.GUI.Forms
 {
@@ -18,22 +15,19 @@ namespace IRSE.GUI.Forms
     {
         private Timer ObjectManipulationRefreshTimer = new Timer();
         private Timer PlayersRefreshTimer = new Timer();
-      
 
         public ExtenderGui()
         {
             InitializeComponent();
 
             DisableControls();
-            
+
             ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
             ServerInstance.Instance.OnServerStopped += Instance_OnServerStopped;
-
 
             new ServerConfigProperties();
             serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
             extenderconfig_properties.SelectedObject = Config.Instance.Settings;
-
 
             //serverconfig_properties.PropertyGridElement.ToolbarElement.Filt //.FilterPropertyName = "Category";
 
@@ -52,18 +46,16 @@ namespace IRSE.GUI.Forms
                     MessageBoxIcon.Exclamation);
                 if (result == DialogResult.OK)
                 {
-                    
                 }
             }
-            
+
             //UpdateManager.Instance.OnUpdateChecked += new UpdateManager.UpdateEventHandler(Instance_OnUpdateChecked);
             //UpdateManager.Instance.OnUpdateDownloaded += new UpdateManager.UpdateEventHandler(Instance_OnUpdateDownloaded);
             //UpdateManager.Instance.OnUpdateApplied += new UpdateManager.UpdateEventHandler(Instance_OnUpdateApplied);
 
-            server_hesNewsLabel.Text = 
+            server_hesNewsLabel.Text =
                 "Welcome to IRSE!\nIt's Almost Ready!!\n" +
                 "Woot!";
-
         }
 
         private void DisableControls(bool disable = true)
@@ -110,8 +102,6 @@ namespace IRSE.GUI.Forms
         {
             try
             {
-
-
                 if (!ServerInstance.Instance.IsRunning)
                     return;
 
@@ -121,10 +111,8 @@ namespace IRSE.GUI.Forms
 
                 foreach (Player player in onlinePlayers)
                 {
- 
                     if (player == null)
                         continue;
-
 
                     var item = new ListViewItem();
                     item.Name = player.ID.ToString();
@@ -203,7 +191,6 @@ namespace IRSE.GUI.Forms
         {
             List<Player> onlinePlayers = ServerInstance.Instance.Handlers.PlayerHandler.GetPlayers.ToList();
 
-
             if (!ServerInstance.Instance.IsRunning)
                 return;
 
@@ -220,7 +207,6 @@ namespace IRSE.GUI.Forms
             // Remove the player
             foreach (Player _player in MyPlayers)
             {
-
                 if (_player == null)
                 {
                     if (MyPlayers.Exists(x => x.ID == _player.ID))
@@ -273,7 +259,6 @@ namespace IRSE.GUI.Forms
             UpdatePlayersTree();
         }
 
-
         #endregion Object Manipulation
 
         #region Server Control
@@ -282,9 +267,8 @@ namespace IRSE.GUI.Forms
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
             {
-                Game.Configuration.ServerConfig.Singleton.Save();               
+                Game.Configuration.ServerConfig.Singleton.Save();
                 StatusBar.Text = "Server Config Saved.";
-                
             }
             else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
             {
@@ -338,10 +322,11 @@ namespace IRSE.GUI.Forms
                 Config.Instance.Settings = new Settings();
                 extenderconfig_properties.SelectedObject = Config.Instance.Settings;
                 extenderconfig_properties.Refresh();
-                StatusBar.Text = "Extender Config Defaults loaded. Don't forget to save!";              
+                StatusBar.Text = "Extender Config Defaults loaded. Don't forget to save!";
             }
         }
         */
+
         private void server_config_reload_Click(object sender, EventArgs e)
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
@@ -506,10 +491,10 @@ namespace IRSE.GUI.Forms
                 $"Release Published {release.Assets.First().CreatedAt.ToLocalTime()}\r\n" +
                 $"Release Description:\r\n\r\n" +
                 $"{release.Body}\r\n\r\n" +
-                $"Would you like to update now?", 
-                "HES Updater", 
+                $"Would you like to update now?",
+                "HES Updater",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-            if(result == DialogResult.Yes)
+            if (result == DialogResult.Yes)
             {
                 UpdateManager.Instance.DownloadLatestRelease(Config.Instance.Settings.EnableDevelopmentVersion);
             }
@@ -545,9 +530,5 @@ namespace IRSE.GUI.Forms
                 StatusBar.Text = "IRSE needs to be restarted before you can use the new features!";
             }
         }
-
-
-
-
     }
 }

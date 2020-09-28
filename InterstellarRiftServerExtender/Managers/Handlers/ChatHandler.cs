@@ -219,8 +219,8 @@ namespace IRSE.Managers.Handlers
 
         public void SendMessageFromServer(string messageToSend)
         {
-			m_chatController.SendToAll(Config.Singleton.AllChatColor, messageToSend, "Server");
-		}
+            m_chatController.SendToAll(Config.Singleton.AllChatColor, messageToSend, "Server");
+        }
 
         #endregion Methods
     }

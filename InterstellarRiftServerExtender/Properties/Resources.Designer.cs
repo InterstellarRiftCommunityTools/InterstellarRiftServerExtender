@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace HellionExtendedServer.Properties {
+namespace IRSE.Properties {
     using System;
     
     

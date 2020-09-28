@@ -3,7 +3,6 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
-using System.Windows.Forms;
 
 namespace IRSE.ReflectionWrappers.ServerWrappers
 {
@@ -23,15 +22,11 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
         private ReflectionMethod m_startupMethod;
         private ReflectionMethod m_stopMethod;
 
-
         private ManualResetEvent m_waitEvent;
 
         #endregion Fields
 
-        #region Events
 
-
-        #endregion Events
 
         #region Properties
 
@@ -74,7 +69,6 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
             catch (Exception)
             {
             }
-            
         }
 
         public Thread StartServer(Object args)
@@ -87,10 +81,6 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
             serverThread.CurrentCulture = CultureInfo.InvariantCulture;
             serverThread.CurrentUICulture = CultureInfo.InvariantCulture;
             serverThread.Start(args);
-
-            //Thread.Sleep(10000);
-
-            mainLog.Info("IRSE: Waiting for server....");
 
             return serverThread;
         }
@@ -112,7 +102,9 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
             m_startupArgsField.SetValue(null, args as String[]);
 
             m_startupMethod.Call(null, null);
-          
+
+            mainLog.Info("IRSE: Waiting for server....");
+
             object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
 
             while (gameServer == null)
@@ -124,8 +116,7 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
                 }
             }
 
-            ServerInstance.Instance.StartInstance();
-
+            ServerInstance.Instance.Hook();
         }
 
         #endregion Methods

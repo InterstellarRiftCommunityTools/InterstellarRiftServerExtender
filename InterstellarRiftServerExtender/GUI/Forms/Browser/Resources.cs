@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
-namespace HellionExtendedServer.GUI.Forms.Browser
+namespace IRSE.GUI.Forms.Browser
 {
     public class PluginFile
     {
@@ -38,7 +38,7 @@ namespace HellionExtendedServer.GUI.Forms.Browser
                 var request = WebRequest.Create(@"https://hellionextendedserver.com/api.php?action=getResources&hash=AeAAUen5PKBEmtewUBRqSCwq") as HttpWebRequest;
                 request.Method = "GET";
                 request.Proxy = null;
-                request.UserAgent = nameof(HellionExtendedServer);
+                request.UserAgent = nameof(IRSE);
 
                 using (var response = request.GetResponse() as HttpWebResponse)
                 {

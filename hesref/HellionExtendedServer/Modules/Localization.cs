@@ -81,7 +81,7 @@ namespace HellionExtendedServer.Modules
                 resXresourceWriter.AddResource("FailedShutdownPlugin", "Uncaught Exception in Plugin {0}. Exception: {1}");
                 resXresourceWriter.AddResource("InitializationPlugin", "Initialization of Plugin {0} failed. Could not find a public, parameterless constructor for {0}");
                 resXresourceWriter.AddResource("InitializingPlugin", "Initializing Plugin : {0}");
-                resXresourceWriter.AddResource("LoadingDedicated", "Loading HELLION Dedicated...");
+                resXresourceWriter.AddResource("LoadingDedicated", "Loading IsR Dedicated...");
                 resXresourceWriter.AddResource("NetControlerLoaded", "Network Controller Loaded!");
                 resXresourceWriter.AddResource("NewPlayer", "A new player is arrived : {0}");
                 resXresourceWriter.AddResource("PlayerOnServerListener", "Player On Server Listener Added.");

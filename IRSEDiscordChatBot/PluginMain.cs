@@ -10,6 +10,7 @@ using Game.ClientServer.Packets;
 using Game.Framework.Networking;
 using System.Linq.Expressions;
 using System.Configuration;
+using IRSE.Managers.Events;
 
 namespace IRSEDiscordChatBot
 {
@@ -50,33 +51,6 @@ namespace IRSEDiscordChatBot
                 {
                     GetLogger.Warn(ex1, "HESDiscordChatBot Discord Initialization failed.");
                 }
-
-
-                // browse Game.ClientServer.Packets for all the event packets you can use
-
-                Console.WriteLine("HESDiscordChatBot - Bot Started");
-
-                Console.WriteLine("HESDiscordChatBot - Registering Events:");
-                // the text chat message
-
-
-
-                EventDispatcher.Functions.Add(typeof(ClientChatMessage), new RPCDelegate(OnPacketChatMessage));
-
-               // d_clientChatMessage = EventDispatcher.Functions[typeof(ClientChatMessage)];
-               EventDispatcher.Functions[typeof(ClientChatMessage)] = new RPCDelegate(OnPacketChatMessage);
-                Console.Write(" [ChatMessage]");
-                
-                GetControllers.Players.OnAddPlayer += Players_OnAddPlayer;
-                Console.Write(" [AddPlayer]");
-
-                GetControllers.Players.OnRemovePlayer += Players_OnRemovePlayer;
-                Console.Write(" [RemovePlayer]");
-
-                EventDispatcher.Functions[typeof(ClientRespawn)] = new RPCDelegate(this.OnPacketRespawn);
-                Console.Write(" [PlayerRespawn]");
-
-                Console.WriteLine("HESDiscordChatBot - Events Registered!");
             }
             catch (Exception ex)
             {
@@ -87,15 +61,15 @@ namespace IRSEDiscordChatBot
         }
 
 
-        private async void OnPacketRespawn(RPCData data)
-        {
+        [IRSEEvent(EventType = typeof(ClientRespawn))]
+        public async void OnPacketRespawn(GenericEvent evt) { 
 
             if (MyConfig.Instance.Settings.PlayerRespawningMessage.StartsWith("null")) return;
 
             if (debugMode)
                 Console.WriteLine($"<- Sending Respawn Message To Discord");
 
-            Player player = GetControllers.Players.GetPlayerByConnectionId(data.OriginalMessage.SenderConnectionId);
+            Player player = evt.Data.DeserializedObject as Player;
 
             if (player == null)
                 return;
@@ -106,14 +80,15 @@ namespace IRSEDiscordChatBot
             await(DiscordClient.SocketClient.GetChannel(MyConfig.Instance.Settings.MainChannelID) as Discord.IMessageChannel).SendMessageAsync(outMsg);
         }
 
-        private async void Players_OnAddPlayer(Player data)
+        [IRSEEvent(EventType = typeof(ClientConnected))]
+        public async void Players_OnAddPlayer(GenericEvent evt)
         {
             if (MyConfig.Instance.Settings.NewPlayerSpawningMessage.StartsWith("null")) return;
 
             if (debugMode)
                 Console.WriteLine($"<- Sending Player Spawn Message To Discord");
 
-            Player player = GetControllers.Players.GetPlayerByConnectionId(data.OriginalMessage.SenderConnectionId);
+            Player player = evt.Data.DeserializedObject as Player;
 
             if (player == null)
                 return;
@@ -124,12 +99,15 @@ namespace IRSEDiscordChatBot
             await(DiscordClient.SocketClient.GetChannel(MyConfig.Instance.Settings.MainChannelID) as Discord.IMessageChannel).SendMessageAsync(outMsg);
         }
 
-        private async void Players_OnRemovePlayer(Player player)
+        [IRSEEvent(EventType = typeof(ClientDisconnected))]
+        public async void Players_OnRemovePlayer(GenericEvent evt)
         {
             if (MyConfig.Instance.Settings.PlayerLeavingMessage.StartsWith("null")) return;
 
             if (debugMode)
                 Console.WriteLine($"<- Sending Disconnect Message To Discord");
+
+            Player player = evt.Data.DeserializedObject as Player;
 
             if (player == null)
                 return;
@@ -140,17 +118,19 @@ namespace IRSEDiscordChatBot
             await (DiscordClient.SocketClient.GetChannel(MyConfig.Instance.Settings.MainChannelID) as Discord.IMessageChannel).SendMessageAsync(outMsg);
         }
 
-        private async void OnPacketChatMessage(RPCData data)
+        [IRSEEvent(EventType = typeof(ClientChatMessage))]
+        public async void OnPacketChatMessage(GenericEvent data)
         {
             if (MyConfig.Instance.Settings.MessageSentToDiscord.StartsWith("null")) return;
 
             try
             {
                 Player player = ServerInstance.Instance.Handlers
-                    .PlayerHandler.Players.GetPlayerByConnectionId((long)data.OriginalMessage.SenderConnectionId);
+                    .PlayerHandler.Players.GetPlayerByConnectionId((long)data.Data.OriginalMessage.SenderConnectionId);
+
 
                 string name = player.Name;
-                string message = ((ClientChatMessage)data.DeserializedObject).message;
+                string message = ((ClientChatMessage)data.Data.DeserializedObject).message;
 
                 
                 if (debugMode)

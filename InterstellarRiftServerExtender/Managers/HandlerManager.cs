@@ -1,20 +1,9 @@
-﻿using Game.Client;
-using Game.ClientServer.Packets;
-using Game.Configuration;
-using Game.Framework;
-using Game.Framework.Networking;
-using Game.Framework.Threading;
-using Game.Server;
-using Game.Universe;
+﻿using Game.Universe;
 using IRSE.Managers.Handlers;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Threading.Tasks;
 using Logger = NLog.Logger;
 
 namespace IRSE.Managers
@@ -63,13 +52,11 @@ namespace IRSE.Managers
                 if (server == null)
                     return null;
 
-
                 mainLog.Info("IRSE: Loaded GameServer Instance!");
 
                 FieldInfo m_controllerManagerField = server.GetType().GetField("m_controllers", BindingFlags.NonPublic | BindingFlags.Instance);
 
                 m_controllerManager = m_controllerManagerField.GetValue(server) as Game.Server.ControllerManager;
-
 
                 var universe = m_controllerManager.Universe as Game.Server.UniverseController;
 
@@ -99,11 +86,10 @@ namespace IRSE.Managers
 
                 m_universeHandler = new UniverseHandler(m_controllerManager);
                 m_universeHandler.SetupHandler(server);
-                     
+
                 mainLog.Info("IRSE: Loaded Universe!");
 
                 return true;
-
             }
             catch (ArgumentException ex)
             {
@@ -117,11 +103,7 @@ namespace IRSE.Managers
             }
         }
 
-
-
         // todo move to class
-
-
 
         public void ForceGalaxySave()
         {

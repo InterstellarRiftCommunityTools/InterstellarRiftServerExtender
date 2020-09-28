@@ -1,5 +1,6 @@
-﻿using System;
-using NLog;
+﻿using NLog;
+using System;
+
 namespace IRSE.Managers.Handlers
 {
     public class UniverseHandler
@@ -13,7 +14,6 @@ namespace IRSE.Managers.Handlers
         public Game.Server.UniverseController Universe
         {
             get;
-
         }
 
         public UniverseHandler(Game.Server.ControllerManager controllerManager)

@@ -12,10 +12,13 @@ namespace IRSE.Managers.Plugins
         public String Directory;
         public Guid Guid;
         private PluginBase _mainClass;
+
         //public Dictionary<String, Command> CommandList;
         public List<Type> FoundCommands = new List<Type>();
+
         //public List<EventListener> FoundEvents = new List<EventListener>();
         public Type MainClassType;
+
         public Type[] FoundTypes;
         public bool Loaded = false;
 
@@ -45,7 +48,7 @@ namespace IRSE.Managers.Plugins
             }
 
             // If one is null, but not both, return false.
-            if (((object) obj1 == null) || ((object) obj2 == null))
+            if (((object)obj1 == null) || ((object)obj2 == null))
             {
                 return false;
             }
@@ -61,7 +64,7 @@ namespace IRSE.Managers.Plugins
         {
             if (obj is PluginInfo)
             {
-                return this == (PluginInfo) obj;
+                return this == (PluginInfo)obj;
             }
             return false;
         }
@@ -72,7 +75,7 @@ namespace IRSE.Managers.Plugins
             int value = 0;
             for (int i = 0; i < by.GetLength(0); i++)
             {
-                value += (int) (by[i] & 0xffL) << (8 * i);
+                value += (int)(by[i] & 0xffL) << (8 * i);
             }
             return value;
         }

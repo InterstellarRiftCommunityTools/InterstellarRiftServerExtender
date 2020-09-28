@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Game.Configuration;
+﻿using Game.Configuration;
 using Game.Server;
 using NLog;
-
+using System;
 
 namespace IRSE.Managers.Plugins
 {
@@ -18,10 +13,10 @@ namespace IRSE.Managers.Plugins
         public Game.Server.ControllerManager GetControllers => svr;
         public Logger GetLogger => logger;
 
-        public class Color {
+        public class Color
+        {
             public static string AllChatColor => Config.Singleton.AllChatColor;
             public static string NotificationColor => Config.Singleton.NotificationChatColor;
-
         }
 
         public PluginHelper(Game.Server.ControllerManager controllers)
@@ -31,9 +26,8 @@ namespace IRSE.Managers.Plugins
             logger = LogManager.GetCurrentClassLogger();
         }
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="p"></param>
         /// <param name="message"></param>
@@ -45,7 +39,7 @@ namespace IRSE.Managers.Plugins
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="color"></param>
         /// <param name="message"></param>
@@ -91,7 +85,7 @@ namespace IRSE.Managers.Plugins
         {
             Player found = null;
             int delta = int.MaxValue;
-            foreach(Player player in GetControllers.Players.AllPlayers())
+            foreach (Player player in GetControllers.Players.AllPlayers())
             {
                 if (player.Name.ToLower().StartsWith(name))
                 {
@@ -109,6 +103,5 @@ namespace IRSE.Managers.Plugins
             }
             return found;
         }
-
     }
 }

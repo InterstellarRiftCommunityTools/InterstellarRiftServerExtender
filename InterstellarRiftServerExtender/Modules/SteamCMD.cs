@@ -12,7 +12,7 @@ namespace IRSE.Modules
     {
         private static NLog.Logger mainLog;
 
-        private static  string SteamCMDDir = Path.Combine(FolderStructure.IRSEFolderPath, "steamcmd");
+        private static string SteamCMDDir = Path.Combine(FolderStructure.IRSEFolderPath, "steamcmd");
         private static string SteamCMDExe = $"{SteamCMDDir}\\steamcmd.exe";
         private static string SteamCMDZip = $"{SteamCMDDir}\\steamcmd.zip";
 

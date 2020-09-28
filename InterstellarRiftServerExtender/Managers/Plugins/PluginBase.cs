@@ -1,8 +1,7 @@
-﻿using NLog;
-using System;
+﻿using Game.Framework.Networking;
 using Game.Server;
-using IRSE.Managers;
-using Game.Framework.Networking;
+using NLog;
+using System;
 
 namespace IRSE.Managers.Plugins
 {
@@ -142,8 +141,6 @@ namespace IRSE.Managers.Plugins
         {
         }
 
-
-       
         #endregion Methods
     }
 }

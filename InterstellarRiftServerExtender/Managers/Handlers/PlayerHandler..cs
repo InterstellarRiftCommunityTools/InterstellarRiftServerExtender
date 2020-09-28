@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-using IRSE.ResultObjects;
-using Game.ClientServer.Packets;
-
 namespace IRSE.Managers.Handlers
 {
     public class PlayerHandler
@@ -48,14 +45,11 @@ namespace IRSE.Managers.Handlers
         {
             try
             {
-
             }
             catch (Exception ex)
             {
                 mainLog.Error(ex.ToString());
             }
         }
-
-
     }
 }

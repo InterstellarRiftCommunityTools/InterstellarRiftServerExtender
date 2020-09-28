@@ -69,7 +69,6 @@ namespace IRSE
 
         #region IRSE Folder Names Fields
 
-
         public static readonly string IRSERootFolderName = "IRSE";
         public static readonly string IRSEBinariesFolderName = "bin";
         public static readonly string IRSEConfigFolderName = "config";
@@ -116,7 +115,6 @@ namespace IRSE
 
         public static string GetFolderPath(ServerFolderName serverFolderName, bool fullPath = false)
         {
-
             string path = "";
             switch (serverFolderName)
             {

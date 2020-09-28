@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Dynamic;
+﻿using Game.Configuration;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
-using Game.Configuration;
-using Game.Framework;
 
 namespace IRSE.Modules.GameConfig
-{ 
+{
     public class ServerConfigConverter
     {
         #region Fields
-
 
         private static ServerConfigConverter m_instance;
 
@@ -21,22 +16,14 @@ namespace IRSE.Modules.GameConfig
 
         #endregion Fields
 
-        public ServerConfigConverter()
-        {
-
-        }
-
         #region Methods
 
- 
-
-        public bool BuildAndUpdateConfigProperties() 
+        public bool BuildAndUpdateConfigProperties()
         {
             // get all the public properties from the class
             ServerConfig serverConfig = new ServerConfig();
 
             FieldInfo[] fieldInfos = serverConfig.GetType().GetFields();
-
 
             string scriptTop =
             $"//gv{Program.ForGameVersion}\r\n" +
@@ -99,17 +86,12 @@ namespace IRSE.Modules.GameConfig
             "        #endregion\r\n" +
             "        //---<STARTGEN>---";
 
-
-
-
-
             string code = "";
-            foreach (FieldInfo field in fieldInfos) {
-
-
+            foreach (FieldInfo field in fieldInfos)
+            {
                 if (field == null)
                     continue;
-                
+
                 ConfigOptionAttribute attribute = field.GetCustomAttribute<ConfigOptionAttribute>();
                 if (attribute == null)
                     continue;
@@ -128,22 +110,20 @@ namespace IRSE.Modules.GameConfig
                     commentOut = @"//";
                 }
 
-                    
-              
-                code += 
+                code +=
                     "\n" +
                     $"      {commentOut}[DisplayName(\"{AddSpacesToSentence(name, true)}\")]\n" +
                     $"      {commentOut}[Category(\"{category}\")]\n" +
                     $"      {commentOut}[Description(\"{description}\")]\n" +
                     $"      {commentOut}public {type} {name} \n" +
-                    $"      {commentOut}{{get{{return ServerConfig.Singleton.{name};}} set {{ServerConfig.Singleton.{name} = value;}}}}\n"+
+                    $"      {commentOut}{{get{{return ServerConfig.Singleton.{name};}} set {{ServerConfig.Singleton.{name} = value;}}}}\n" +
                     "\n";
             }
 
             string scriptBottom =
                 "      //---<ENDGEN>---\n" +
                 "  }\n" +
-                "}\n"+
+                "}\n" +
                 "\n";
 
             File.WriteAllText(@"F:\Wrex\Desktop\New folder\ServerConfigProperties.cs", scriptTop + code + scriptBottom);
@@ -151,7 +131,7 @@ namespace IRSE.Modules.GameConfig
             return false;
         }
 
-        string AddSpacesToSentence(string text, bool preserveAcronyms)
+        private string AddSpacesToSentence(string text, bool preserveAcronyms)
         {
             if (string.IsNullOrWhiteSpace(text))
                 return string.Empty;
@@ -168,8 +148,6 @@ namespace IRSE.Modules.GameConfig
             }
             return newText.ToString();
         }
-
-
 
         #endregion Methods
     }

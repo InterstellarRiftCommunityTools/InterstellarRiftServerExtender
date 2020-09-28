@@ -1,4 +1,4 @@
-﻿namespace HellionExtendedServer.GUI.Forms.Browser
+﻿namespace IRSE.GUI.Forms.Browser
 {
     partial class BrowserForm
     {

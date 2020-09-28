@@ -1,4 +1,4 @@
-﻿namespace HellionExtendedServer.GUI.Forms.Updater
+﻿namespace IRSE.GUI.Forms.Updater
 {
     partial class UpdateForm
     {

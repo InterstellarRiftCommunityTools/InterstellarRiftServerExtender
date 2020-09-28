@@ -1,6 +1,6 @@
 ﻿namespace IRSE.Managers.ConsoleCommands
 {
-    internal class IRExtendedCommands
+    internal static class ExtendedCommands
     {
     }
 }

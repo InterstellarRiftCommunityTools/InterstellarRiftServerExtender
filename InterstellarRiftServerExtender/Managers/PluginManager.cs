@@ -1,11 +1,11 @@
-﻿
-using IRSE.Managers.Plugins;
+﻿using IRSE.Managers.Events;
+using IRSE.Modules;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Runtime.InteropServices;
-
+using IRSE.Managers.Plugins;
 namespace IRSE.Managers
 {
     public class PluginManager
@@ -15,7 +15,8 @@ namespace IRSE.Managers
         private List<PluginInfo> m_discoveredPlugins;
         private List<PluginInfo> m_loadedPlugins;
         private readonly Object _lockObj = new Object();
-        private static NLog.Logger mainLog; //mainLog.Error
+
+        private static Logger mainLog = LogManager.GetCurrentClassLogger();
 
         #endregion Fields
 
@@ -29,7 +30,6 @@ namespace IRSE.Managers
 
         public PluginManager()
         {
-            mainLog = NLog.LogManager.GetCurrentClassLogger();
             m_discoveredPlugins = new List<PluginInfo>();
             m_loadedPlugins = new List<PluginInfo>();
         }
@@ -37,6 +37,7 @@ namespace IRSE.Managers
         public void InitializeAllPlugins()
         {
             m_discoveredPlugins = FindAllPlugins();
+            mainLog.Warn(String.Format("Found {0} Plugins!", m_discoveredPlugins.Count));
             foreach (PluginInfo Plugin in m_discoveredPlugins)
             {
                 InitializePlugin(Plugin);
@@ -45,7 +46,8 @@ namespace IRSE.Managers
 
         public void InitializePlugin(PluginInfo Plugin)
         {
-            Console.WriteLine(String.Format("Initializing Plugin: {0}", Plugin.Assembly.GetName().Name));
+            if (Plugin == null) return;
+            mainLog.Warn(string.Format(Program.Localization.Sentences["InitializingPlugin"], Plugin.Assembly.GetName().Name));
             bool PluginInitialized = false;
 
             if (Plugin.Directory == null)
@@ -54,6 +56,7 @@ namespace IRSE.Managers
             try
             {
                 Plugin.MainClass = (PluginBase)Activator.CreateInstance(Plugin.MainClassType);
+
                 if (Plugin.MainClass != null)
                 {
                     try
@@ -63,23 +66,41 @@ namespace IRSE.Managers
                     }
                     catch (MissingMethodException)
                     {
-                        Console.WriteLine(String.Format("Initialization of Plugin {0} failed. Could not find a public, parameterless constructor for {0}", Plugin.Assembly.GetName().Name, Plugin.MainClassType.ToString()));
+                        mainLog.Error(string.Format(Program.Localization.Sentences["InitializationPlugin"], Plugin.Assembly.GetName().Name, Plugin.MainClassType.ToString()));
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine(String.Format("Failed initialzation of Plugin {0}. Uncaught Exception: {1}", Plugin.Assembly.GetName().Name, ex.ToString()));
+                        mainLog.Error(string.Format(Program.Localization.Sentences["FailedInitPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(String.Format("Failed initialzation of Plugin {0}. Uncaught Exception: {1}", Plugin.Assembly.GetName().Name, ex.ToString()));
+                mainLog.Warn(string.Format(Program.Localization.Sentences["FailedInitPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
             }
 
-            if (PluginInitialized)
+            if (PluginInitialized && Plugin.MainClass.Enabled)
             {
                 lock (_lockObj)
                 {
+                    //Commands
+                    // foreach (Type CommandType in Plugin.FoundCommands)
+                    // {
+                    //    Command c = (Command)Activator.CreateInstance(CommandType, new object[] { ServerInstance.Instance.Server });
+                    //    ServerInstance.Instance.CommandManager.AddCommand(c);
+                    // }
+                    //Now Look for Events... IN THE PLUGIN TYPE!!!!!!!
+                    //Actually Just register them
+                    //Events
+                    //Enable
+                    //Enable Events
+                    //foreach (EventListener el in Plugin.FoundEvents)
+                    //{
+                    //    ServerInstance.Instance.EventHelper.RegisterEvent(el);
+                    //}
+
+                    //Plugin.FoundEvents.ForEach(x => ServerInstance.Instance.EventHelper.RegisterEvent(x));
+
                     m_loadedPlugins.Add(Plugin);
                 }
             }
@@ -100,41 +121,110 @@ namespace IRSE.Managers
 
         public void ShutdownPlugin(PluginInfo Plugin)
         {
-            Console.WriteLine(String.Format("Shutting down Plugin {0}", Plugin.Assembly.GetName().Name));
+            mainLog.Warn(string.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugin.Assembly.GetName().Name));
             lock (_lockObj)
             {
                 try
                 {
+                    //BUG HUGE!!!!!
                     if (Plugin.MainClass != null)
                     {
-                        Plugin.MainClass.Shutdown();
+                        Plugin.MainClass.DisablePlugin();
                     }
                     Plugin.MainClass = null;
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(String.Format("Uncaught Exception in Plugin {0}. Exception: {1}", Plugin.Assembly.GetName().Name, ex.ToString()));
+                    //Log.Instance.Error("ERror!!!" + ex);
+                    mainLog.Error(string.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
                 }
                 m_loadedPlugins.Remove(Plugin);
                 m_discoveredPlugins.Remove(Plugin);
             }
         }
 
+        public void ShutdownPlugin(String Plugin)
+        {
+            lock (_lockObj)
+            {
+                foreach (PluginInfo Plugininfo in m_discoveredPlugins)
+                {
+                    PluginBase pb = Plugininfo.MainClass;
+                    if (pb == null)
+                    {
+                        mainLog.Warn("Error 131!");
+                        return;
+                    }
+                    if (pb.GetName.ToLower() == Plugin)
+                    {
+                        mainLog.Warn(String.Format("Shutting down Plugin {0}", Plugininfo.Assembly.GetName().Name));
+                        pb.DisablePlugin(false);
+                        m_loadedPlugins.Remove(Plugininfo);
+                        m_discoveredPlugins.Remove(Plugininfo);
+                        return;
+                    }
+                }
+            }
+        }
+
+        public List<Assembly> LoadPluginReferences(string pluginFolder)
+        {
+            List<Assembly> pluginReferences = new List<Assembly>();
+
+            try
+            {
+                string[] subDirectories = Directory.GetDirectories(pluginFolder);
+                foreach (string path in subDirectories)
+                {
+                    string[] files = Directory.GetFiles(path, "*.dll", SearchOption.AllDirectories);
+                    foreach (string file in files)
+                    {
+                        try
+                        {
+                            if (IsValidAssembly(file))
+                            {
+                                Assembly pluginreference = Assembly.LoadFrom(file);
+                                pluginReferences.Add(pluginreference);
+                            }
+                            else
+                            {
+                                mainLog.Warn($"WARNING: '{Path.GetFileName(file)}' is not valid for plugin '{Path.GetDirectoryName(pluginFolder)}' Reference will not be loaded.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            mainLog.Warn($"Failed to load plugin reference assembly '{Path.GetFileName(file)}' for plugin '{Path.GetDirectoryName(pluginFolder)}' Error: " + ex.ToString());
+                        }
+                    }
+                }
+                return pluginReferences;
+            }
+            catch (Exception ex)
+            {
+                mainLog.Warn($"Failed to load plugin references for {Path.GetDirectoryName(pluginFolder)} Error: " + ex.ToString());
+            }
+
+            return null;
+        }
+
         public List<PluginInfo> FindAllPlugins()
         {
             List<PluginInfo> foundPlugins = new List<PluginInfo>();
-
-            String modPath = Path.Combine(IRSE.Modules.FolderStructure.IRSEFolderPath, "plugins");
+            //TODO create Plugin Folder if it does not exist
+            String modPath = Path.Combine(FolderStructure.IRSEFolderPath, "plugins");
             String[] subDirectories = Directory.GetDirectories(modPath);
 
             foreach (String subDirectory in subDirectories)
             {
-                PluginInfo Plugin = FindPlugin(subDirectory);
+                PluginInfo[] Plugins = FindPlugin(subDirectory);
+                LoadPluginReferences(subDirectory);
 
-                if (Plugin != null)
-                {
-                    foundPlugins.Add(Plugin);
-                }
+                if (Plugins.Length > 0) foundPlugins.AddRange(Plugins);
+            }
+            if (Program.Dev)
+            {
+                PluginInfo[] Plugins = FindPlugin(Environment.CurrentDirectory);
+                if (Plugins.Length > 0) foundPlugins.AddRange(Plugins);
             }
 
             m_discoveredPlugins = foundPlugins;
@@ -142,9 +232,10 @@ namespace IRSE.Managers
             return foundPlugins;
         }
 
-        public PluginInfo FindPlugin(String directory)
+        public PluginInfo[] FindPlugin(String directory)
         {
-            String[] libraries = Directory.GetFiles(directory, "*.dll");
+            List<PluginInfo> found = new List<PluginInfo>();
+            String[] libraries = Directory.GetFiles(directory, "*.Plugin.dll");
 
             foreach (String library in libraries)
             {
@@ -152,63 +243,140 @@ namespace IRSE.Managers
                 if (Plugin != null)
                 {
                     Plugin.Directory = directory;
-                    return Plugin;
+                    found.Add(Plugin);
                 }
             }
-            return null;
+            return found.ToArray();
         }
 
         private PluginInfo ValidatePlugin(String library)
         {
             byte[] bytes;
-            Assembly libraryAssembly = null;
-            Guid guid;
-
+            Assembly libraryAssembly;
             try
             {
+                
                 bytes = File.ReadAllBytes(library);
                 libraryAssembly = Assembly.Load(bytes);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Failed to load assembly: " + library + " Error: " + ex.ToString());
-            }
+                //Bug Guid is Glitched Right Now
+                //Guid guid = new Guid(((GuidAttribute)libraryAssembly.GetCustomAttributes(typeof(GuidAttribute), true)[0]).Value);
 
+                bool plug = true;
+                PluginInfo plugin = new PluginInfo();
+                //Plugin.Guid = guid;
+                plugin.Assembly = libraryAssembly;
 
-            try
-            {
-                guid = new Guid(((GuidAttribute)libraryAssembly.GetCustomAttributes(typeof(GuidAttribute), true)[0]).Value);
-            }
-            catch (Exception)
-            {
-                guid = new Guid();
-            }
+                //Command[] CommandList;
 
-
-            try
-            {
-                PluginInfo Plugin = new PluginInfo();
-                Plugin.Guid = guid;
-                Plugin.Assembly = libraryAssembly;
-
-                Type[] PluginTypes = libraryAssembly?.GetExportedTypes();
-
-                if (PluginTypes.Length < 1) return null;
+                Type[] PluginTypes = libraryAssembly.GetExportedTypes();
 
                 foreach (Type PluginType in PluginTypes)
                 {
-                    if (PluginType.GetInterface(typeof(IPlugin).FullName) != null)
+                    /*
+                    if (PluginType.BaseType == typeof(Command))
                     {
-                        Plugin.MainClassType = PluginType;
-                        return Plugin;
+                        plugin.FoundCommands.Add(PluginType);
+                        //Permissions In Command
+                        //Load Permissions
+                        foreach (Attribute attribute in PluginType.GetCustomAttributes(true))
+                        {
+                            if (attribute is PermissionAttribute)
+                            {
+                                PermissionAttribute pa = attribute as PermissionAttribute;
+                                //Add To plugin
+                                //Onplayer Join Event Add Default Perms to player
+                                ServerInstance.Instance.PermissionManager.AddPermissionAttribute(pa);
+                            }
+                        }
+                        continue;
+                    }*/
+
+                    if (PluginType.GetInterface(typeof(IPlugin).FullName) != null && plug)
+                    {
+                        mainLog.Warn("Loading Plugin Located at " + library);
+
+                        plugin.MainClassType = PluginType;
+                        plug = false;
+                        continue;
                     }
                 }
+                //B4 resturn Check for Events here
+                //Now Look for Events... IN THE PLUGIN TYPE!!!!!!!
+                //Events
+                if (!plug)
+                {
+                    //Loads Events
+                    foreach (MethodInfo method in plugin.MainClassType.GetMethods())
+                    {
+                        Boolean isevent = false;
+                        foreach (Attribute attribute in method.GetCustomAttributes(true))
+                        {
+                            if (attribute is IRSEEventAttribute)
+                            {
+                                IRSEEventAttribute hea = attribute as IRSEEventAttribute;
+
+                                plugin = HandleEvent(method, plugin, hea.EventType);
+                            }
+                        }
+                    }
+
+                    /*
+                    //Load Permissions
+                    foreach (Attribute attribute in plugin.GetType().GetCustomAttributes(true))
+                    {
+                        if (attribute is PermissionAttribute)
+                        {
+                            PermissionAttribute pa = attribute as PermissionAttribute;
+                            //Add To plugin
+                            //Onplayer Join Event Add Default Perms to player
+                            ServerInstance.Instance.PermissionManager.AddPermissionAttribute(pa);
+                        }
+                    }
+                    */
+                }
+                return plugin;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to load plugin assembly " + library + " Error: " + ex.ToString());
+                mainLog.Error("Failed to load assembly: " + library + " Error: " + ex.ToString());
             }
             return null;
+        }
+
+        public PluginInfo HandleEvent(MethodInfo method, PluginInfo plugin, Type type)
+        {
+            ParameterInfo[] parameters = method.GetParameters();
+            if (parameters.Length <= 0)
+            {
+                mainLog.Error("Parameter had no length! Method Name: " + method.Name);
+                return plugin;
+            }
+            if (parameters[0].ParameterType.BaseType != typeof(Event))
+            {
+                mainLog.Error("INVALID Function Format! Event Expected but got " + parameters[0].Name);
+                return plugin;
+            }
+
+            var listener = new EventListener(method, plugin.MainClassType, type);
+
+            EventManager.Instance.Events[type].Add(listener);
+
+            mainLog.Info("Found Event Function : " + parameters[0].ParameterType.Name + " For EventType : " + type.Name);
+            return plugin;
+        }
+
+        // Utility method for loading plugin references
+        public bool IsValidAssembly(string path)
+        {
+            try
+            {
+                var assembly = AssemblyName.GetAssemblyName(path);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         #endregion Methods

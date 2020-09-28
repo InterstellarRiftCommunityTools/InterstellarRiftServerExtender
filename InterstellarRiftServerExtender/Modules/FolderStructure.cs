@@ -10,13 +10,11 @@ namespace IRSE.Modules
         public static string RootFolderPath => Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         public static string IRSEFolderPath => Path.Combine(RootFolderPath, "IRSE");
 
-
         private Assembly _assembly;
         private static NLog.Logger mainLog; //mainLog.Error
 
         public FolderStructure()
         {
-
             mainLog = NLog.LogManager.GetCurrentClassLogger();
 
             _assembly = Assembly.GetExecutingAssembly();

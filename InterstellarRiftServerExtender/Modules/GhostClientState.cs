@@ -1,18 +1,11 @@
 ﻿using Game.ClientServer.Packets;
 using Game.Configuration;
 using Game.Framework;
-using Game.Framework.Threading;
 using Game.Server;
-using Game.Universe;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace IRSE.Managers
+namespace IRSE.Modules
 {
     public class GhostClientState : IUpdatable
     {
@@ -101,5 +94,5 @@ namespace IRSE.Managers
             this.m_lastHeartbeatReceived = DateTime.MinValue;
             this.m_heartbeatTimer = (float)ServerConfig.Singleton.GhostClientHeartbeatIntervalInSeconds;
         }
-    } 
+    }
 }

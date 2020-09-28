@@ -1,8 +1,9 @@
 ﻿using Game.Configuration;
 using Game.Framework;
 using Game.Framework.Threading;
-using Game.Server;
 using Game.Universe;
+using IRSE.Managers.Events;
+using IRSE.Modules;
 using IRSE.ReflectionWrappers.ServerWrappers;
 using System;
 using System.Collections.Generic;
@@ -125,7 +126,7 @@ namespace IRSE.Managers
             }
         }
 
-        public void StartInstance()
+        internal void Hook()
         {
             m_launchedTime = DateTime.Now;
             try
@@ -136,12 +137,16 @@ namespace IRSE.Managers
 
                 Game.Server.ControllerManager controllerManager = m_handlerManager.ControllerManager;
 
+                // Intercept events to copy and invoke
+                EventManager.Instance.Intercept(controllerManager);
+
                 // command loader
                 mainLog.Info("IRSE: Loading Game Console Commands..");
-
+                // soon
 
                 // start gamelogic coroutine
                 Program.ConsoleCoroutine = CommandSystem.Singleton.Logic(controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete);
+
 
 
                 // plugin loader

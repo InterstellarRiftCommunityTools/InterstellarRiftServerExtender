@@ -8,7 +8,7 @@ namespace IRSE.Modules
 {
     public class Localization
     {
-        public static string PathFolder = Path.Combine(FolderStructure.IRSEFolderPath,"localization");
+        public static string PathFolder = Path.Combine(FolderStructure.IRSEFolderPath, "localization");
         public static string Version = "0.01";
         private Dictionary<string, string> m_sentences = new Dictionary<string, string>();
         private static NLog.Logger mainLog; //mainLog.Error

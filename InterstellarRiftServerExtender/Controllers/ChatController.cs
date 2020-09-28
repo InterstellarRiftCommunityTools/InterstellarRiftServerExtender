@@ -1,14 +1,4 @@
-﻿/* Copyright (C) Extra-Terrestrial Technologies - All Rights Reserved
- * Unauthorized copying of this file, via any medium is prohibited not including
- * the individuals and/or companies stated below;
- *
- * -Split Polygon
- *
- * Proprietary and confidential
- * Written by General Wrex <generalwrex@gmail.com>, 2014
- */
-
-using IRSE.Managers;
+﻿using IRSE.Managers;
 using IRSE.ResultObjects;
 using System;
 using System.Collections.Generic;
