@@ -202,7 +202,10 @@ namespace IRSE
 
             Console.ResetColor();
 
-            //updateManager = new UpdateManager(); // REPO NEEDS TO BE PUBLIC
+            updateManager = new UpdateManager(); // REPO NEEDS TO BE PUBLIC
+
+            updateManager.CheckForUpdates().GetAwaiter().GetResult();
+
 
             Instance = new Program();
             Instance.Run(args);
@@ -416,7 +419,7 @@ namespace IRSE
 
                         if (stringList[1] == "opengui")
                         {
-                            SetupGUI();
+                            LoadGUI();
                             flag = true;
                         }
 

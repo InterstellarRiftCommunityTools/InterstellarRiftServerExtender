@@ -12,6 +12,9 @@ namespace IRSE.Managers
 {
     public class UpdateManager
     {
+        private readonly string Organization = "TheServerExtenders";
+        private readonly string Repository = "InterstellarRiftServerExtender";
+
         private static NLog.Logger mainLog; //mainLog.Error
 
         private GitHubClient _git = new GitHubClient(new ProductHeaderValue("InterstellarRiftServerExtender"));
@@ -175,12 +178,15 @@ namespace IRSE.Managers
         {
             try
             {
+                if (m_developmentRelease != null || m_currentRelease != null)
+                    return false;
+
                 string devText = (m_useDevRelease ? "Development Version" : "");
 
-                var checkedVersion = new Version(m_currentRelease.TagName);
+                var checkedVersion = new Version(m_currentRelease?.TagName);
 
                 if (m_useDevRelease)
-                    checkedVersion = new Version(m_developmentRelease.TagName);
+                    checkedVersion = new Version(m_developmentRelease?.TagName);
 
                 NewVersionNumber = checkedVersion;
 
@@ -280,19 +286,28 @@ namespace IRSE.Managers
         {
             try
             {
-                m_currentRelease = await _git.Repository.Release.GetLatest("TheServerExtenders", "InterstellarRiftServerExtender").ConfigureAwait(false);
+                m_currentRelease = await _git.Repository.Release.GetLatest(Organization, Repository).ConfigureAwait(false);
 
                 if (m_useDevRelease)
                 {
-                    var releases = await _git.Repository.Release.GetAll("TheServerExtenders", "InterstellarRiftServerExtender").ConfigureAwait(false);
+                    var releases = await _git.Repository.Release.GetAll(Organization, Repository).ConfigureAwait(false);
                     m_developmentRelease = releases.FirstOrDefault(x => x.Prerelease == true);
                 }
+
+                Console.WriteLine(m_currentRelease.TagName);
+            }
+            catch(NotFoundException nex)
+            {
+                Console.WriteLine("There are no releases!");
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Update Failed (GetLatestReleaseInfo)" + ex.ToString());
             }
         }
+
+
+
 
         public delegate void UpdateEventHandler(Release release);
 
