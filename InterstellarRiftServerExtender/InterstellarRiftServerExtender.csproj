@@ -289,11 +289,7 @@ echo Running build event for $(ProjectName)..
 xcopy "$(TargetDir)$(TargetFileName)" "$(ProjectDir)bin\IRSERelease\"  /y
 xcopy "$(TargetDir)$(TargetFileName).config" "$(ProjectDir)bin\IRSERelease\" /y
 
-xcopy "$(TargetDir)l" "$(ProjectDir)Resources" /y
-xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)Resources" /y
-xcopy "$(TargetDir)NLog.config" "$(ProjectDir)Resources" /y
-
-echo $(ProjectName) files have been copied to "$(ProjectDir)bin\HESRelease\".
+echo $(ProjectName) files have been copied to "$(ProjectDir)bin\IRSERelease\".
 
 echo This is used to build the proper folder/file structure for releases to be zipped up.
 
