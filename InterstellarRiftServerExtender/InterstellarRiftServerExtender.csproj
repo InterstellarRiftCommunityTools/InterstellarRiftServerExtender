@@ -53,12 +53,8 @@
     <StartupObject>IRSE.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\TelerikCommon.dll" />
     <EmbeddedResource Include="Resources\System.Net.Http.Formatting.dll" />
     <EmbeddedResource Include="Resources\System.Web.Http.dll" />
-    <EmbeddedResource Include="Resources\Telerik.WinControls.Themes.FluentDark.dll" />
-    <EmbeddedResource Include="Resources\Telerik.WinControls.Themes.Office2013Dark.dll" />
-    <EmbeddedResource Include="Resources\Telerik.WinControls.UI.dll" />
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -80,7 +76,7 @@
     <EmbeddedResource Include="Resources\NLog.dll" />
     <EmbeddedResource Include="Resources\Octokit.dll" />
     <None Include="App.config" />
-    <Content Include="Assets\hesicon.ico" />
+    <Content Include="Assets\irse_icon.ico" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -284,4 +280,28 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\GitInfo.2.0.34\build\GitInfo.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitInfo.2.0.34\build\GitInfo.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>;;@echo off
+
+echo Running build event for $(ProjectName)..
+
+
+xcopy "$(TargetDir)$(TargetFileName)" "$(ProjectDir)bin\IRSERelease\"  /y
+xcopy "$(TargetDir)$(TargetFileName).config" "$(ProjectDir)bin\IRSERelease\" /y
+
+xcopy "$(TargetDir)l" "$(ProjectDir)Resources" /y
+xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)Resources" /y
+xcopy "$(TargetDir)NLog.config" "$(ProjectDir)Resources" /y
+
+echo $(ProjectName) files have been copied to "$(ProjectDir)bin\HESRelease\".
+
+echo This is used to build the proper folder/file structure for releases to be zipped up.
+
+REM Dont remove this line below! VS hates when you dont exit 0!
+EXIT 0</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
 </Project>
