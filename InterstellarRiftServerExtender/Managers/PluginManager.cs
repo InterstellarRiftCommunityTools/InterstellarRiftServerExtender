@@ -83,24 +83,6 @@ namespace IRSE.Managers
             {
                 lock (_lockObj)
                 {
-                    //Commands
-                    // foreach (Type CommandType in Plugin.FoundCommands)
-                    // {
-                    //    Command c = (Command)Activator.CreateInstance(CommandType, new object[] { ServerInstance.Instance.Server });
-                    //    ServerInstance.Instance.CommandManager.AddCommand(c);
-                    // }
-                    //Now Look for Events... IN THE PLUGIN TYPE!!!!!!!
-                    //Actually Just register them
-                    //Events
-                    //Enable
-                    //Enable Events
-                    //foreach (EventListener el in Plugin.FoundEvents)
-                    //{
-                    //    ServerInstance.Instance.EventHelper.RegisterEvent(el);
-                    //}
-
-                    //Plugin.FoundEvents.ForEach(x => ServerInstance.Instance.EventHelper.RegisterEvent(x));
-
                     m_loadedPlugins.Add(Plugin);
                 }
             }
@@ -221,11 +203,6 @@ namespace IRSE.Managers
 
                 if (Plugins.Length > 0) foundPlugins.AddRange(Plugins);
             }
-            if (Program.Dev)
-            {
-                PluginInfo[] Plugins = FindPlugin(Environment.CurrentDirectory);
-                if (Plugins.Length > 0) foundPlugins.AddRange(Plugins);
-            }
 
             m_discoveredPlugins = foundPlugins;
 
@@ -308,7 +285,6 @@ namespace IRSE.Managers
                     //Loads Events
                     foreach (MethodInfo method in plugin.MainClassType.GetMethods())
                     {
-                        Boolean isevent = false;
                         foreach (Attribute attribute in method.GetCustomAttributes(true))
                         {
                             if (attribute is IRSEEventAttribute)

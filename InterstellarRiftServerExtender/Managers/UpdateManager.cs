@@ -49,7 +49,7 @@ namespace IRSE.Managers
             foreach (string file in Directory.GetFiles(ExtenderGlobals.GetFolderPath(IRSEFolderName.Updates), "*", SearchOption.AllDirectories))
                 FileList.Add(new FileInfo(file));
 
-            foreach (string file in Directory.GetFiles(Environment.CurrentDirectory, "*", SearchOption.AllDirectories))
+            foreach (string file in Directory.GetFiles(FolderStructure.RootFolderPath, "*", SearchOption.AllDirectories))
             {
                 var currentFile = new FileInfo(file);
 
@@ -63,6 +63,7 @@ namespace IRSE.Managers
             }
 
             CheckForUpdates().GetAwaiter().GetResult();
+            
         }
 
         public async Task CheckForUpdates(bool forceUpdate = false)
@@ -139,7 +140,7 @@ namespace IRSE.Managers
                 Console.WriteLine("IRSE:  Applying Update...");
 
                 string updatePath = ExtenderGlobals.GetFolderPath(IRSEFolderName.Updates);
-                string hesPath = ExtenderGlobals.GetFolderPath(IRSEFolderName.IRSE);
+                string IRSEPath = ExtenderGlobals.GetFolderPath(IRSEFolderName.IRSE);
 
                 // for all of the files already in the server folder
                 foreach (var file in CurrentFileList)
@@ -178,8 +179,21 @@ namespace IRSE.Managers
         {
             try
             {
-                if (m_developmentRelease != null || m_currentRelease != null)
+                Console.WriteLine("Checking for IRSE updates...");
+
+
+
+
+                if (m_useDevRelease && m_developmentRelease == null) {                  
+                    Console.WriteLine("No Development Updates Exist");
                     return false;
+                }
+                    
+                if (!m_useDevRelease && m_currentRelease == null) {
+                    Console.WriteLine("No Updates Exist");
+                    return false;
+                }
+
 
                 string devText = (m_useDevRelease ? "Development Version" : "");
 
@@ -205,12 +219,14 @@ namespace IRSE.Managers
 
                 if (checkedVersion > Program.Version || forceUpdate)
                 {
-                    Console.WriteLine($"IRSE:  A new {devText} version of Hellion Extended Server has been detected.\r\n");
+
+
+                    Console.WriteLine($"IRSE:  A new {devText} version of IRSE has been detected.\r\n");
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Name: { localRelease.Assets.First().Name }");
+                    Console.WriteLine($"Name: { localRelease.Name }");
                     Console.WriteLine($"Version: { localRelease.TagName }");
-                    Console.WriteLine($"Total Downloads: { localRelease.Assets.First().DownloadCount }");
-                    Console.WriteLine($"Published Date: { localRelease.Assets.First().CreatedAt }\r\n");
+                    if (localRelease.Assets.Count > 0) Console.WriteLine($"Total Downloads: { localRelease.Assets.First().DownloadCount }");
+                    if (localRelease.Assets.Count > 0) Console.WriteLine($"Published Date: { localRelease.Assets.First().CreatedAt.ToLocalTime() }\r\n");
                     Console.ResetColor();
 
                     if (!EnableAutoUpdates)
@@ -229,7 +245,7 @@ namespace IRSE.Managers
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("WARNING: Be absolutely sure that your server is backed up!");
                             Console.WriteLine("WARNING: Development Versions CAN break your server!\r\n");
-                            Console.WriteLine($"Do you agree to use this {devText}? (y/n)");
+                            Console.WriteLine($"Press Y to continue, or N to quit. (y/n)");
                             Console.ResetColor();
 
                             if (Console.ReadKey().Key == ConsoleKey.Y)
@@ -261,11 +277,11 @@ namespace IRSE.Managers
                             }
                         }
 
-                        Console.WriteLine("IRSE:  Skipping update.. We'll ask next time you restart HES!");
+                        Console.WriteLine("IRSE:  Skipping update.. We'll ask next time you restart IRSE!");
                     }
                     else
                     {
-                        Console.WriteLine("IRSE:  Auto updating");
+                        Console.WriteLine("IRSE: Auto updating");
                         DownloadLatestRelease(m_useDevRelease);
                     }
                     return true;
@@ -285,20 +301,17 @@ namespace IRSE.Managers
         public async Task GetLatestReleaseInfo()
         {
             try
-            {
+            {               
                 m_currentRelease = await _git.Repository.Release.GetLatest(Organization, Repository).ConfigureAwait(false);
 
-                if (m_useDevRelease)
-                {
-                    var releases = await _git.Repository.Release.GetAll(Organization, Repository).ConfigureAwait(false);
-                    m_developmentRelease = releases.FirstOrDefault(x => x.Prerelease == true);
-                }
+                var releases = await _git.Repository.Release.GetAll(Organization, Repository).ConfigureAwait(false);
+                m_developmentRelease = releases.FirstOrDefault(x => x.Prerelease == true);
+                
 
-                Console.WriteLine(m_currentRelease.TagName);
             }
             catch(NotFoundException nex)
             {
-                Console.WriteLine("There are no releases!");
+                Console.WriteLine("Repository or Releases Not found error, check the organization and repository settings and that releases exist.");
             }
             catch (Exception ex)
             {

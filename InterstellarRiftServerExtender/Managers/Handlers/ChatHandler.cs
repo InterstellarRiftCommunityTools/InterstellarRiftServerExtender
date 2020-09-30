@@ -2,7 +2,7 @@
 using Game.Configuration;
 using Game.Framework.Networking;
 using Game.Server;
-using IRSE.ResultObjects;
+using IRSE.API.ResultObjects;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -220,7 +220,7 @@ namespace IRSE.Managers.Handlers
         public void SendMessageFromServer(string messageToSend)
         {
             m_chatController.SendToAll(Config.Singleton.AllChatColor, messageToSend, "Server");
-        }
+		}
 
         #endregion Methods
     }

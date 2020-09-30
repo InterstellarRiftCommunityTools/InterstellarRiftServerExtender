@@ -12,6 +12,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace IRSE.Managers
 {
@@ -88,11 +89,13 @@ namespace IRSE.Managers
 
         public ServerInstance()
         {
+            m_serverInstance = this;
+
             mainLog = NLog.LogManager.GetCurrentClassLogger();
 
             m_launchedTime = DateTime.MinValue;
             m_serverThread = null;
-            m_serverInstance = this;
+            
 
             // Wrap IR.exe
             m_assembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IR.exe"));
@@ -144,10 +147,15 @@ namespace IRSE.Managers
                 mainLog.Info("IRSE: Loading Game Console Commands..");
                 // soon
 
+                ConsoleCommandManager.InitCommands(controllerManager);
+
+                IsRunning = true; // Server is running by now
+
                 // start gamelogic coroutine
                 Program.ConsoleCoroutine = CommandSystem.Singleton.Logic(controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete);
 
 
+                SendKeys.SendWait("{ENTER}"); // activates the game console commands
 
                 // plugin loader
                 mainLog.Info("IRSE: Initializing Plugins...");
@@ -155,9 +163,7 @@ namespace IRSE.Managers
                 m_pluginManager.InitializeAllPlugins();
 
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
-                Thread.Sleep(5000);
-
-                IsRunning = true;
+               
                 mainLog.Info("IRSE: Startup Procedure Complete!");
             }
             catch (Exception ex)

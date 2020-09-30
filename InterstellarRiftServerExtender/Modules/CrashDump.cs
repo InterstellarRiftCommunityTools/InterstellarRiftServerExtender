@@ -51,7 +51,7 @@ namespace IRSE.Modules
             String path = Path.Combine(FolderStructure.IRSEFolderPath, "dump");
             if (!Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
             String now = DateTime.UtcNow.ToString("yyyy_MM_dd__HH_mm_ss");
-            using (FileStream fs = new FileStream(String.Format("IRSE\\Dump\\UnhandledDump_{0}.dmp", now), FileMode.Create))
+            using (FileStream fs = new FileStream(Path.Combine(path, String.Format("UnhandledDump_{0}.dmp", now)), FileMode.Create))
             {
                 using (System.Diagnostics.Process process = System.Diagnostics.Process.GetCurrentProcess())
                 {
@@ -73,7 +73,7 @@ namespace IRSE.Modules
                 }
             }
 
-            Console.WriteLine("Dump File Created at > " + String.Format("IRSE\\Dump\\UnhandledDump_{0}.dmp", now));
+            Console.WriteLine("Dump File Created at > " + Path.Combine(path, String.Format("UnhandledDump_{0}.dmp", now)));
         }
     }
 }

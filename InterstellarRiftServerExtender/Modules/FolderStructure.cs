@@ -11,18 +11,15 @@ namespace IRSE.Modules
         public static string IRSEFolderPath => Path.Combine(RootFolderPath, "IRSE");
 
         private Assembly _assembly;
-        private static NLog.Logger mainLog; //mainLog.Error
 
         public FolderStructure()
         {
-            mainLog = NLog.LogManager.GetCurrentClassLogger();
 
             _assembly = Assembly.GetExecutingAssembly();
 
             List<string> directories = new List<string>();
             directories.Add("bin");
             directories.Add("config");
-            directories.Add("worlddata");
             directories.Add("localization");
             directories.Add("plugins");
             directories.Add("logs");
@@ -81,7 +78,7 @@ namespace IRSE.Modules
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Hellion Extended Server[{ex.TargetSite}]: {ex.StackTrace}");
+                Console.WriteLine($"[ERROR] IRSE: [{ex.TargetSite}]: {ex.StackTrace}");
             }
         }
     }

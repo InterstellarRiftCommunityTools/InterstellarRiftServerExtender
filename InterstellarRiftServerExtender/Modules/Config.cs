@@ -26,9 +26,12 @@ namespace IRSE.Modules
             AnnounceRestartTime = true;
             EnableAutomaticUpdates = true;
             EnableDevelopmentVersion = false;
-            EnableHellionAutomaticUpdates = true;
+            EnableAutomaticUpdates = true;
             CheckUpdatesTime = 60;
             CurrentLanguage = Config.Language.English;
+
+            ManageSteamCMD = true;
+
 
             usePreReleaseVersions = EnableDevelopmentVersion;
         }
@@ -40,49 +43,48 @@ namespace IRSE.Modules
 
         [Category("Main")]
         [DisplayName("Start Server On Load - (Default: False )")]
-        [Description("Starts the Hellion server on HES load.\r\n" +
-            "If enabled, Hellion Dedicated will automatically start after HES initializes")]
+        [Description("Starts the Hellion server on IRSE load.\r\n" +
+            "If enabled, Hellion Dedicated will automatically start after IRSE initializes")]
         public bool AutoStartEnable { get; set; }
 
-        [ReadOnly(true)]
         [Category("Main")]
         [DisplayName("Language - (Default: English)")]
-        [Description("Language of HES.\r\n" +
+        [Description("Language of IRSE.\r\n" +
             "You can find more Languages in our GitHub. Thats if someone has made a new language file for us!")]
         public Config.Language CurrentLanguage { get; set; }
 
         [Category("Updates")]
         [DisplayName("Enable Automatic Restarts - (Default: False )")]
-        [Description("Allow HES to Restart itself after a set time elapses.\r\n" +
-            "Used for automatic restarts and releasing Hes's resources after a set time.")]
+        [Description("Allow IRSE to Restart itself after a set time elapses.\r\n" +
+            "Used for automatic restarts and releasing IRSE's resources after a set time.")]
         public bool AutoRestartsEnable { get; set; }
 
         [ReadOnly(true)]
         [Category("Updates")]
         [DisplayName("Automatic Restart Time - (Default: 0 )")]
-        [Description("Auto-Restart HES After a set time in minutes.\r\n" +
-            "Used for automatic updates and releasing Hes's resources after a set time.")]
+        [Description("Auto-Restart IRSE After a set time in minutes.\r\n" +
+            "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public float AutoRestartTime { get; set; }
 
         [ReadOnly(true)]
         [Category("Updates")]
         [DisplayName("Announce Restart Time - (Default: True )")]
         [Description("Announce restart time to players on the server.\r\n" +
-            "Used for automatic updates and releasing Hes's resources after a set time.")]
+            "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public bool AnnounceRestartTime { get; set; }
 
         [Category("Updates")]
         [DisplayName("Enable Automatic Updates - (Default: True )")]
-        [Description("Allow HES to update itself.\r\n" +
-            "Used for automatic updates and releasing Hes's resources after a set time.")]
-        public bool EnableAutomaticUpdates { get; set; }
+        [Description("Allow IRSE to update itself.\r\n" +
+            "Used for automatic updates and releasing IRSE's resources after a set time.")]
+        public bool EnableExtenderAutomaticUpdates { get; set; }
 
         private bool usePreReleaseVersions = false;
 
         [Category("Development")]
         [DisplayName("Enable Development Version (Restart Required)- (Default: false )")]
         [Description("Change to true if you would like to use Development versions (I.E. PreReleases).\r\n" +
-            "Used for automatic updates and releasing Hes's resources after a set time.")]
+            "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public bool EnableDevelopmentVersion
         {
             get => usePreReleaseVersions;
@@ -94,17 +96,23 @@ namespace IRSE.Modules
         }
 
         [Category("Updates")]
-        [DisplayName("Enable Hellion Automatic Updates - (Default: True )")]
-        [Description("Allows HES to update Hellion Dedicated.\r\n" +
-            "Used for automatic updates and releasing Hes's resources after a set time.")]
-        public bool EnableHellionAutomaticUpdates { get; set; }
+        [DisplayName("Enable IR Automatic Updates - (Default: True )")]
+        [Description("Allows IRSE to update ISR Dedicated Server.\r\n" +
+            "Used for automatic updates and releasing IRSE's resources after a set time.")]
+        public bool EnableAutomaticUpdates { get; set; }
 
         [ReadOnly(true)]
         [Category("Updates")]
         [DisplayName("Check Updates Time - (Default: 60 )")]
-        [Description("How often should HES check for updates, in minutes.\r\n" +
-            "Used for automatic updates and releasing Hes's resources after a set time.")]
+        [Description("How often should IRSE check for updates, in minutes.\r\n" +
+            "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public int CheckUpdatesTime { get; set; }
+
+
+        [Category("Steam CMD")]
+        [DisplayName("Manage Steam CMD (Restart Required)")]
+        [Description("Let IRSE manage Interstellar Rift installations.")]
+        public bool ManageSteamCMD { set { RestartNeeded = true; } }
     }
 
     /// <summary>
@@ -112,7 +120,7 @@ namespace IRSE.Modules
     /// </summary>
     public class Config
     {
-        public static string FileName = "IRSE/config/Config.xml";
+        public static string FileName = Path.Combine(FolderStructure.IRSEFolderPath, "config/Config.xml");
 
         private Settings _settings;
 
@@ -168,7 +176,7 @@ namespace IRSE.Modules
         {
             if (!File.Exists(FileName))
             {
-                Console.WriteLine("IRSE:  HES Config does not exist, creating one from defaults.");
+                Console.WriteLine("IRSE:  IRSE Config does not exist, creating one from defaults.");
                 SaveConfiguration();
                 return true;
             }
@@ -182,7 +190,7 @@ namespace IRSE.Modules
                 {
                     if (!serializer.CanDeserialize(reader))
                     {
-                        Console.WriteLine("IRSE:  Could not deserialize HES's Configuration File! Load Failed!");
+                        Console.WriteLine("IRSE:  Could not deserialize IRSE's Configuration File! Load Failed!");
                         return false;
                     }
 
