@@ -20,11 +20,16 @@ namespace IRSE.API.ResultObjects
         public ulong ID { get; set; }
         public string Message { get; set; }
 
-        public ChatMessage(string name, string message)
+        public string Channel { get; set; }
+
+        public ChatMessage(string name, string message, ulong id = 0UL, string channel = "All")
         {
+            ID = id;
             Name = name;
             Message = message;
+            Channel = channel;
         }
+
     }
 
 

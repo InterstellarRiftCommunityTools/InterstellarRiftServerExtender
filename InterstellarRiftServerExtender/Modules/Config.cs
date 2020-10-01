@@ -30,7 +30,8 @@ namespace IRSE.Modules
             CheckUpdatesTime = 60;
             CurrentLanguage = Config.Language.English;
 
-            ManageSteamCMD = true;
+            manageSteamCmd = true;
+
 
 
             usePreReleaseVersions = EnableDevelopmentVersion;
@@ -108,11 +109,21 @@ namespace IRSE.Modules
             "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public int CheckUpdatesTime { get; set; }
 
-
+        private bool manageSteamCmd;
         [Category("Steam CMD")]
-        [DisplayName("Manage Steam CMD (Restart Required)")]
+        [DisplayName("Manage Steam CMD -(Restart Required)")]
         [Description("Let IRSE manage Interstellar Rift installations.")]
-        public bool ManageSteamCMD { set { RestartNeeded = true; } }
+        public bool ManageSteamCMD {
+            get
+            {
+                return manageSteamCmd;
+            }
+            set { 
+                manageSteamCmd = value;
+                RestartNeeded = true; 
+            } 
+        }
+
     }
 
     /// <summary>

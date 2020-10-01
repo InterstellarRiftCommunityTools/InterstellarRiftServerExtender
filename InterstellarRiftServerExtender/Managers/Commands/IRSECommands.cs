@@ -11,7 +11,14 @@ namespace IRSE.Managers.ConsoleCommands
         [SvCommandMethod("opengui|loadgui|lg", "opens IRSE gui window", 3, new SvCommandMethod.ArgumentID[] { })]
         public static void c_opengui(object caller, List<string> parameters)
         {
-            Program.LoadGUI();
+
+            if (!Program.GUIDisabled)
+            {
+                Program.SetupGUI();
+            }
+            else
+                Console.WriteLine("GUI DISABLED");
+            
         }
 
 

@@ -28,14 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Players");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Players");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtenderGui));
             this.Tabs = new System.Windows.Forms.TabControl();
             this.ServerTab = new System.Windows.Forms.TabPage();
             this.ServerContainer = new System.Windows.Forms.SplitContainer();
             this.server_server_Tabs = new System.Windows.Forms.TabControl();
             this.ServerConfig = new System.Windows.Forms.TabPage();
+            this.serverconfig_properties = new System.Windows.Forms.PropertyGrid();
             this.ExtenderConfig = new System.Windows.Forms.TabPage();
+            this.extenderconfig_properties = new System.Windows.Forms.PropertyGrid();
             this.serverconfig_checkForUpdates = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.server_hesNewsLabel = new System.Windows.Forms.Label();
@@ -82,8 +84,6 @@
             this.plugins_pluginManager_tab = new System.Windows.Forms.TabPage();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
-            this.serverconfig_properties = new System.Windows.Forms.PropertyGrid();
-            this.extenderconfig_properties = new System.Windows.Forms.PropertyGrid();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -213,6 +213,14 @@
             this.ServerConfig.Text = "Server Config";
             this.ServerConfig.UseVisualStyleBackColor = true;
             // 
+            // serverconfig_properties
+            // 
+            this.serverconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.serverconfig_properties.Location = new System.Drawing.Point(3, 3);
+            this.serverconfig_properties.Name = "serverconfig_properties";
+            this.serverconfig_properties.Size = new System.Drawing.Size(752, 337);
+            this.serverconfig_properties.TabIndex = 0;
+            // 
             // ExtenderConfig
             // 
             this.ExtenderConfig.Controls.Add(this.extenderconfig_properties);
@@ -223,6 +231,14 @@
             this.ExtenderConfig.TabIndex = 1;
             this.ExtenderConfig.Text = "Extender Config";
             this.ExtenderConfig.UseVisualStyleBackColor = true;
+            // 
+            // extenderconfig_properties
+            // 
+            this.extenderconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.extenderconfig_properties.Location = new System.Drawing.Point(3, 3);
+            this.extenderconfig_properties.Name = "extenderconfig_properties";
+            this.extenderconfig_properties.Size = new System.Drawing.Size(752, 337);
+            this.extenderconfig_properties.TabIndex = 0;
             // 
             // serverconfig_checkForUpdates
             // 
@@ -254,8 +270,7 @@
             this.server_hesNewsLabel.Name = "server_hesNewsLabel";
             this.server_hesNewsLabel.Size = new System.Drawing.Size(367, 59);
             this.server_hesNewsLabel.TabIndex = 0;
-            this.server_hesNewsLabel.Text = "Configuration options for HES have been moved to the Server tab\r\nunder the HES Co" +
-    "nfig subtab.\r\n";
+            this.server_hesNewsLabel.Text = "Configuration options for IRSE have been moved to the Server tab\r\nunder the IRSE Config subtab.\r\n";
             // 
             // server_config_reload
             // 
@@ -677,10 +692,10 @@
             this.objectManipulation_treeview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.objectManipulation_treeview.Location = new System.Drawing.Point(0, 0);
             this.objectManipulation_treeview.Name = "objectManipulation_treeview";
-            treeNode2.Name = "PlayersNode";
-            treeNode2.Text = "Players";
+            treeNode1.Name = "PlayersNode";
+            treeNode1.Text = "Players";
             this.objectManipulation_treeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.objectManipulation_treeview.Size = new System.Drawing.Size(262, 463);
             this.objectManipulation_treeview.TabIndex = 0;
             this.objectManipulation_treeview.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.objectManipulation_treeview_AfterSelect);
@@ -717,7 +732,7 @@
             this.hesw_Website.ScriptErrorsSuppressed = true;
             this.hesw_Website.Size = new System.Drawing.Size(766, 463);
             this.hesw_Website.TabIndex = 0;
-            this.hesw_Website.Url = new System.Uri("https://hellionextendedserver.com/", System.UriKind.Absolute);
+            this.hesw_Website.Url = new System.Uri("https://github.com/TheServerExtenders/InterstellarRiftServerExtender", System.UriKind.Absolute);
             // 
             // PluginsTab
             // 
@@ -764,22 +779,6 @@
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.Size = new System.Drawing.Size(0, 17);
             // 
-            // serverconfig_properties
-            // 
-            this.serverconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.serverconfig_properties.Location = new System.Drawing.Point(3, 3);
-            this.serverconfig_properties.Name = "serverconfig_properties";
-            this.serverconfig_properties.Size = new System.Drawing.Size(752, 337);
-            this.serverconfig_properties.TabIndex = 0;
-            // 
-            // extenderconfig_properties
-            // 
-            this.extenderconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extenderconfig_properties.Location = new System.Drawing.Point(3, 3);
-            this.extenderconfig_properties.Name = "extenderconfig_properties";
-            this.extenderconfig_properties.Size = new System.Drawing.Size(752, 337);
-            this.extenderconfig_properties.TabIndex = 0;
-            // 
             // ExtenderGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -792,6 +791,8 @@
             this.Name = "ExtenderGui";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "-";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExtenderGui_FormClosing);
+            this.Load += new System.EventHandler(this.ExtenderGui_Load);
             this.Tabs.ResumeLayout(false);
             this.ServerTab.ResumeLayout(false);
             this.ServerContainer.Panel1.ResumeLayout(false);

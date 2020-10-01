@@ -134,6 +134,8 @@ namespace IRSE.Managers
             m_launchedTime = DateTime.Now;
             try
             {
+                Program.SetTitle(true);
+
                 m_handlerManager = new HandlerManager(m_assembly, m_frameworkAssembly);
 
                 WaitForHandlers();

@@ -1,12 +1,15 @@
-﻿
+﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
 using System.Runtime.CompilerServices;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace IRSE.Modules
 {
@@ -17,6 +20,7 @@ namespace IRSE.Modules
         private static string SteamCMDDir = Path.Combine(FolderStructure.IRSEFolderPath, "steamcmd");
         private static string SteamCMDExe = Path.Combine(SteamCMDDir, "steamcmd.exe");
         private static string SteamCMDZip = Path.Combine(SteamCMDDir, "steamcmd.zip");
+        private static string GameNewsURL = "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2?appid=363360&count=1";
 
         public static bool AutoUpdateIR = true;
 
@@ -24,17 +28,14 @@ namespace IRSE.Modules
         {
             mainLog = NLog.LogManager.GetCurrentClassLogger();
             mainLog.Info("Running SteamCMD Checks..");
-
         }
 
         private int? GetLineNumber([CallerLineNumber] int? lineNumber = null) => lineNumber;
 
+        private bool errored = true;
+        private int count = 0;
 
-        bool errored = true;
-        int count = 0;
-        public bool GetSteamCMD()
-        {
-
+        public bool HandleLogin() {
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("|-------------------------------------------------------------------------|");
             Console.WriteLine("INTERSTELLAR RIFT SERVER EXTENDER STEAM MANAGER.");
@@ -55,7 +56,6 @@ namespace IRSE.Modules
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Press S if you would like IRSE to manage IR updates.");
 
-
             // quit if they dont agree
             if (Console.ReadKey().Key == ConsoleKey.Q)
             {
@@ -63,14 +63,19 @@ namespace IRSE.Modules
                 Config.Instance.SaveConfiguration();
                 Environment.Exit(0);
             }
-                
-
-
-            //if(Console.K)
 
 
             Console.ReadLine();
 
+
+
+            return false;
+        }
+
+
+        public bool GetSteamCMD()
+        {
+         
 
             if (!AutoUpdateIR)
             {
@@ -95,10 +100,9 @@ namespace IRSE.Modules
                 {
                     mainLog.Info("SteamCMD does not exist, downloading!");
 
-                    using (var client = new WebClient()) 
+                    using (var client = new WebClient())
                         client.DownloadFile("https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip", SteamCMDZip);
-                    
-                        
+
                     mainLog.Info("Done! Unpacking and starting SteamCMD to install Interstellar Rift Dedicated Server");
 
                     ZipFile.ExtractToDirectory(SteamCMDZip, SteamCMDDir);
@@ -111,7 +115,7 @@ namespace IRSE.Modules
                 }
             }
 
-            string script = @"+force_install_dir ../../ +app_update 363360 validate +quit"; 
+            string script = @"+force_install_dir ../../ +app_update 363360 validate +quit";
 
             try
             {
@@ -126,7 +130,6 @@ namespace IRSE.Modules
                 };
                 Process steamCmd = Process.Start(steamCmdinfo);
 
-                
                 while (!steamCmd.HasExited)
                 {
                     string line = steamCmd.StandardOutput.ReadLine();
@@ -144,18 +147,69 @@ namespace IRSE.Modules
                 return false;
             }
 
-            if(errored || count == 1) 
+            if (errored || count == 1)
                 mainLog.Warn("Interstellar Rift has NOT been installed!");
             else
                 mainLog.Info("Interstellar Rift has been successfully installed or updated!");
 
-
             return true;
         }
 
-        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        public static Root SteamIRData { get; set; }
+
+        public static Version GetGameVersion()
         {
-            
+            try
+            {
+                using (WebClient wc = new WebClient())
+                {
+                    string info = wc.DownloadString(GameNewsURL);
+
+                    SteamIRData = JsonConvert.DeserializeObject<Root>(info);
+
+                    string verString = SteamIRData.appnews.newsitems.FirstOrDefault().title;
+
+                    Match match = Regex.Match(verString, @"(\d+\.)?(\d+\.)?(\d+\.)?(\*|\d+)");
+
+                    if (match.Success)
+                        return new Version(match.Value);
+                    else
+                        throw new Exception("Could not match version from URL, Please use github issues at our repository.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Could not get game version from " + GameNewsURL + "\n" + ex.ToString());
+            }
+            return null;
+        }
+
+        public class Newsitem
+        {
+            public string gid { get; set; }
+            public string title { get; set; }
+            public string url { get; set; }
+            public bool is_external_url { get; set; }
+            public string author { get; set; }
+            public string contents { get; set; }
+            public string feedlabel { get; set; }
+            public int date { get; set; }
+            public string feedname { get; set; }
+            public int feed_type { get; set; }
+            public int appid { get; set; }
+            public List<string> tags { get; set; }
+        }
+
+        public class Appnews
+        {
+            public int appid { get; set; }
+            public List<Newsitem> newsitems { get; set; }
+            public int count { get; set; }
+        }
+
+        public class Root
+        {
+            public Appnews appnews { get; set; }
         }
     }
 }

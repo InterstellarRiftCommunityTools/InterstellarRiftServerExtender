@@ -8,6 +8,8 @@ namespace IRSE.GUI.Forms.Browser
 {
     public class PluginFile
     {
+
+        private const string ResourcesURL = "";
         public int Id { get; set; }
         public string Name { get; set; }
         public string Author { get; set; }
@@ -35,7 +37,7 @@ namespace IRSE.GUI.Forms.Browser
             {
                 Console.WriteLine("Getting Resources");
 
-                var request = WebRequest.Create(@"https://hellionextendedserver.com/api.php?action=getResources&hash=AeAAUen5PKBEmtewUBRqSCwq") as HttpWebRequest;
+                var request = WebRequest.Create(ResourcesURL) as HttpWebRequest;
                 request.Method = "GET";
                 request.Proxy = null;
                 request.UserAgent = nameof(IRSE);
@@ -70,7 +72,7 @@ namespace IRSE.GUI.Forms.Browser
 
                     plugin.Name = plugin.Name.ToLower();
 
-                    DownloadURL = String.Format($"http://hellionextendedserver.com/index.php?resources/{plugin.Name}.{plugin.Id}/download&version={plugin.VersionId}");
+                    DownloadURL = String.Format(ResourcesURL);
 
                     Console.WriteLine("NewDL: " + DownloadURL);
 

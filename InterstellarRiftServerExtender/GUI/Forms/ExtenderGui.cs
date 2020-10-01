@@ -20,6 +20,8 @@ namespace IRSE.GUI.Forms
         {
             InitializeComponent();
 
+            AddChatLine("Waiting for server to start..");
+
             DisableControls();
 
             ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
@@ -73,7 +75,6 @@ namespace IRSE.GUI.Forms
             objectManipulation_grid.Enabled = !disable;
             objectManipulation_treeview.Enabled = !disable;
 
-            cpc_chat_list.AppendText("Waiting for server to start..\r\n");
         }
 
         #region Events
@@ -156,12 +157,16 @@ namespace IRSE.GUI.Forms
         {
             Invoke(new MethodInvoker(delegate
             {
+                AddChatLine("Server Online, Ready For Chat.");
+
                 DisableControls(false);
 
                 UpdatePlayersTree();
                 UpdateChatPlayers();
 
                 this.Refresh();
+
+
             }));
 
             ObjectManipulationRefreshTimer.Interval = (1000); // 1 secs
@@ -345,13 +350,15 @@ namespace IRSE.GUI.Forms
                     extenderconfig_properties.SelectedObject = Config.Instance.Settings;
                     extenderconfig_properties.Refresh();
 
-                    StatusBar.Text = "Reloaded HES Config from Config.xml.";
+                    StatusBar.Text = "Reloaded IRSE Config from Config.xml.";
                 }
             }
         }
 
         private void server_config_startserver_Click(object sender, EventArgs e)
         {
+            DisableControls(false);
+
             if (!ServerInstance.Instance.IsRunning)
             {
                 Task.Run(() => ServerInstance.Instance.Start());
@@ -406,6 +413,7 @@ namespace IRSE.GUI.Forms
                 ServerInstance.Instance.Handlers.ChatHandler.SendMessageFromServer(cpc_messagebox.Text);
                 cpc_messagebox.Text = "";
 
+                
                 e.Handled = e.SuppressKeyPress = true;
             }
         }
@@ -525,6 +533,17 @@ namespace IRSE.GUI.Forms
             {
                 StatusBar.Text = "IRSE needs to be restarted before you can use the new features!";
             }
+        }
+
+        private void ExtenderGui_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ExtenderGui_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Visible = false;
+            e.Cancel = true;
         }
     }
 }

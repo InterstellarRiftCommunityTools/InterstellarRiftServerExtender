@@ -179,10 +179,7 @@ namespace IRSE.Managers
         {
             try
             {
-                Console.WriteLine("Checking for IRSE updates...");
-
-
-
+                if (!GUIMode) Console.WriteLine("Checking for IRSE updates...");
 
                 if (m_useDevRelease && m_developmentRelease == null) {                  
                     Console.WriteLine("No Development Updates Exist");
@@ -209,17 +206,17 @@ namespace IRSE.Managers
                 if (m_useDevRelease)
                     localRelease = m_developmentRelease;
 
+                HasUpdate = (checkedVersion > Program.Version || forceUpdate);
+
                 if (GUIMode)
                 {
-                    HasUpdate = (checkedVersion > Program.Version || forceUpdate);
-
                     OnUpdateChecked?.Invoke(localRelease);
                     return true;
                 }
 
-                if (checkedVersion > Program.Version || forceUpdate)
+                if (HasUpdate)
                 {
-
+                    
 
                     Console.WriteLine($"IRSE:  A new {devText} version of IRSE has been detected.\r\n");
                     Console.ForegroundColor = ConsoleColor.Yellow;
