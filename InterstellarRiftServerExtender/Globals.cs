@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IRSE.Modules;
+using System;
 using System.IO;
 
 namespace IRSE
@@ -132,7 +133,7 @@ namespace IRSE
 
         public static string GetFolderPath(IRSEFolderName IRSEFolder, bool fullPath = false)
         {
-            string fullBasePath = Environment.CurrentDirectory;
+            string fullBasePath = FolderStructure.RootFolderPath;
 
             string path = "";
             switch (IRSEFolder)

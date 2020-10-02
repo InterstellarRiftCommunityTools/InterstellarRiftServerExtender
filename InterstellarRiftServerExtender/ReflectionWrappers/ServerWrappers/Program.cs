@@ -3,6 +3,7 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace IRSE.ReflectionWrappers.ServerWrappers
 {
@@ -77,14 +78,21 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
             Thread serverThread = new Thread(new ParameterizedThreadStart(this.ThreadStart));
 
-            serverThread.IsBackground = true;
+            serverThread.IsBackground = false;
             serverThread.CurrentCulture = CultureInfo.InvariantCulture;
             serverThread.CurrentUICulture = CultureInfo.InvariantCulture;
             serverThread.Start(args);
 
+            Console.WriteLine(serverThread.IsAlive ? "Starting" : "");
+
+            Thread.Sleep(2000);
+            SendKeys.SendWait("{ENTER}");
+            Thread.Sleep(2000);
+            SendKeys.SendWait("{ENTER}");// twice because i have no idea what else to do, hitting enter makes it start
+
             return serverThread;
         }
-
+        [STAThread]
         private void ThreadStart(Object args)
         {
             try
@@ -102,6 +110,8 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
             m_startupArgsField.SetValue(null, args as String[]);
 
             m_startupMethod.Call(null, null);
+
+
 
             mainLog.Info("IRSE: Waiting for server....");
 

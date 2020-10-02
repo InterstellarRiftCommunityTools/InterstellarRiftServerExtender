@@ -1,5 +1,4 @@
 ﻿using Game.Framework;
-using Game.Server;
 using IRSE.GUI.Forms;
 using IRSE.Managers;
 using IRSE.Modules;
@@ -13,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -23,7 +21,6 @@ namespace IRSE
 {
     public class Program
     {
-        public static string ForGameVersion = "1.0.0.10";
         public static string ThisGameVersion;
 
         #region Fields
@@ -34,13 +31,17 @@ namespace IRSE
         private static ServerInstance m_serverInstance;
         private static EventHandler _handler;
 
-        //private static Boolean m_useGui = true;
+        private static Boolean m_useGui = true;
         private static Thread uiThread;
 
         private static NLog.Logger mainLog;
         private static string[] CommandLineArgs;
         private static bool debugMode = true;
         private static ExtenderGui m_form;
+
+        public Version CurrentGameVerson { get; }
+
+        public static bool GUIDisabled => m_useGui;
 
         public static IEnumerator ConsoleCoroutine;
 
@@ -61,15 +62,15 @@ namespace IRSE
         public static Program Instance { get; private set; }
         public static ExtenderGui GUI { get; private set; }
 
-        //public static Window MainWindow => GUI.MainWindow;
-        public static Version Version => Assembly.GetEntryAssembly().GetName().Version;
+        public static Assembly EntryAssembly => Assembly.GetEntryAssembly();
+        public static Version Version => EntryAssembly.GetName().Version;
+
+        public static string ForGameVersion => EntryAssembly.GetCustomAttributes(typeof(SupportedGameAssemblyVersion), false).Cast<SupportedGameAssemblyVersion>().First().someText;
 
         public static String VersionString => Version.ToString(4) + $" Branch: {ThisAssembly.Git.Branch}";
-        public static String WindowTitle => string.Format("IsR Server Extender V{0} - Game Version: v{1} - This Game Version: v{2}", VersionString, ForGameVersion, ThisGameVersion);
+        public static String WindowTitle => string.Format("IsR Server Extender V{0}", VersionString);
 
         public static Config Config => m_config;
-
-        public static bool WPFGUI { get; private set; }
 
         #endregion Properties
 
@@ -81,32 +82,19 @@ namespace IRSE
             if (!Dev)
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
 
-            string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
-
-            LogManager.Configuration = new XmlLoggingConfiguration(configPath);
-
-            mainLog = LogManager.GetCurrentClassLogger();
-
-            mainLog.Info("Interstellar Rift Dedicated Server Initializing....");
-
-            mainLog.Info($"Git Branch: {ThisAssembly.Git.Branch}");
-
-            if (Dev)
-            {
-                mainLog.Info($"Git Commit: {ThisAssembly.Git.Commit}");
-                mainLog.Info($"Git SHA: {ThisAssembly.Git.Sha}");
-            }
-
-            m_serverInstance = new ServerInstance();
-
-            ThisGameVersion = m_serverInstance.Assembly.GetName().Version.ToString();
+            CurrentGameVerson = SteamCMD.GetGameVersion();
             Console.Title = WindowTitle;
+        }
+
+        public static void SetTitle(bool after = false)
+        {
+            Console.Title = Console.Title + " : " + (after ? WindowTitle.Replace("IsR", "") : WindowTitle);
         }
 
         [STAThread]
         private static void Main(string[] args)
         {
-            Console.Title = WindowTitle;
+            SetTitle();
 
             new FolderStructure().Build();
 
@@ -121,11 +109,12 @@ namespace IRSE
                     return null;
 
                 string dllName = assemblyName + ".dll";
-                string dllFullPath = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), "bin", dllName);
+                string dllFullPath = Path.GetFullPath(Path.Combine("IRSE", "bin", dllName));
 
-                if (debugMode)
-                    Console.WriteLine($"The assembly '{dllName}' is missing or has been updated. Adding/Updating missing assembly.");
+                //if (debugMode)
+                Console.WriteLine($"The assembly '{dllName}' is missing or has been updated. Adding/Updating missing assembly.");
 
+                /*
                 // get binaries in plugins
                 String modPath = Path.Combine(FolderStructure.IRSEFolderPath, "plugins");
                 String[] subDirectories = Directory.GetDirectories(modPath);
@@ -147,10 +136,8 @@ namespace IRSE
                             return Assembly.LoadFrom(path2);
                         }
                     }
-
                 }
-
-
+                */
 
                 using (Stream s = Assembly.GetCallingAssembly().GetManifestResourceStream("IRSE.Resources." + dllName))
                 {
@@ -166,6 +153,19 @@ namespace IRSE
                 return Assembly.LoadFrom(dllFullPath);
             };
 
+            string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
+            LogManager.Configuration = new XmlLoggingConfiguration(configPath);
+
+            Console.WriteLine($"Interstellar Rift Extended Server v{Version} Initializing....");
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Git Branch: {ThisAssembly.Git.Branch}");
+            if (Dev)
+            {
+                Console.WriteLine($"Git Commit: {ThisAssembly.Git.Commit}");
+                Console.WriteLine($"Git SHA: {ThisAssembly.Git.Sha}");
+            }
+            Console.WriteLine();
             // This is for args that should be used before IRSE loads
             bool noUpdateIRSE = false;
             bool noUpdateIR = false;
@@ -185,24 +185,71 @@ namespace IRSE
 
             if (usePrereleaseVersions || Config.Settings.EnableDevelopmentVersion)
             {
-                Console.WriteLine("IRSE: (Arg: -usedevversion is set) HES Will use Pre-releases versions");
+                Console.WriteLine("IRSE: (Arg: -usedevversion is set) IRSE Will use Pre-releases versions");
             }
 
-            if (noUpdateIRSE || !Config.Settings.EnableAutomaticUpdates)
+            if (noUpdateIRSE || !Config.Settings.EnableExtenderAutomaticUpdates)
             {
                 UpdateManager.EnableAutoUpdates = false;
-                Console.WriteLine("IRSE: (Arg: -noupdate is set or option in IRSE config is enabled) HES will not be auto-updated.\r\n");
+                Console.WriteLine("IRSE: (Arg: -noupdate is set or option in IRSE config is enabled) IRSE will not be auto-updated.");
             }
 
-            if (noUpdateIR || !Config.Settings.EnableHellionAutomaticUpdates)
+            if (noUpdateIR || !Config.Settings.EnableAutomaticUpdates)
             {
                 SteamCMD.AutoUpdateIR = false;
-                Console.WriteLine("IRSE: (Arg: -noupdateir is set) Hellion Dedicated will not be auto-updated.");
+                Console.WriteLine("IRSE: (Arg: -noupdateir is set) IsR Dedicated Serevr will not be auto-updated.");
             }
-
+            Console.WriteLine();
             Console.ResetColor();
 
-            //updateManager = new UpdateManager(); // REPO NEEDS TO BE PUBLIC
+            //new SteamCMD().GetSteamCMD();
+
+            // Run anything that doesn't require the loading of IR references above here
+
+            if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "IR.exe")))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("IRSE: IR.EXE wasn't found.");
+                Console.WriteLine("Make sure IRSE.exe is in the same folder as IR.exe.");
+                Console.WriteLine("Press enter to close.");
+                Console.ReadLine();
+                Environment.Exit(0);
+            }
+            
+
+
+            m_serverInstance = new ServerInstance();
+            ThisGameVersion = m_serverInstance.Assembly.GetName().Version.ToString();
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("For Game Version: ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(ForGameVersion + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("This Game Version: ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(ThisGameVersion + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("Online Game Version: ");
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write(SteamCMD.GetGameVersion() + "\n");
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            if (new Version(ThisGameVersion) < SteamCMD.GetGameVersion())
+            {               
+                Console.WriteLine("There is a new version of Interstellar Rift! Update your IR Installation!");
+            }
+
+            if(new Version(ForGameVersion) < new Version(ThisGameVersion))
+            {               
+                Console.WriteLine("Interstellar Rifts Version is newer than what this version of IRSE Supports, Check for IRSE updates!");
+            }
+
+            Console.WriteLine();
+            Console.ResetColor();
+
+            updateManager = new UpdateManager(); // REPO NEEDS TO BE PUBLIC
 
             Instance = new Program();
             Instance.Run(args);
@@ -211,9 +258,10 @@ namespace IRSE
         // this is where stuff goes!
         private void Run(string[] args)
         {
+            mainLog = LogManager.GetCurrentClassLogger();
+
             m_localization = new Localization();
             m_localization.Load(m_config.Settings.CurrentLanguage.ToString().Substring(0, 2));
-
 
             //Build IR's paths so we can use the Localization system
             Game.Program.InitFileSystems();
@@ -221,82 +269,114 @@ namespace IRSE
 
             //new ServerConfigConverter().BuildAndUpdateConfigProperties();
 
-
-            SetupGUI();
-
             // They initialize it as (string[])null, not good for us trying to use their static classes, this fixes it
             Game.Program.CommandLineArgs = new string[1];
 
+            bool autoStart = Config.Settings.AutoStartEnable;
+            Console.ForegroundColor = ConsoleColor.Green;
+            foreach (string arg in args)
+            {
+                if (arg.Equals("-nogui"))
+                {
+                    m_useGui = false;
+
+                    if (!m_form.Visible)
+                        Console.WriteLine("IRSE: (Arg: -nogui is set) GUI Disabled, use /showgui to Enable it for this session.");
+                }
+                autoStart = arg.Equals("-autostart");
+            }
+            Console.ResetColor();
+
+            if (!Environment.UserInteractive)
+            {
+                Console.WriteLine("Non interactive environment detected, GUI disabled");
+            }
+            else
+                if (m_useGui)
+                SetupGUI();
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("IRSE: Ready for Input, try /help !");
+
+            if (autoStart)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("IRSE: Arg: -autostart or Gui's Autostart Checkbox was Checked)");
+                Console.ResetColor();
+                ServerInstance.Instance.Start();
+            }
+
+            Console.ResetColor();
             //console logic for commands
             ReadConsoleCommands(args);
         }
 
-        #region Will Be Moved To Own Class
-
-        [SvCommandMethod("fart", "fart", 4, new SvCommandMethod.ArgumentID[] { })]
-        public static void c_start(object caller, List<string> parameters)
-        {
-            Console.WriteLine("u farted!");
-            //ServerInstance.Instance.Start();
-
-            //SendKeys.SendWait("{ENTER}");
-        }
-
-        public static void InitCommands(ControllerManager controllers)
-        {
-            if (controllers != null) SvCommandMethod.UpdateControllers(controllers);
-
-            foreach (MethodInfo method in typeof(Program).GetMethods(BindingFlags.Static | BindingFlags.Public))
-            {
-                object[] customAttributes1 = method.GetCustomAttributes(typeof(SvCommandMethod), false);
-                if (((IEnumerable<object>)customAttributes1).Count<object>() != 0)
-                {
-                    object[] customAttributes2 = null;
-                    SvCommandMethod svCommandMethod = customAttributes1[0] as SvCommandMethod;
-                    EventHandler<List<string>> handler = (EventHandler<List<string>>)Delegate.CreateDelegate(typeof(EventHandler<List<string>>), method);
-                    CommandSystem.Singleton.AddCommand(new Command(svCommandMethod.Names, svCommandMethod.Description, svCommandMethod.Arguments, handler, svCommandMethod.RequiredRight, customAttributes2 != null && ((IEnumerable<object>)customAttributes2).Any<object>(), method.GetCustomAttribute<TalkCommandAttribute>() != null), true);
-                }
-            }
-            CommandSystem.Singleton.SortCommands();
-        }
-        #endregion
+        #region GUI
 
         /// <summary>
         /// The UI Thread
         /// </summary>
-        private static void SetupGUI()
+        internal static void SetupGUI()
         {
             if (uiThread != null)
+            {
+                if (m_form.InvokeRequired)
+                    m_form.Invoke(new SafeCall(OpenGUI));
+                else
+                    OpenGUI();
+
                 return;
+            }
 
             uiThread = new Thread(LoadGUI);
             uiThread.SetApartmentState(ApartmentState.STA);
+            uiThread.IsBackground = true;
             uiThread.Start();
         }
 
         /// <summary>
-        /// Loads the gui into its own thread
+        /// Allows Thread Safe calls to the Form
+        /// </summary>
+        private delegate void SafeCall();
+
+        /// <summary>
+        /// do NOT call this by itself, call SetupGui()
+        /// </summary>
+        private static void OpenGUI()
+        {
+            if (m_form.IsDisposed)
+                return;
+
+            m_form.WindowState = FormWindowState.Normal;
+            m_form.Visible = true;
+            m_form.BringToFront();
+            m_form.Show();
+        }
+
+        /// <summary>
+        /// Loads the gui into its own thread !!DO NOT CALL!! call SetupGUI()
         /// </summary>
         [STAThread]
         private static void LoadGUI()
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
+            Console.WriteLine("Loading GUI..");
+
             if (m_form == null || m_form.IsDisposed)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
                 m_form = new ExtenderGui();
             }
-            else if (m_form.Visible)
-                return;
 
             m_form.Text = WindowTitle + " GUI";
 
             GUI = m_form;
 
             Application.Run(m_form);
-
-            Console.WriteLine("Loading GUI");
         }
+
+        #endregion GUI
 
         internal static void Restart(bool stopServer = true)
         {
@@ -341,18 +421,15 @@ namespace IRSE
                 }
                 else
                 {
-                    string line = Console.ReadLine();
+                    if (ServerInstance.Instance.IsRunning)
+                        continue;
+
+                    string line = Console.KeyAvailable ? Console.ReadLine() : "";
 
                     if (!string.IsNullOrEmpty(line) && line.Length > 1)
                     {
                         if (!line.StartsWith("/"))
                         {
-                            if (ServerInstance.Instance.IsRunning)
-                                if (Instance != null)
-                                    ServerInstance.Instance.Handlers.ChatHandler.SendMessageFromServer(line);
-                                else
-                                    Console.WriteLine("The Server must be running to message connected clients!");
-
                             continue;
                         }
 
@@ -396,7 +473,6 @@ namespace IRSE
                             if (!ServerInstance.Instance.IsRunning)
                             {
                                 CommandSystem.Singleton = new CommandSystem();
-                                InitCommands(null);
                                 Program.ConsoleCoroutine = CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete);
                                 ServerInstance.Instance.Start();
                             }
@@ -416,7 +492,10 @@ namespace IRSE
 
                         if (stringList[1] == "opengui")
                         {
-                            SetupGUI();
+                            if (Environment.UserInteractive && m_useGui)
+                                SetupGUI();
+                            else
+                                Console.WriteLine("GUI DISABLED");
                             flag = true;
                         }
 
@@ -426,6 +505,7 @@ namespace IRSE
                 }
             }
         }
+
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
@@ -448,13 +528,24 @@ namespace IRSE
         {
             if (sig == CtrlType.CTRL_C_EVENT || sig == CtrlType.CTRL_BREAK_EVENT || (sig == CtrlType.CTRL_LOGOFF_EVENT || sig == CtrlType.CTRL_SHUTDOWN_EVENT) || sig == CtrlType.CTRL_CLOSE_EVENT)
             {
-                if (ServerInstance.Instance.IsRunning)
-                {
-                    ServerInstance.Instance.Stop();
-                    Console.WriteLine("Closing IRSE Safely...");
-                }
+                Console.WriteLine("Attempting to stop any running servers.");
+                ServerInstance.Instance.Stop();
+                Console.WriteLine("Closing. Press any key to quit");
+
+                Console.ReadKey(true);
             }
             return false;
         }
+
     }
+
+    [AttributeUsage(AttributeTargets.Assembly)]
+    public class SupportedGameAssemblyVersion : Attribute
+    {
+        public string someText;
+        public SupportedGameAssemblyVersion() : this(string.Empty) { }
+        public SupportedGameAssemblyVersion(string txt) { someText = txt; }
+    }
+
+
 }

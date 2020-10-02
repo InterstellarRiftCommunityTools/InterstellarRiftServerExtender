@@ -1,4 +1,4 @@
-﻿namespace IRSE.ResultObjects
+﻿namespace IRSE.API.ResultObjects
 {
     public class BaseResult
     {

@@ -1,19 +1,16 @@
 ﻿using IRSE.Controllers;
 using System.Collections.Generic;
 
-namespace IRSE.ResultObjects
+namespace IRSE.API.ResultObjects
 {
-    public class PlayerResult
+    public class PlayerResult : BaseResult
     {
-        public bool Error { get; set; }
-        public string Status { get; set; }
         public List<IRPlayer> Players { get; set; }
         public int PlayerCount { get { return Players.Count; } }
 
         public PlayerResult(bool error, string status, List<IRPlayer> players)
+                         : base(error, status)
         {
-            Error = error;
-            Status = status;
             Players = players;
         }
     }

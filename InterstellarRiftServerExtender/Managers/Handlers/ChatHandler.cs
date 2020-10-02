@@ -2,7 +2,7 @@
 using Game.Configuration;
 using Game.Framework.Networking;
 using Game.Server;
-using IRSE.ResultObjects;
+using IRSE.API.ResultObjects;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -188,24 +188,24 @@ namespace IRSE.Managers.Handlers
         //
         protected void OnPacketChatMessage(RPCData data)
         {
+            m_delegate.Invoke(data);
+
             try
             {
                 Player player = ServerInstance.Instance.Handlers
                     .PlayerHandler.Players.GetPlayerByConnectionId((long)data.OriginalMessage.SenderConnectionId);
 
                 string name = player.Name;
-                string message = ((ClientChatMessage)data.DeserializedObject).message;
+                ClientChatMessage obj = (ClientChatMessage)data.DeserializedObject;
 
-                if (ParseCommand(player, message))
-                {
-                    mainLog.Info("'" + name + "' used command " + message);
-                    return;
-                }
+                ChatMessages.Add(new ChatMessage(player.Name, obj.message, player.ID));
 
-                m_delegate.Invoke(data);
+                string formatted = String.Format("[All]{0}({1}): {2}", player.Name, player.ID, obj.message);
 
-                ChatMessages.Add(new ChatMessage(name, message));
-                mainLog.Info(String.Format("[Chat]{0}: {1}", name, message));
+                //if (obj.channel == "All" || obj.channel == "System") {
+                mainLog.Info(formatted);
+                Program.GUI.AddChatLine(formatted);
+                //}
             }
             catch (Exception ex)
             {
@@ -213,15 +213,22 @@ namespace IRSE.Managers.Handlers
             }
         }
 
-        #endregion Event Handlers
-
-        #region Methods
-
-        public void SendMessageFromServer(string messageToSend)
+        public void SendMessageFromServer(string msg)
         {
-            m_chatController.SendToAll(Config.Singleton.AllChatColor, messageToSend, "Server");
+            if (string.IsNullOrEmpty(msg))
+                return;
+
+            try
+            {
+                m_chatController.SendToAll(Config.Singleton.AllChatColor, msg);
+            }
+            catch (Exception)
+            {
+            }
+
+            Program.GUI.AddChatLine(String.Format("{0} - {1}: {2}", DateTime.Now.ToLocalTime(), "Server", msg));
         }
 
-        #endregion Methods
+        #endregion Event Handlers
     }
 }

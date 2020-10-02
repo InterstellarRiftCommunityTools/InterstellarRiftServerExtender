@@ -20,6 +20,8 @@ namespace IRSE.GUI.Forms
         {
             InitializeComponent();
 
+            AddChatLine("Waiting for server to start..");
+
             DisableControls();
 
             ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
@@ -29,11 +31,7 @@ namespace IRSE.GUI.Forms
             serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
             extenderconfig_properties.SelectedObject = Config.Instance.Settings;
 
-            //serverconfig_properties.PropertyGridElement.ToolbarElement.Filt //.FilterPropertyName = "Category";
-
-            //FilterDescriptor filter = new FilterDescriptor("Category", FilterOperator.Contains, "server");
-            //serverconfig_properties.FilterDescriptors.Add(filter);
-
+            extenderconfig_properties.Refresh();
             serverconfig_properties.Refresh();
 
             if (Config.Instance.Settings.EnableDevelopmentVersion)
@@ -49,9 +47,9 @@ namespace IRSE.GUI.Forms
                 }
             }
 
-            //UpdateManager.Instance.OnUpdateChecked += new UpdateManager.UpdateEventHandler(Instance_OnUpdateChecked);
-            //UpdateManager.Instance.OnUpdateDownloaded += new UpdateManager.UpdateEventHandler(Instance_OnUpdateDownloaded);
-            //UpdateManager.Instance.OnUpdateApplied += new UpdateManager.UpdateEventHandler(Instance_OnUpdateApplied);
+            UpdateManager.Instance.OnUpdateChecked += new UpdateManager.UpdateEventHandler(Instance_OnUpdateChecked);
+            UpdateManager.Instance.OnUpdateDownloaded += new UpdateManager.UpdateEventHandler(Instance_OnUpdateDownloaded);
+            UpdateManager.Instance.OnUpdateApplied += new UpdateManager.UpdateEventHandler(Instance_OnUpdateApplied);
 
             server_hesNewsLabel.Text =
                 "Welcome to IRSE!\nIt's Almost Ready!!\n" +
@@ -77,7 +75,6 @@ namespace IRSE.GUI.Forms
             objectManipulation_grid.Enabled = !disable;
             objectManipulation_treeview.Enabled = !disable;
 
-            cpc_chat_list.AppendText("Waiting for server to start..\r\n");
         }
 
         #region Events
@@ -160,12 +157,16 @@ namespace IRSE.GUI.Forms
         {
             Invoke(new MethodInvoker(delegate
             {
+                AddChatLine("Server Online, Ready For Chat.");
+
                 DisableControls(false);
 
                 UpdatePlayersTree();
                 UpdateChatPlayers();
 
                 this.Refresh();
+
+
             }));
 
             ObjectManipulationRefreshTimer.Interval = (1000); // 1 secs
@@ -250,7 +251,7 @@ namespace IRSE.GUI.Forms
         private void objectManipulation_treeview_AfterSelect(object sender, TreeViewEventArgs e)
         {
             var node = e.Node;
-            objectManipulation_grid.SelectedObject = node.Tag as Player;
+            objectManipulation_grid.SelectedObject = node.Tag;
             objectManipulation_grid.Refresh();
         }
 
@@ -274,7 +275,7 @@ namespace IRSE.GUI.Forms
             {
                 if (Config.Instance.SaveConfiguration())
                 {
-                    StatusBar.Text = "HES Config Saved.";
+                    StatusBar.Text = "IRSE Config Saved.";
                 }
             }
         }
@@ -349,13 +350,15 @@ namespace IRSE.GUI.Forms
                     extenderconfig_properties.SelectedObject = Config.Instance.Settings;
                     extenderconfig_properties.Refresh();
 
-                    StatusBar.Text = "Reloaded HES Config from Config.xml.";
+                    StatusBar.Text = "Reloaded IRSE Config from Config.xml.";
                 }
             }
         }
 
         private void server_config_startserver_Click(object sender, EventArgs e)
         {
+            DisableControls(false);
+
             if (!ServerInstance.Instance.IsRunning)
             {
                 Task.Run(() => ServerInstance.Instance.Start());
@@ -410,6 +413,7 @@ namespace IRSE.GUI.Forms
                 ServerInstance.Instance.Handlers.ChatHandler.SendMessageFromServer(cpc_messagebox.Text);
                 cpc_messagebox.Text = "";
 
+                
                 e.Handled = e.SuppressKeyPress = true;
             }
         }
@@ -492,7 +496,7 @@ namespace IRSE.GUI.Forms
                 $"Release Description:\r\n\r\n" +
                 $"{release.Body}\r\n\r\n" +
                 $"Would you like to update now?",
-                "HES Updater",
+                "IRSE Updater",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (result == DialogResult.Yes)
             {
@@ -529,6 +533,17 @@ namespace IRSE.GUI.Forms
             {
                 StatusBar.Text = "IRSE needs to be restarted before you can use the new features!";
             }
+        }
+
+        private void ExtenderGui_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ExtenderGui_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Visible = false;
+            e.Cancel = true;
         }
     }
 }

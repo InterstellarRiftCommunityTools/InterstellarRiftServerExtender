@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using IRSE;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
@@ -28,5 +30,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.1.0.7")]
-[assembly: AssemblyFileVersion("0.1.0.7")]
+[assembly: AssemblyVersion("0.1.2.20")]
+[assembly: AssemblyFileVersion("0.1.2.20")]
+[assembly: SupportedGameAssemblyVersion("1.0.0.30")]

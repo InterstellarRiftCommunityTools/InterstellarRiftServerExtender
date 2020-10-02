@@ -28,16 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Players");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Players");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtenderGui));
             this.Tabs = new System.Windows.Forms.TabControl();
             this.ServerTab = new System.Windows.Forms.TabPage();
             this.ServerContainer = new System.Windows.Forms.SplitContainer();
             this.server_server_Tabs = new System.Windows.Forms.TabControl();
             this.ServerConfig = new System.Windows.Forms.TabPage();
-            this.serverconfig_properties = new Telerik.WinControls.UI.RadPropertyGrid();
+            this.serverconfig_properties = new System.Windows.Forms.PropertyGrid();
             this.ExtenderConfig = new System.Windows.Forms.TabPage();
-            this.extenderconfig_properties = new Telerik.WinControls.UI.RadPropertyGrid();
+            this.extenderconfig_properties = new System.Windows.Forms.PropertyGrid();
             this.serverconfig_checkForUpdates = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.server_hesNewsLabel = new System.Windows.Forms.Label();
@@ -84,7 +84,6 @@
             this.plugins_pluginManager_tab = new System.Windows.Forms.TabPage();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
-            this.office2013DarkTheme1 = new Telerik.WinControls.Themes.Office2013DarkTheme();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -93,9 +92,7 @@
             this.ServerContainer.SuspendLayout();
             this.server_server_Tabs.SuspendLayout();
             this.ServerConfig.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.serverconfig_properties)).BeginInit();
             this.ExtenderConfig.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.extenderconfig_properties)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.ChatTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChatPlayerContainer)).BeginInit();
@@ -219,15 +216,10 @@
             // serverconfig_properties
             // 
             this.serverconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.serverconfig_properties.HelpBarHeight = 55F;
             this.serverconfig_properties.Location = new System.Drawing.Point(3, 3);
             this.serverconfig_properties.Name = "serverconfig_properties";
-            this.serverconfig_properties.PropertySort = System.Windows.Forms.PropertySort.CategorizedAlphabetical;
             this.serverconfig_properties.Size = new System.Drawing.Size(752, 337);
-            this.serverconfig_properties.SortOrder = System.Windows.Forms.SortOrder.Ascending;
             this.serverconfig_properties.TabIndex = 0;
-            this.serverconfig_properties.ThemeName = "Office2013Dark";
-            this.serverconfig_properties.ToolbarVisible = true;
             // 
             // ExtenderConfig
             // 
@@ -243,15 +235,10 @@
             // extenderconfig_properties
             // 
             this.extenderconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.extenderconfig_properties.HelpBarHeight = 55F;
             this.extenderconfig_properties.Location = new System.Drawing.Point(3, 3);
             this.extenderconfig_properties.Name = "extenderconfig_properties";
-            this.extenderconfig_properties.PropertySort = System.Windows.Forms.PropertySort.CategorizedAlphabetical;
             this.extenderconfig_properties.Size = new System.Drawing.Size(752, 337);
-            this.extenderconfig_properties.SortOrder = System.Windows.Forms.SortOrder.Descending;
             this.extenderconfig_properties.TabIndex = 0;
-            this.extenderconfig_properties.ThemeName = "Office2013Dark";
-            this.extenderconfig_properties.ToolbarVisible = true;
             // 
             // serverconfig_checkForUpdates
             // 
@@ -283,8 +270,7 @@
             this.server_hesNewsLabel.Name = "server_hesNewsLabel";
             this.server_hesNewsLabel.Size = new System.Drawing.Size(367, 59);
             this.server_hesNewsLabel.TabIndex = 0;
-            this.server_hesNewsLabel.Text = "Configuration options for HES have been moved to the Server tab\r\nunder the HES Co" +
-    "nfig subtab.\r\n";
+            this.server_hesNewsLabel.Text = "Configuration options for IRSE have been moved to the Server tab\r\nunder the IRSE Config subtab.\r\n";
             // 
             // server_config_reload
             // 
@@ -306,7 +292,6 @@
             this.server_config_setdefaults.TabIndex = 4;
             this.server_config_setdefaults.Text = "Set Config Defaults";
             this.server_config_setdefaults.UseVisualStyleBackColor = true;
-            //this.server_config_setdefaults.Click += new System.EventHandler(this.server_config_setdefaults_Click);
             // 
             // server_config_cancel
             // 
@@ -707,10 +692,10 @@
             this.objectManipulation_treeview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.objectManipulation_treeview.Location = new System.Drawing.Point(0, 0);
             this.objectManipulation_treeview.Name = "objectManipulation_treeview";
-            treeNode2.Name = "PlayersNode";
-            treeNode2.Text = "Players";
+            treeNode1.Name = "PlayersNode";
+            treeNode1.Text = "Players";
             this.objectManipulation_treeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode2});
+            treeNode1});
             this.objectManipulation_treeview.Size = new System.Drawing.Size(262, 463);
             this.objectManipulation_treeview.TabIndex = 0;
             this.objectManipulation_treeview.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.objectManipulation_treeview_AfterSelect);
@@ -747,7 +732,7 @@
             this.hesw_Website.ScriptErrorsSuppressed = true;
             this.hesw_Website.Size = new System.Drawing.Size(766, 463);
             this.hesw_Website.TabIndex = 0;
-            this.hesw_Website.Url = new System.Uri("https://hellionextendedserver.com/", System.UriKind.Absolute);
+            this.hesw_Website.Url = new System.Uri("https://github.com/TheServerExtenders/InterstellarRiftServerExtender", System.UriKind.Absolute);
             // 
             // PluginsTab
             // 
@@ -806,6 +791,8 @@
             this.Name = "ExtenderGui";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "-";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExtenderGui_FormClosing);
+            this.Load += new System.EventHandler(this.ExtenderGui_Load);
             this.Tabs.ResumeLayout(false);
             this.ServerTab.ResumeLayout(false);
             this.ServerContainer.Panel1.ResumeLayout(false);
@@ -814,9 +801,7 @@
             this.ServerContainer.ResumeLayout(false);
             this.server_server_Tabs.ResumeLayout(false);
             this.ServerConfig.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.serverconfig_properties)).EndInit();
             this.ExtenderConfig.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.extenderconfig_properties)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.ChatTab.ResumeLayout(false);
             this.ChatPlayerContainer.Panel1.ResumeLayout(false);
@@ -925,9 +910,8 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label server_hesNewsLabel;
         private System.Windows.Forms.Button serverconfig_checkForUpdates;
-        private Telerik.WinControls.UI.RadPropertyGrid serverconfig_properties;
-        private Telerik.WinControls.Themes.Office2013DarkTheme office2013DarkTheme1;
-        private Telerik.WinControls.UI.RadPropertyGrid extenderconfig_properties;
+        private System.Windows.Forms.PropertyGrid serverconfig_properties;
+        private System.Windows.Forms.PropertyGrid extenderconfig_properties;
     }
 }
 

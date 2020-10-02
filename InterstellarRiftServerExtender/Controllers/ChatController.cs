@@ -1,5 +1,5 @@
 ﻿using IRSE.Managers;
-using IRSE.ResultObjects;
+using IRSE.API.ResultObjects;
 using System;
 using System.Collections.Generic;
 using System.Web.Http;
@@ -28,7 +28,7 @@ namespace IRSE.Controllers
         {
             try
             {
-                ServerInstance.Instance.Handlers.ChatHandler.ChatMessages = new List<ChatMessage>();
+                //ServerInstance.Instance.Handlers.ChatHandler.ChatMessages =  new List<ChatMessage>();
 
                 return new ChatResult(false, "All messages cleared out!", new List<ChatMessage>());
             }
@@ -39,7 +39,7 @@ namespace IRSE.Controllers
         }
 
         [HttpGet]
-        public GetLastMessageId GetLastMessageID()
+        public GetLastMessageIdResult GetLastMessageID()
         {
             int lastID = ServerInstance.Instance.Handlers.ChatHandler.ChatMessages.Count - 1;
             string message = null;
@@ -47,7 +47,7 @@ namespace IRSE.Controllers
                 message = "Last message ID is " + lastID;
             else
                 message = "There is currently no message in the list";
-            return new GetLastMessageId(false, message, lastID);
+            return new GetLastMessageIdResult(false, message, lastID);
         }
 
         [HttpGet]

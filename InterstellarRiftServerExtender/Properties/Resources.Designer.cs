@@ -19,10 +19,10 @@ namespace IRSE.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace IRSE.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("HellionExtendedServer.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IRSE.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,12 +51,129 @@ namespace IRSE.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;log4net&gt;
+        ///  &lt;appender name=&quot;ConsoleAppender&quot; type=&quot;log4Net.Appender.ColoredConsoleAppender&quot;&gt;
+        ///    &lt;threshold value=&quot;INFO&quot; /&gt;
+        ///    &lt;mapping&gt;
+        ///      &lt;level value=&quot;FATAL&quot; /&gt;
+        ///      &lt;foreColor value=&quot;Red&quot; /&gt;
+        ///      &lt;backColor value=&quot;White&quot; /&gt;
+        ///    &lt;/mapping&gt;
+        ///    &lt;mapping&gt;
+        ///      &lt;level value=&quot;ERROR&quot; /&gt;
+        ///      &lt;foreColor value=&quot;Red, HighIntensity&quot; /&gt;
+        ///    &lt;/mapping&gt;
+        ///    &lt;mapping&gt;
+        ///      &lt;level value=&quot;WARN&quot; /&gt;
+        ///      &lt;foreColor value=&quot;Yellow&quot; /&gt;
+        ///    &lt;/mapping&gt;
+        ///    &lt;mapping&gt;
+        ///      &lt;level value=&quot;INFO&quot; /&gt;
+        ///    [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string log4net {
+            get {
+                return ResourceManager.GetString("log4net", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Log4Net_Async {
+            get {
+                object obj = ResourceManager.GetObject("Log4Net_Async", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Newtonsoft_Json {
+            get {
+                object obj = ResourceManager.GetObject("Newtonsoft_Json", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;nlog xmlns=&quot;http://www.nlog-project.org/schemas/NLog.xsd&quot;
+        ///      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        ///      xsi:schemaLocation=&quot;http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd&quot;
+        ///      autoReload=&quot;true&quot;
+        ///      throwExceptions=&quot;false&quot;
+        ///      internalLogLevel=&quot;Off&quot; internalLogFile=&quot;c:\temp\nlog-internal.log&quot;&gt;
+        ///
+        ///  &lt;!-- optional, add some variables
+        ///  https://github.com/nlog/NLog/wiki/Configuration-file#variables
+        ///  --&gt;
+        ///  &lt;variable name=&quot;myvar&quot;  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string NLog {
+            get {
+                return ResourceManager.GetString("NLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;nlog xmlns=&quot;http://www.nlog-project.org/schemas/NLog.xsd&quot;
+        ///      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+        ///      xsi:schemaLocation=&quot;http://www.nlog-project.org/schemas/NLog.xsd NLog.xsd&quot;
+        ///      autoReload=&quot;true&quot;
+        ///      throwExceptions=&quot;false&quot;
+        ///      internalLogLevel=&quot;Off&quot; internalLogFile=&quot;c:\temp\nlog-internal.log&quot;&gt;
+        ///
+        ///  &lt;!-- optional, add some variables
+        ///  https://github.com/nlog/NLog/wiki/Configuration-file#variables
+        ///  --&gt;
+        ///  &lt;variable name=&quot;myvar&quot;  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string NLog1 {
+            get {
+                return ResourceManager.GetString("NLog1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] Octokit {
+            get {
+                object obj = ResourceManager.GetObject("Octokit", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] System_Net_Http_Formatting {
+            get {
+                object obj = ResourceManager.GetObject("System_Net_Http_Formatting", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        public static byte[] System_Web_Http {
+            get {
+                object obj = ResourceManager.GetObject("System_Web_Http", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }

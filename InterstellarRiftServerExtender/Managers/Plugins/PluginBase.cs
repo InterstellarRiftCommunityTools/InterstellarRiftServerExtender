@@ -19,13 +19,13 @@ namespace IRSE.Managers.Plugins
         protected String[] m_aillias;
         protected Guid m_id;
         protected PluginHelper m_plugin_helper;
-        protected RPCDispatcher m_dispatcher;
         protected Boolean isenabled = false;
 
         protected Logger m_log;
         protected PluginBaseConfig m_config;
 
         #endregion Fields
+        
 
         #region Properties
 
@@ -40,7 +40,6 @@ namespace IRSE.Managers.Plugins
         public virtual String[] Aillias { get { return m_aillias; } internal set { m_aillias = value; } }
         public virtual ControllerManager GetControllers { get { return m_controllers; } }
 
-        public virtual RPCDispatcher EventDispatcher { get { return m_dispatcher; } }
         public virtual PluginHelper GetPluginHelper { get { return m_plugin_helper; } }
 
         public virtual Logger PluginLog { get { return m_log; } }
@@ -55,22 +54,11 @@ namespace IRSE.Managers.Plugins
         public PluginBase()
         {
             m_controllers = ServerInstance.Instance.Handlers.ControllerManager;
-            //Create an Attribute for this!
-            //Assembly assembly = Assembly.GetCallingAssembly(); Console.WriteLine("ssssssssss");
-            //GuidAttribute guidAttr = (GuidAttribute)assembly.GetCustomAttributes(typeof(GuidAttribute), true)[0];
-            //this.Id = new Guid(guidAttr.Value);
-
-            //AssemblyName asmName = assembly.GetName(); Console.WriteLine("ssssssssss");
-            //BUG Cause a Stack Overflow
-            //Name = asmName.Name; Console.WriteLine("ssssssssss");
-
-            //Version = asmName.Version.ToString(); Console.WriteLine("ssssss2222ssss");
 
             m_plugin_helper = new PluginHelper(m_controllers);
 
             m_log = NLog.LogManager.GetCurrentClassLogger();
 
-            m_dispatcher = m_controllers.Network.Net.RpcDispatcher;
         }
 
         public virtual void Init(String modDirectory)
