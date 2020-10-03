@@ -6,7 +6,8 @@ An Extended Dedicated Server for Interstellar Rift https://www.interstellarrift.
 ### Websites
 **Patreon** - https://www.patreon.com/irse
 
-[![Build status](https://ci.appveyor.com/api/projects/status/phdspum8g0d3ics9/branch/master?svg=true)](https://ci.appveyor.com/project/theserverextenders/interstellarriftserverextender/branch/master)
+
+[![Build status](https://ci.appveyor.com/api/projects/status/vemitxcyep1kgvdm?svg=true)](https://ci.appveyor.com/project/generalwrex/interstellarriftserverextender)
 
 
 # FEATURES
