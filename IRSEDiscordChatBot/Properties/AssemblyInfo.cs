@@ -1,18 +1,17 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using IRSE;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("IsR Server Extender")]
-[assembly: AssemblyDescription("Interstellar Rift Server Extender")]
-[assembly: AssemblyConfiguration("DEV")]
-[assembly: AssemblyCompany("The Server Extenders")]
-[assembly: AssemblyProduct("Interstellar Rift Server Extender")]
-[assembly: AssemblyCopyright("The Server Extenders © 2020")]
-[assembly: AssemblyTrademark("TSE")]
+[assembly: AssemblyTitle("HESDiscordChatBot")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("HESDiscordChatBot")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -21,7 +20,7 @@ using IRSE;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8e635858-b6bb-49e4-a8c0-54a636d0725e")]
+[assembly: Guid("0cd0e1dd-068a-4a35-aaf1-9bcd7af14241")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -30,6 +29,8 @@ using IRSE;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.1.2.23")]
-[assembly: AssemblyFileVersion("0.1.2.23")]
-[assembly: SupportedGameAssemblyVersion("1.0.0.30")]
+// You can specify all the values or you can default the Build and Revision Numbers
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

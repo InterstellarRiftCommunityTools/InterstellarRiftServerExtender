@@ -8,6 +8,9 @@ namespace IRSE.Managers.Plugins
     {
         #region Fields
 
+        public String Name;
+        public String Version;
+
         internal Assembly Assembly;
         public String Directory;
         public Guid Guid;

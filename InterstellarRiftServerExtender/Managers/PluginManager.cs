@@ -79,12 +79,12 @@ namespace IRSE.Managers
                 mainLog.Warn(string.Format(Program.Localization.Sentences["FailedInitPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
             }
 
-            if (PluginInitialized && Plugin.MainClass.Enabled)
+            if (PluginInitialized)
             {
-                lock (_lockObj)
-                {
+                //lock (_lockObj)
+                //{
                     m_loadedPlugins.Add(Plugin);
-                }
+               // }
             }
         }
 
@@ -198,8 +198,9 @@ namespace IRSE.Managers
 
             foreach (String subDirectory in subDirectories)
             {
-                PluginInfo[] Plugins = FindPlugin(subDirectory);
                 LoadPluginReferences(subDirectory);
+                PluginInfo[] Plugins = FindPlugin(subDirectory);
+                
 
                 if (Plugins.Length > 0) foundPlugins.AddRange(Plugins);
             }
@@ -272,7 +273,10 @@ namespace IRSE.Managers
                     {
                         mainLog.Warn("Loading Plugin Located at " + library);
 
+                        PluginAttribute attr = PluginType.GetCustomAttribute<PluginAttribute>();
+
                         plugin.MainClassType = PluginType;
+                        plugin.Name = attr.Name;
                         plug = false;
                         continue;
                     }
@@ -295,6 +299,7 @@ namespace IRSE.Managers
                             }
                         }
                     }
+
 
                     /*
                     //Load Permissions

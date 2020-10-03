@@ -151,7 +151,7 @@ namespace IRSE.Managers
 
                 ConsoleCommandManager.InitCommands(controllerManager);
 
-                IsRunning = true; // Server is running by now
+               
 
                 // start gamelogic coroutine
                 Program.ConsoleCoroutine = CommandSystem.Singleton.Logic(controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete);
@@ -167,6 +167,7 @@ namespace IRSE.Managers
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
                
                 mainLog.Info("IRSE: Startup Procedure Complete!");
+                IsRunning = true; // Server is running by now
             }
             catch (Exception ex)
             {

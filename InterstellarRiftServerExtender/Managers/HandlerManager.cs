@@ -84,8 +84,8 @@ namespace IRSE.Managers
                 ChatHandler = new ChatHandler(m_controllerManager);
                 ChatHandler.SetupChatMessageHandler(NetworkHandler);
 
-                m_universeHandler = new UniverseHandler(m_controllerManager);
-                m_universeHandler.SetupHandler(server);
+                UniverseHandler = new UniverseHandler(m_controllerManager);
+                UniverseHandler.SetupHandler(server);
 
                 mainLog.Info("IRSE: Loaded Universe!");
 

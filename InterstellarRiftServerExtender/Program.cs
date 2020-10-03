@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -41,7 +42,7 @@ namespace IRSE
 
         public Version CurrentGameVerson { get; }
 
-        public static bool GUIDisabled => m_useGui;
+        public static bool GUIDisabled => Environment.UserInteractive;
 
         public static IEnumerator ConsoleCoroutine;
 
@@ -103,54 +104,43 @@ namespace IRSE
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, rArgs) =>
             {
-                string assemblyName = new AssemblyName(rArgs.Name).Name;
+                Assembly executingAssembly = Assembly.GetExecutingAssembly();
+                AssemblyName assemblyName = new AssemblyName(rArgs.Name);
 
-                if (assemblyName.EndsWith(".resources"))
-                    return null;
-
-                string dllName = assemblyName + ".dll";
-                string dllFullPath = Path.GetFullPath(Path.Combine("IRSE", "bin", dllName));
-
-                //if (debugMode)
-                Console.WriteLine($"The assembly '{dllName}' is missing or has been updated. Adding/Updating missing assembly.");
-
-                /*
+                var pathh = assemblyName.Name + ".dll";
+                if (assemblyName.CultureInfo != null && assemblyName.CultureInfo.Equals(CultureInfo.InvariantCulture) == false) 
+                    pathh = String.Format(@"{0}\{1}", assemblyName.CultureInfo, pathh);
+           
                 // get binaries in plugins
                 String modPath = Path.Combine(FolderStructure.IRSEFolderPath, "plugins");
                 String[] subDirectories = Directory.GetDirectories(modPath);
                 foreach (String subDirectory in subDirectories)
                 {
-                    string path = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), "plugins", subDirectory, dllName);
-
-                    if (File.Exists(path))
-                    {
+                    string path = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), "plugins", subDirectory, pathh);
+                    if (File.Exists(path))                   
                         return Assembly.LoadFrom(path);
-                    }
+                    
 
+                    // maybe a subfolder?
                     foreach (String subDirectory2 in Directory.GetDirectories(subDirectory))
                     {
-                        string path2 = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), "plugins", subDirectory2, "bin", dllName);
-
+                        string path2 = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), "plugins", subDirectory2, "bin", pathh);
                         if (File.Exists(path2))
-                        {
                             return Assembly.LoadFrom(path2);
-                        }
+                        
                     }
                 }
-                */
 
-                using (Stream s = Assembly.GetCallingAssembly().GetManifestResourceStream("IRSE.Resources." + dllName))
+                using (Stream stream = executingAssembly.GetManifestResourceStream(pathh))
                 {
-                    if (s != null)
-                    {
-                        byte[] data = new byte[s.Length];
-                        s.Read(data, 0, data.Length);
+                    if (stream == null) return null;
 
-                        File.WriteAllBytes(dllFullPath, data);
-                    }
+                    var assemblyRawBytes = new byte[stream.Length];
+                    stream.Read(assemblyRawBytes, 0, assemblyRawBytes.Length);
+                    //Console.WriteLine("found missing dll: " + pathh);
+                    return Assembly.Load(assemblyRawBytes);
                 }
 
-                return Assembly.LoadFrom(dllFullPath);
             };
 
             string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
