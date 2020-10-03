@@ -81,8 +81,7 @@ namespace IRSE.Managers.Plugins
                 Version = pluginAttribute.Version;
                 Description = pluginAttribute.Description;
                 Author = pluginAttribute.Author;
-                API = pluginAttribute.API;
-                Aillias = pluginAttribute.Alliais;
+                Enabled = true;
             }
             else
             {
@@ -100,6 +99,11 @@ namespace IRSE.Managers.Plugins
         public void Shutdown()
         {
             DisablePlugin();
+        }
+
+        public virtual void OnUpdate()
+        {
+            
         }
 
         public void OnLoad()

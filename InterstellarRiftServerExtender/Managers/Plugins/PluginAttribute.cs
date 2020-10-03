@@ -9,7 +9,5 @@ namespace IRSE.Managers.Plugins
         public string Version;
         public string Description;
         public string Author;
-        public string API;
-        public string[] Alliais;
     }
 }

@@ -32,6 +32,8 @@ namespace IRSE.Managers.Plugins
 
         void Shutdown();
 
+        void OnUpdate();
+
         #endregion Methods
     }
 }

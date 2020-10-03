@@ -125,6 +125,7 @@
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\UniverseController.cs" />
+    <Compile Include="EntityWrappers\PlayerWrapper.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="GUI\Forms\Browser\BBCodeHTML.cs" />
     <Compile Include="GUI\Forms\Browser\BrowserForm.cs">
@@ -206,11 +207,11 @@
   <ItemGroup>
     <Reference Include="AlunaNetFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\GameLibraries\AlunaNetFramework.dll</HintPath>
+      <HintPath>I:\steam\steamapps\common\Interstellar Rift\Build\AlunaNetFramework.dll</HintPath>
     </Reference>
     <Reference Include="AlunaNETWrapper, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\GameLibraries\AlunaNETWrapper.dll</HintPath>
+      <HintPath>I:\steam\steamapps\common\Interstellar Rift\Build\AlunaNETWrapper.dll</HintPath>
     </Reference>
     <Reference Include="IR, Version=0.2.15.40, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -223,6 +224,9 @@
     </Reference>
     <Reference Include="Log4Net.Async, Version=2.0.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Log4Net.Async.2.0.4\lib\net40\Log4Net.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="MarkdownDeep, Version=1.5.4615.26275, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MarkdownDeep.NET.1.5\lib\.NetFramework 3.5\MarkdownDeep.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -293,6 +297,10 @@ echo Running build event for $(ProjectName)..
 
 xcopy "$(TargetDir)$(TargetFileName)" "$(ProjectDir)bin\IRSERelease\"  /y
 xcopy "$(TargetDir)$(TargetFileName).config" "$(ProjectDir)bin\IRSERelease\" /y
+
+xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\" /y
+xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\" /y
+xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\" /y
 
 echo $(ProjectName) files have been copied to "$(ProjectDir)bin\IRSERelease\".
 

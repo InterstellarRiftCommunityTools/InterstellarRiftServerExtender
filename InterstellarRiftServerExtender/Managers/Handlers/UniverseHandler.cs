@@ -1,5 +1,10 @@
-﻿using NLog;
+﻿using Game.Framework.Nodes.Visual;
+using Game.Universe;
+using NLog;
 using System;
+using System.Web.UI;
+using System.Windows.Controls;
+using System.Windows.Forms;
 
 namespace IRSE.Managers.Handlers
 {
@@ -13,12 +18,14 @@ namespace IRSE.Managers.Handlers
 
         public Game.Server.UniverseController Universe
         {
-            get;
+            get; private set;
         }
 
         public UniverseHandler(Game.Server.ControllerManager controllerManager)
         {
-            var test = controllerManager.Universe as Game.Server.UniverseController;
+            Universe = controllerManager.Universe as Game.Server.UniverseController;
+
+
 
             //Console.WriteLine(test.ActiveSystems.FirstOrDefault());
             try
