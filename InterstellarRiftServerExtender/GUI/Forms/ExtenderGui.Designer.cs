@@ -80,12 +80,13 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.plugins_tab_informationTab = new System.Windows.Forms.TabPage();
             this.plugins_tab_browser = new System.Windows.Forms.WebBrowser();
+            this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
+            this.plugins_tab_propertyGrid = new System.Windows.Forms.PropertyGrid();
             this.ExtenderWebsite = new System.Windows.Forms.TabPage();
             this.hesw_Website = new System.Windows.Forms.WebBrowser();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
-            this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
-            this.plugins_tab_propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.development_label = new System.Windows.Forms.Label();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -132,9 +133,9 @@
             this.splitContainer6.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.plugins_tab_informationTab.SuspendLayout();
+            this.plugins_tab_settingsTab.SuspendLayout();
             this.ExtenderWebsite.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.plugins_tab_settingsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -255,7 +256,7 @@
             this.groupBox1.Controls.Add(this.server_hesNewsLabel);
             this.groupBox1.Location = new System.Drawing.Point(183, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(373, 78);
+            this.groupBox1.Size = new System.Drawing.Size(373, 72);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extender News";
@@ -265,7 +266,7 @@
             this.server_hesNewsLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.server_hesNewsLabel.Location = new System.Drawing.Point(3, 16);
             this.server_hesNewsLabel.Name = "server_hesNewsLabel";
-            this.server_hesNewsLabel.Size = new System.Drawing.Size(367, 59);
+            this.server_hesNewsLabel.Size = new System.Drawing.Size(367, 53);
             this.server_hesNewsLabel.TabIndex = 0;
             this.server_hesNewsLabel.Text = "Configuration options for IRSE have been moved to the Server tab\r\nunder the IRSE " +
     "Config subtab.\r\n";
@@ -273,7 +274,7 @@
             // server_config_reload
             // 
             this.server_config_reload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.server_config_reload.Location = new System.Drawing.Point(562, 63);
+            this.server_config_reload.Location = new System.Drawing.Point(562, 57);
             this.server_config_reload.Name = "server_config_reload";
             this.server_config_reload.Size = new System.Drawing.Size(106, 23);
             this.server_config_reload.TabIndex = 6;
@@ -284,7 +285,7 @@
             // server_config_setdefaults
             // 
             this.server_config_setdefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.server_config_setdefaults.Location = new System.Drawing.Point(562, 15);
+            this.server_config_setdefaults.Location = new System.Drawing.Point(562, 9);
             this.server_config_setdefaults.Name = "server_config_setdefaults";
             this.server_config_setdefaults.Size = new System.Drawing.Size(106, 23);
             this.server_config_setdefaults.TabIndex = 4;
@@ -294,7 +295,7 @@
             // server_config_cancel
             // 
             this.server_config_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.server_config_cancel.Location = new System.Drawing.Point(674, 63);
+            this.server_config_cancel.Location = new System.Drawing.Point(674, 57);
             this.server_config_cancel.Name = "server_config_cancel";
             this.server_config_cancel.Size = new System.Drawing.Size(85, 23);
             this.server_config_cancel.TabIndex = 3;
@@ -305,7 +306,7 @@
             // server_config_save
             // 
             this.server_config_save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.server_config_save.Location = new System.Drawing.Point(674, 15);
+            this.server_config_save.Location = new System.Drawing.Point(674, 9);
             this.server_config_save.Name = "server_config_save";
             this.server_config_save.Size = new System.Drawing.Size(85, 23);
             this.server_config_save.TabIndex = 1;
@@ -316,7 +317,7 @@
             // server_config_stopserver
             // 
             this.server_config_stopserver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.server_config_stopserver.Location = new System.Drawing.Point(96, 61);
+            this.server_config_stopserver.Location = new System.Drawing.Point(96, 55);
             this.server_config_stopserver.Name = "server_config_stopserver";
             this.server_config_stopserver.Size = new System.Drawing.Size(81, 23);
             this.server_config_stopserver.TabIndex = 1;
@@ -327,7 +328,7 @@
             // server_config_startserver
             // 
             this.server_config_startserver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.server_config_startserver.Location = new System.Drawing.Point(7, 61);
+            this.server_config_startserver.Location = new System.Drawing.Point(7, 55);
             this.server_config_startserver.Name = "server_config_startserver";
             this.server_config_startserver.Size = new System.Drawing.Size(83, 23);
             this.server_config_startserver.TabIndex = 0;
@@ -731,6 +732,25 @@
             this.plugins_tab_browser.Size = new System.Drawing.Size(541, 437);
             this.plugins_tab_browser.TabIndex = 0;
             // 
+            // plugins_tab_settingsTab
+            // 
+            this.plugins_tab_settingsTab.Controls.Add(this.plugins_tab_propertyGrid);
+            this.plugins_tab_settingsTab.Location = new System.Drawing.Point(4, 22);
+            this.plugins_tab_settingsTab.Name = "plugins_tab_settingsTab";
+            this.plugins_tab_settingsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.plugins_tab_settingsTab.Size = new System.Drawing.Size(547, 443);
+            this.plugins_tab_settingsTab.TabIndex = 1;
+            this.plugins_tab_settingsTab.Text = "Settings";
+            this.plugins_tab_settingsTab.UseVisualStyleBackColor = true;
+            // 
+            // plugins_tab_propertyGrid
+            // 
+            this.plugins_tab_propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plugins_tab_propertyGrid.Location = new System.Drawing.Point(3, 3);
+            this.plugins_tab_propertyGrid.Name = "plugins_tab_propertyGrid";
+            this.plugins_tab_propertyGrid.Size = new System.Drawing.Size(541, 437);
+            this.plugins_tab_propertyGrid.TabIndex = 1;
+            // 
             // ExtenderWebsite
             // 
             this.ExtenderWebsite.Controls.Add(this.hesw_Website);
@@ -771,24 +791,16 @@
             this.StatusBar.Name = "StatusBar";
             this.StatusBar.Size = new System.Drawing.Size(0, 17);
             // 
-            // plugins_tab_settingsTab
+            // development_label
             // 
-            this.plugins_tab_settingsTab.Controls.Add(this.plugins_tab_propertyGrid);
-            this.plugins_tab_settingsTab.Location = new System.Drawing.Point(4, 22);
-            this.plugins_tab_settingsTab.Name = "plugins_tab_settingsTab";
-            this.plugins_tab_settingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.plugins_tab_settingsTab.Size = new System.Drawing.Size(547, 443);
-            this.plugins_tab_settingsTab.TabIndex = 1;
-            this.plugins_tab_settingsTab.Text = "Settings";
-            this.plugins_tab_settingsTab.UseVisualStyleBackColor = true;
-            // 
-            // plugins_tab_propertyGrid
-            // 
-            this.plugins_tab_propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plugins_tab_propertyGrid.Location = new System.Drawing.Point(3, 3);
-            this.plugins_tab_propertyGrid.Name = "plugins_tab_propertyGrid";
-            this.plugins_tab_propertyGrid.Size = new System.Drawing.Size(541, 437);
-            this.plugins_tab_propertyGrid.TabIndex = 1;
+            this.development_label.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.development_label.AutoSize = true;
+            this.development_label.ForeColor = System.Drawing.Color.Red;
+            this.development_label.Location = new System.Drawing.Point(466, 500);
+            this.development_label.Name = "development_label";
+            this.development_label.Size = new System.Drawing.Size(0, 13);
+            this.development_label.TabIndex = 3;
             // 
             // ExtenderGui
             // 
@@ -796,6 +808,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(780, 517);
+            this.Controls.Add(this.development_label);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.statusStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -854,10 +867,10 @@
             this.splitContainer6.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.plugins_tab_informationTab.ResumeLayout(false);
+            this.plugins_tab_settingsTab.ResumeLayout(false);
             this.ExtenderWebsite.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.plugins_tab_settingsTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -920,6 +933,7 @@
         private System.Windows.Forms.WebBrowser plugins_tab_browser;
         private System.Windows.Forms.TabPage plugins_tab_settingsTab;
         private System.Windows.Forms.PropertyGrid plugins_tab_propertyGrid;
+        private System.Windows.Forms.Label development_label;
     }
 }
 

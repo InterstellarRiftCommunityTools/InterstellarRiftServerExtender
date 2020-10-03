@@ -40,24 +40,12 @@ namespace IRSE.GUI.Forms
             extenderconfig_properties.SelectedObject = Config.Instance.Settings;
 
 
-            
-
-
-
             extenderconfig_properties.Refresh();
             serverconfig_properties.Refresh();
 
             if (Config.Instance.Settings.EnableDevelopmentVersion)
             {
-                var result = MessageBox.Show(
-                    "Development Versions have been enabled.\r\n\r\n" +
-                    "You have selected to use IRSE's Development Versions",
-                    "Development Versions Enabled",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Exclamation);
-                if (result == DialogResult.OK)
-                {
-                }
+                development_label.Text = "WARNING: Development Versions have been enabled. Possibility of server corruption.";
             }
 
             UpdateManager.Instance.OnUpdateChecked += new UpdateManager.UpdateEventHandler(Instance_OnUpdateChecked);
@@ -642,7 +630,7 @@ namespace IRSE.GUI.Forms
                // }
 
                 plugins_tab_propertyGrid.Visible = true;
-                plugins_tab_propertyGrid.SelectedObject = pluginType;
+                plugins_tab_propertyGrid.SelectedObject = pluginInfo.MainClass;
 
            // }
 
