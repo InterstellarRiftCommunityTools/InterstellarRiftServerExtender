@@ -26,6 +26,10 @@ namespace IRSE
 
         #region Fields
 
+        public const int VK_RETURN = 0x0D;
+        public const int WM_KEYDOWN = 0x100;
+        public static IntPtr HWnd;
+
         private static Config m_config;
         private static UpdateManager updateManager;
         private static Localization m_localization;
@@ -45,6 +49,9 @@ namespace IRSE
         public static bool GUIDisabled => Environment.UserInteractive;
 
         public static IEnumerator ConsoleCoroutine;
+
+        public static bool PendingServerStart;
+
 
         #endregion Fields
 
@@ -92,7 +99,7 @@ namespace IRSE
             Console.Title = Console.Title + " : " + (after ? WindowTitle.Replace("IsR", "") : WindowTitle);
         }
 
-        [STAThread]
+        [MTAThread]
         private static void Main(string[] args)
         {
             SetTitle();
@@ -394,106 +401,125 @@ namespace IRSE
             thisProcess.Kill();
         }
 
+
+        [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
+        public static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
+
         /// <summary>
         /// This contains the console commands
         /// </summary>
         public void ReadConsoleCommands(string[] commandLineArgs)
         {
+            HWnd = Process.GetCurrentProcess().MainWindowHandle;
+            string line = null;
+
             while (true)
             {
-                if (ServerInstance.Instance.IsRunning)
+
+                line = Console.ReadLine();
+
+
+                if (PendingServerStart)
                 {
-                    if (Program.ConsoleCoroutine != null)
-                    {
-                        Program.ConsoleCoroutine.MoveNext();
-                    }
-                    Thread.Sleep(50);
+                    PendingServerStart = false;
+                    StartServer();
                 }
-                else
+
+
+                if (ServerInstance.Instance.IsRunning)
+                    continue;
+
+                if (!string.IsNullOrEmpty(line) && line.Length > 1)
                 {
-                    if (ServerInstance.Instance.IsRunning)
-                        continue;
-
-                    string line = Console.KeyAvailable ? Console.ReadLine() : "";
-
-                    if (!string.IsNullOrEmpty(line) && line.Length > 1)
+                    if (!line.StartsWith("/"))
                     {
-                        if (!line.StartsWith("/"))
-                        {
-                            continue;
-                        }
-
-                        string cmd = line.Split(" ".ToCharArray())[0].Replace("/", "");
-                        string[] args = line.Split(" ".ToCharArray()).Skip(1).ToArray();
-
-                        //if (ServerInstance.Instance.CommandManager.HandleConsoleCommand(cmmd, args)) continue;
-
-                        string[] strArray = Regex.Split(line, "^/([a-z]+) (\\([a-zA-Z\\(\\)\\[\\]. ]+\\))|([a-zA-Z\\-]+)");
-                        List<string> stringList = new List<string>();
-                        int num = 1;
-
-                        foreach (string str2 in strArray)
-                        {
-                            if (str2 != "" && str2 != " ")
-                                stringList.Add(str2);
-                            ++num;
-                        }
-                        bool flag = false;
-
-                        if (stringList[1] == "checkupdate")
-                        {
-                            updateManager.CheckForUpdates().GetAwaiter().GetResult();
-                            flag = true;
-                        }
-
-                        if (stringList[1] == "restart")
-                        {
-                            Restart();
-                            flag = true;
-                        }
-
-                        if (stringList[1] == "forceupdate")
-                        {
-                            updateManager.CheckForUpdates(true).GetAwaiter().GetResult();
-                            flag = true;
-                        }
-
-                        if (stringList[1] == "start")
-                        {
-                            if (!ServerInstance.Instance.IsRunning)
-                            {
-                                CommandSystem.Singleton = new CommandSystem();
-                                Program.ConsoleCoroutine = CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete);
-                                ServerInstance.Instance.Start();
-                            }
-                            else
-                                Console.WriteLine("The server is already running.");
-                            flag = true;
-                        }
-
-                        if (stringList[1] == "stop")
-                        {
-                            if (ServerInstance.Instance.IsRunning)
-                                ServerInstance.Instance.Stop();
-                            else
-                                Console.WriteLine("The server is not running");
-                            flag = true;
-                        }
-
-                        if (stringList[1] == "opengui")
-                        {
-                            if (Environment.UserInteractive && m_useGui)
-                                SetupGUI();
-                            else
-                                Console.WriteLine("GUI DISABLED");
-                            flag = true;
-                        }
-
-                        if (!flag)
-                            Console.WriteLine("bad syntax");
+                        continue;
                     }
+
+                    string cmd = line.Split(" ".ToCharArray())[0].Replace("/", "");
+                    string[] args = line.Split(" ".ToCharArray()).Skip(1).ToArray();
+
+                    //if (ServerInstance.Instance.CommandManager.HandleConsoleCommand(cmmd, args)) continue;
+
+                    string[] strArray = Regex.Split(line, "^/([a-z]+) (\\([a-zA-Z\\(\\)\\[\\]. ]+\\))|([a-zA-Z\\-]+)");
+                    List<string> stringList = new List<string>();
+                    int num = 1;
+
+                    foreach (string str2 in strArray)
+                    {
+                        if (str2 != "" && str2 != " ")
+                            stringList.Add(str2);
+                        ++num;
+                    }
+
+                    bool flag = false;
+
+                    if (stringList[1] == "checkupdate")
+                    {
+                        updateManager.CheckForUpdates().GetAwaiter().GetResult();
+                        flag = true;
+                    }
+
+                    if (stringList[1] == "restart")
+                    {
+                        Restart();
+                        flag = true;
+                    }
+
+                    if (stringList[1] == "forceupdate")
+                    {
+                        updateManager.CheckForUpdates(true).GetAwaiter().GetResult();
+                        flag = true;
+                    }
+
+                    if (stringList[1] == "start")
+                    {
+                        StartServer();
+
+                        flag = true;
+                    }
+
+                    if (stringList[1] == "stop")
+                    {
+                        if (ServerInstance.Instance.IsRunning)
+                            ServerInstance.Instance.Stop();
+                        else
+                            Console.WriteLine("The server is not running");
+                        flag = true;
+                    }
+
+                    if (stringList[1] == "opengui")
+                    {
+                        if (Environment.UserInteractive && m_useGui)
+                            SetupGUI();
+                        else
+                            Console.WriteLine("GUI DISABLED");
+                        flag = true;
+                    }
+
+                    if (!flag)
+                        Console.WriteLine("bad syntax");
                 }
             }
+        }
+
+        private static void StartServer()
+        {
+            if (!ServerInstance.Instance.IsRunning)
+            {
+                CommandSystem.Singleton = new CommandSystem();
+                Program.ConsoleCoroutine =
+                    CommandSystem.Singleton.Logic((object) null, Game.Configuration.Globals.NoConsoleAutoComplete);
+
+                ServerInstance.Instance.Start();
+                while (ServerInstance.Instance.IsRunning)
+                {
+                    ConsoleCoroutine.MoveNext();
+                    Thread.Sleep(50);
+                }
+            }
+            else
+                Console.WriteLine("The server is already running.");
         }
 
 

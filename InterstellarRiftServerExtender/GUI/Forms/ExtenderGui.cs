@@ -515,15 +515,11 @@ namespace IRSE.GUI.Forms
 
         private void server_config_startserver_Click(object sender, EventArgs e)
         {
-            DisableControls(false);
+            Program.PendingServerStart = true;
 
-            if (!ServerInstance.Instance.IsRunning)
-            {
-                Task.Run(() => ServerInstance.Instance.Start());
-                StatusBar.Text = "Server Starting";
-            }
-            else
-                StatusBar.Text = "The server is already running!";
+            //Sends an "Enter" into the Console to get the MainThread out of Console.ReadLine()
+            Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
+
         }
 
         private void server_config_stopserver_Click(object sender, EventArgs e)
