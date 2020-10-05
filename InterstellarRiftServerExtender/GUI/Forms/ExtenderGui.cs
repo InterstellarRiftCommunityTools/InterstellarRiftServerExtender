@@ -510,6 +510,12 @@ namespace IRSE.GUI.Forms
         {
             Program.PendingServerStart = true;
 
+            server_config_startserver.Enabled = false;
+
+            // REMOVE ME WHEN GHOST CLIENTS ARE FIXED ON SP SIDE
+            // OVerride IR starting ghost clients until they repair the name replacer.
+            Game.Configuration.ServerConfig.Singleton.CreateGhostClients = false;
+
             //Sends an "Enter" into the Console to get the MainThread out of Console.ReadLine()
             Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
 
