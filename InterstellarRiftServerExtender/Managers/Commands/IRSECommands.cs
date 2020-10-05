@@ -7,6 +7,11 @@ namespace IRSE.Managers.ConsoleCommands
 {
     internal class IRSECommands
     {
+        [SvCommandMethod("---------------------------IRSE COMMANDS------------------------------", "SPLITTER", 4, new SvCommandMethod.ArgumentID[] { })]
+        public static void splitter(object caller, List<string> parameters)
+        {
+
+        }
 
         [SvCommandMethod("opengui|loadgui|lg", "opens IRSE gui window", 3, new SvCommandMethod.ArgumentID[] { })]
         public static void c_opengui(object caller, List<string> parameters)
@@ -22,5 +27,10 @@ namespace IRSE.Managers.ConsoleCommands
         }
 
 
+        [SvCommandMethod("---------------------------PLUGIN COMMANDS------------------------------", "SPLITTER", 4, new SvCommandMethod.ArgumentID[] { })]
+        public static void splitter2(object caller, List<string> parameters)
+        {
+
+        }
     }
 }

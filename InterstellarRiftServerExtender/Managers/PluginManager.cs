@@ -6,6 +6,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using IRSE.Managers.Plugins;
+using Game.Server;
+using System.Linq;
+using Game.Framework;
+using Logger = NLog.Logger;
+
 namespace IRSE.Managers
 {
     public class PluginManager
@@ -358,6 +363,35 @@ namespace IRSE.Managers
             {
                 return false;
             }
+        }
+
+
+        public enum Permission
+        {
+
+            Developer = 4,
+            Admin = 3,
+
+        }
+
+
+        public static void InitPluginCommands(PluginInfo Plugin)
+        {
+            
+            ///Permission.Admin
+
+            foreach (MethodInfo method in typeof(PluginBase).GetMethods(BindingFlags.Static | BindingFlags.Public))
+            {
+                object[] customAttributes1 = method.GetCustomAttributes(typeof(SvCommandMethod), false);
+                if (((IEnumerable<object>)customAttributes1).Count<object>() != 0)
+                {
+                    object[] customAttributes2 = null;
+                    SvCommandMethod svCommandMethod = customAttributes1[0] as SvCommandMethod;
+                    EventHandler<List<string>> handler = (EventHandler<List<string>>)Delegate.CreateDelegate(typeof(EventHandler<List<string>>), method);
+                    CommandSystem.Singleton.AddCommand(new Command(svCommandMethod.Names, svCommandMethod.Description, svCommandMethod.Arguments, handler, svCommandMethod.RequiredRight, customAttributes2 != null && ((IEnumerable<object>)customAttributes2).Any<object>(), method.GetCustomAttribute<TalkCommandAttribute>() != null), true);
+                }
+            }
+            //CommandSystem.Singleton.SortCommands();
         }
 
         #endregion Methods

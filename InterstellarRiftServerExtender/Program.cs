@@ -52,7 +52,6 @@ namespace IRSE
 
         public static bool PendingServerStart;
 
-
         #endregion Fields
 
         #region Properties
@@ -83,7 +82,7 @@ namespace IRSE
         #endregion Properties
 
         public Program()
-        {
+        {         
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
 
@@ -115,18 +114,17 @@ namespace IRSE
                 AssemblyName assemblyName = new AssemblyName(rArgs.Name);
 
                 var pathh = assemblyName.Name + ".dll";
-                if (assemblyName.CultureInfo != null && assemblyName.CultureInfo.Equals(CultureInfo.InvariantCulture) == false) 
+                if (assemblyName.CultureInfo != null && assemblyName.CultureInfo.Equals(CultureInfo.InvariantCulture) == false)
                     pathh = String.Format(@"{0}\{1}", assemblyName.CultureInfo, pathh);
-           
+
                 // get binaries in plugins
                 String modPath = Path.Combine(FolderStructure.IRSEFolderPath, "plugins");
                 String[] subDirectories = Directory.GetDirectories(modPath);
                 foreach (String subDirectory in subDirectories)
                 {
                     string path = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), "plugins", subDirectory, pathh);
-                    if (File.Exists(path))                   
+                    if (File.Exists(path))
                         return Assembly.LoadFrom(path);
-                    
 
                     // maybe a subfolder?
                     foreach (String subDirectory2 in Directory.GetDirectories(subDirectory))
@@ -134,7 +132,6 @@ namespace IRSE
                         string path2 = Path.Combine(Path.GetFullPath(FolderStructure.IRSEFolderPath), "plugins", subDirectory2, "bin", pathh);
                         if (File.Exists(path2))
                             return Assembly.LoadFrom(path2);
-                        
                     }
                 }
 
@@ -147,7 +144,6 @@ namespace IRSE
                     //Console.WriteLine("found missing dll: " + pathh);
                     return Assembly.Load(assemblyRawBytes);
                 }
-
             };
 
             string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
@@ -156,9 +152,11 @@ namespace IRSE
             Console.WriteLine($"Interstellar Rift Extended Server v{Version} Initializing....");
 
             Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Repo URL: {ThisAssembly.Git.RepositoryUrl}");
             Console.WriteLine($"Git Branch: {ThisAssembly.Git.Branch}");
             if (Dev)
-            {
+            {              
+                Console.WriteLine($"Git Commit Date: {ThisAssembly.Git.CommitDate}");
                 Console.WriteLine($"Git Commit: {ThisAssembly.Git.Commit}");
                 Console.WriteLine($"Git SHA: {ThisAssembly.Git.Sha}");
             }
@@ -212,8 +210,6 @@ namespace IRSE
                 Console.ReadLine();
                 Environment.Exit(0);
             }
-            
-
 
             m_serverInstance = new ServerInstance();
             ThisGameVersion = m_serverInstance.Assembly.GetName().Version.ToString();
@@ -234,12 +230,12 @@ namespace IRSE
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             if (new Version(ThisGameVersion) < SteamCMD.GetGameVersion())
-            {               
+            {
                 Console.WriteLine("There is a new version of Interstellar Rift! Update your IR Installation!");
             }
 
-            if(new Version(ForGameVersion) < new Version(ThisGameVersion))
-            {               
+            if (new Version(ForGameVersion) < new Version(ThisGameVersion))
+            {
                 Console.WriteLine("Interstellar Rifts Version is newer than what this version of IRSE Supports, Check for IRSE updates!");
             }
 
@@ -401,7 +397,6 @@ namespace IRSE
             thisProcess.Kill();
         }
 
-
         [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
         public static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 
@@ -415,16 +410,13 @@ namespace IRSE
 
             while (true)
             {
-
                 line = Console.ReadLine();
-
 
                 if (PendingServerStart)
                 {
                     PendingServerStart = false;
                     StartServer();
                 }
-
 
                 if (ServerInstance.Instance.IsRunning)
                     continue;
@@ -509,7 +501,7 @@ namespace IRSE
             {
                 CommandSystem.Singleton = new CommandSystem();
                 Program.ConsoleCoroutine =
-                    CommandSystem.Singleton.Logic((object) null, Game.Configuration.Globals.NoConsoleAutoComplete);
+                    CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete);
 
                 ServerInstance.Instance.Start();
                 while (ServerInstance.Instance.IsRunning)
@@ -521,7 +513,6 @@ namespace IRSE
             else
                 Console.WriteLine("The server is already running.");
         }
-
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
@@ -545,23 +536,28 @@ namespace IRSE
             if (sig == CtrlType.CTRL_C_EVENT || sig == CtrlType.CTRL_BREAK_EVENT || (sig == CtrlType.CTRL_LOGOFF_EVENT || sig == CtrlType.CTRL_SHUTDOWN_EVENT) || sig == CtrlType.CTRL_CLOSE_EVENT)
             {
                 Console.WriteLine("Attempting to stop any running servers.");
-                ServerInstance.Instance.Stop();
+                if (ServerInstance.Instance != null)
+                    ServerInstance.Instance.Stop();
                 Console.WriteLine("Closing. Press any key to quit");
 
                 Console.ReadKey(true);
             }
             return false;
         }
-
     }
 
     [AttributeUsage(AttributeTargets.Assembly)]
     public class SupportedGameAssemblyVersion : Attribute
     {
         public string someText;
-        public SupportedGameAssemblyVersion() : this(string.Empty) { }
-        public SupportedGameAssemblyVersion(string txt) { someText = txt; }
+
+        public SupportedGameAssemblyVersion() : this(string.Empty)
+        {
+        }
+
+        public SupportedGameAssemblyVersion(string txt)
+        {
+            someText = txt;
+        }
     }
-
-
 }

@@ -20,7 +20,7 @@ namespace IRSE.API
         {
             try
             {
-                ServerInstance.Instance.Handlers.ForceGalaxySave();
+                ServerInstance.Instance.Handlers.UniverseHandler.ForceGalaxySave();
             }
             catch (Exception ex)
             {

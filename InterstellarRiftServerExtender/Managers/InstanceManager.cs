@@ -165,7 +165,7 @@ namespace IRSE.Managers
                 m_pluginManager.InitializeAllPlugins();
 
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
-               
+                Thread.Sleep(2000);
                 mainLog.Info("IRSE: Startup Procedure Complete!");
                 IsRunning = true; // Server is running by now
             }
@@ -189,24 +189,37 @@ namespace IRSE.Managers
                 {
                     "-server",
                 };
-
+         
             m_serverThread = ServerWrapper.Program.StartServer(serverArgs);
             m_serverWrapper.Init();
         }
 
         public void Stop()
         {
+            Console.WriteLine("Shutting Down IR.");
+            Thread.Sleep(2000);
             IsRunning = false;
 
-            Console.WriteLine("Shutting down plugins...");
-            PluginManager.ShutdownAllPlugins();
-            Console.WriteLine("Stopping server..");
-            ServerWrapper.Program.StopServer();
-            m_serverThread.Abort();
+            try
+            {
+                Console.WriteLine("Saving Galaxy...");
+                Handlers.UniverseHandler.ForceGalaxySave();
+                Console.WriteLine("Shutting down plugins...");
+                PluginManager.ShutdownAllPlugins();
+                Console.WriteLine("Stopping server..");
+                ServerWrapper.Program.StopServer();
+                m_serverThread.Abort();
+            }
+            catch (Exception)
+            {
+                // as long as the server saves, who cares
+            }
+
         }
 
-        internal void Save(bool v)
+        internal void Save()
         {
+            (Handlers.ControllerManager.Universe.Galaxy as ServerGalaxy).SaveGalaxy(Handlers.ControllerManager, "user", Handlers.ControllerManager.Universe.Galaxy.Name.ToLower(), true);
         }
 
         // will be removed when they fix the ghost client spawner

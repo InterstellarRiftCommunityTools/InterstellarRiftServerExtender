@@ -150,6 +150,9 @@ namespace IRSE.GUI.Forms
                 if (!ServerInstance.Instance.IsRunning)
                     return;
 
+                if (ServerInstance.Instance.Handlers.PlayerHandler == null)
+                    return;
+
                 List<Player> onlinePlayers = ServerInstance.Instance.Handlers.PlayerHandler.GetPlayers.ToList();
 
                 sc_onlineplayers_label.Text = onlinePlayers.Count.ToString();
@@ -244,7 +247,7 @@ namespace IRSE.GUI.Forms
         {
             try
             {
-                if (!ServerInstance.Instance.IsRunning)
+                if (!ServerInstance.Instance.IsRunning || ServerInstance.Instance.Handlers.UniverseHandler == null)
                     return;
 
                 Game.Server.UniverseController Universe = ServerInstance.Instance.Handlers.UniverseHandler.Universe;
@@ -334,8 +337,10 @@ namespace IRSE.GUI.Forms
 
 
         public void UpdatePlayersTree()
+
+
         {
-            if (!ServerInstance.Instance.IsRunning)
+            if (!ServerInstance.Instance.IsRunning || ServerInstance.Instance.Handlers.PlayerHandler == null)
                 return;
 
             List<Player> onlinePlayers = ServerInstance.Instance.Handlers.PlayerHandler.GetPlayers.ToList();
@@ -579,7 +584,7 @@ namespace IRSE.GUI.Forms
         private void plugins_tab_pluginslist_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            if(plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems[0] == null)
+            if(plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems == null)
                 return;
 
             var pluginInfo = plugins_tab_pluginslist.SelectedItems[0].Tag as PluginInfo;
@@ -626,7 +631,7 @@ namespace IRSE.GUI.Forms
                // }
 
                 plugins_tab_propertyGrid.Visible = true;
-                plugins_tab_propertyGrid.SelectedObject = pluginInfo.MainClass;
+                plugins_tab_propertyGrid.SelectedObject = pluginInfo.MainClass.Config;
 
            // }
 
@@ -701,9 +706,7 @@ namespace IRSE.GUI.Forms
                 StatusBar.Text = $"You are running the latest version!";
                 return;
             }
-
-            ServerInstance.Instance.Save(true);
-
+          
             var result = MessageBox.Show(
                 $"A new version has been detected: { UpdateManager.NewVersionNumber }\r\n" +
                 $"\r\n Release Information:\r\n" +
@@ -717,6 +720,7 @@ namespace IRSE.GUI.Forms
                 MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (result == DialogResult.Yes)
             {
+                ServerInstance.Instance.Handlers.UniverseHandler.ForceGalaxySave();
                 UpdateManager.Instance.DownloadLatestRelease(Config.Instance.Settings.EnableDevelopmentVersion);
             }
             else
