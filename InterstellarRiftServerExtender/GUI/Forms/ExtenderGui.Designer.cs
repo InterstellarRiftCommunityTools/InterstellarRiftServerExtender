@@ -65,6 +65,7 @@
             this.cpc_chat_list = new System.Windows.Forms.TextBox();
             this.cpc_chat_send = new System.Windows.Forms.Button();
             this.cpc_messagebox = new System.Windows.Forms.TextBox();
+            this.CommandVisualizerTab = new System.Windows.Forms.TabPage();
             this.ObjectManipulationTab = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.objectManipulation_treeview = new System.Windows.Forms.TreeView();
@@ -87,6 +88,8 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.development_label = new System.Windows.Forms.Label();
+            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.cv_tab_list = new System.Windows.Forms.ListBox();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -117,6 +120,7 @@
             this.splitContainer3.SuspendLayout();
             this.cpc_chat_tabs.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.CommandVisualizerTab.SuspendLayout();
             this.ObjectManipulationTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -136,15 +140,19 @@
             this.plugins_tab_settingsTab.SuspendLayout();
             this.ExtenderWebsite.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
+            this.splitContainer7.Panel1.SuspendLayout();
+            this.splitContainer7.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
             // 
             this.Tabs.Controls.Add(this.ServerTab);
             this.Tabs.Controls.Add(this.ChatTab);
+            //this.Tabs.Controls.Add(this.CommandVisualizerTab);
             this.Tabs.Controls.Add(this.ObjectManipulationTab);
             this.Tabs.Controls.Add(this.PluginsTab);
-            this.Tabs.Controls.Add(this.ExtenderWebsite);
+            //this.Tabs.Controls.Add(this.ExtenderWebsite);
             this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabs.Location = new System.Drawing.Point(0, 0);
             this.Tabs.Name = "Tabs";
@@ -547,6 +555,17 @@
             this.cpc_messagebox.TabIndex = 0;
             this.cpc_messagebox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cpc_messagebox_KeyDown);
             // 
+            // CommandVisualizerTab
+            // 
+            this.CommandVisualizerTab.Controls.Add(this.splitContainer7);
+            this.CommandVisualizerTab.Location = new System.Drawing.Point(4, 22);
+            this.CommandVisualizerTab.Name = "CommandVisualizerTab";
+            this.CommandVisualizerTab.Padding = new System.Windows.Forms.Padding(3);
+            this.CommandVisualizerTab.Size = new System.Drawing.Size(772, 469);
+            this.CommandVisualizerTab.TabIndex = 6;
+            this.CommandVisualizerTab.Text = "Command Visualizer";
+            this.CommandVisualizerTab.UseVisualStyleBackColor = true;
+            // 
             // ObjectManipulationTab
             // 
             this.ObjectManipulationTab.Controls.Add(this.splitContainer1);
@@ -802,6 +821,28 @@
             this.development_label.Size = new System.Drawing.Size(0, 13);
             this.development_label.TabIndex = 3;
             // 
+            // splitContainer7
+            // 
+            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer7.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer7.Name = "splitContainer7";
+            // 
+            // splitContainer7.Panel1
+            // 
+            this.splitContainer7.Panel1.Controls.Add(this.cv_tab_list);
+            this.splitContainer7.Size = new System.Drawing.Size(766, 463);
+            this.splitContainer7.SplitterDistance = 226;
+            this.splitContainer7.TabIndex = 0;
+            // 
+            // cv_tab_list
+            // 
+            this.cv_tab_list.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cv_tab_list.FormattingEnabled = true;
+            this.cv_tab_list.Location = new System.Drawing.Point(0, 0);
+            this.cv_tab_list.Name = "cv_tab_list";
+            this.cv_tab_list.Size = new System.Drawing.Size(226, 463);
+            this.cv_tab_list.TabIndex = 0;
+            // 
             // ExtenderGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -850,6 +891,7 @@
             this.cpc_chat_tabs.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
+            this.CommandVisualizerTab.ResumeLayout(false);
             this.ObjectManipulationTab.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -871,6 +913,9 @@
             this.ExtenderWebsite.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.splitContainer7.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
+            this.splitContainer7.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -934,6 +979,9 @@
         private System.Windows.Forms.TabPage plugins_tab_settingsTab;
         private System.Windows.Forms.PropertyGrid plugins_tab_propertyGrid;
         private System.Windows.Forms.Label development_label;
+        private System.Windows.Forms.TabPage CommandVisualizerTab;
+        private System.Windows.Forms.SplitContainer splitContainer7;
+        private System.Windows.Forms.ListBox cv_tab_list;
     }
 }
 

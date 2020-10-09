@@ -11,7 +11,8 @@ namespace IRSE.Modules.GameConfig
 {
     public class ServerConfigProperties
     {
-        private static ServerConfigProperties m_instance; public static ServerConfigProperties Instance => m_instance == null ? m_instance = new ServerConfigProperties() : m_instance;
+        private static ServerConfigProperties m_instance; 
+        public static ServerConfigProperties Instance => m_instance == null ? m_instance = new ServerConfigProperties() : m_instance;
 
         public ServerConfigProperties()
         {

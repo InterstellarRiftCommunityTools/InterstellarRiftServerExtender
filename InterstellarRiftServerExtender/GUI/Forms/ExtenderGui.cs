@@ -97,6 +97,12 @@ namespace IRSE.GUI.Forms
                 PluginsRefreshTimer.Enabled = true;
                 ObjectManipulationRefreshTimer.Enabled = true;
 
+                var test = new CommandVisualizer();
+                test.BuildLayout();
+
+                foreach (var name in test.Map)
+                    cv_tab_list.Items.Add(name.Key);
+
 
                 ObjectManipulationRefreshTimer.Interval = (1000); // 1 secs
                 ObjectManipulationRefreshTimer.Tick += delegate (object sender, EventArgs e)

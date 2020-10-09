@@ -30,6 +30,6 @@ using IRSE;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.1.2.32")]
-[assembly: AssemblyFileVersion("0.1.2.32")]
-[assembly: SupportedGameAssemblyVersion("1.0.0.30")]
+[assembly: AssemblyVersion("0.1.2.33")]
+[assembly: AssemblyFileVersion("0.1.2.33")]
+[assembly: SupportedGameAssemblyVersion("1.0.0.50")]
