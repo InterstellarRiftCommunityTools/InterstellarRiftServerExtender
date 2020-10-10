@@ -111,6 +111,8 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
                 mainLog.Info("IRSE: Waiting for server....");
 
+                ServerInstance.Instance.SetIsStarting();
+
                 // just making sure 
                 object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
 
@@ -122,6 +124,8 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
                         break;
                     }
                 }
+
+                
 
                 ServerInstance.Instance.Hook();
             }
