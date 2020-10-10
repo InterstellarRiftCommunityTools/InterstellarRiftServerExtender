@@ -7,19 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Game.ClientServer.Classes;
 
-namespace IRSE.EntityWrappers
+namespace IRSE.GUI.ObjectManipulator.Wrappers
 {
-    public class PlayerWrapper
+    public class PlayerWrapper : ManipulatorWrapper
     {
         [Browsable(false)]
         public readonly Player Player;
 
-
         public PlayerWrapper(Player player)
         {
-            Player = player;
-
+            Player = player;           
         }
+
 
         [Category("General")]
         [ReadOnly(true)]
@@ -35,8 +34,20 @@ namespace IRSE.EntityWrappers
             get { return Player.ID; }
         }
 
+        [Category("Wealth")]
+        public long Credit
+        {
+            get { return Player.PersonalState.GetCredit(); }
+            set { Player.PersonalState.SetCredit(Controllers, Player, value, Debt, "Server");}
+        }
+
+        [Category("Wealth")]
+        public long Debt
+        {
+            get { return Player.PersonalState.GetDebt(); }
+            set { Player.PersonalState.SetCredit(Controllers, Player, Credit, value, "Server"); }
+        }
 
     }
-
 
 }

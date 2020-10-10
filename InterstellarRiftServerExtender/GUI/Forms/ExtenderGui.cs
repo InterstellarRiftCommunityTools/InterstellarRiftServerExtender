@@ -2,6 +2,7 @@
 using Game.Server;
 using Game.Universe;
 using Game.Universe.Net;
+using IRSE.GUI.ObjectManipulator.Wrappers;
 using IRSE.Managers;
 using IRSE.Managers.Plugins;
 using IRSE.Modules;
@@ -384,7 +385,7 @@ namespace IRSE.GUI.Forms
                     Name = _player.ID.ToString(),
                     Text = _player.Name + $" ({_player.ID})",
 
-                    Tag = _player
+                    Tag = new PlayerWrapper(_player)
                 };
 
                 if (!treeNodeList.ContainsKey(node.Name))
@@ -393,7 +394,7 @@ namespace IRSE.GUI.Forms
 
             foreach (TreeNode node in treeNodeList)
             {
-                Player player = node.Tag as Player;
+                PlayerWrapper player = node.Tag as PlayerWrapper;
 
                 if (player == null)
                 {

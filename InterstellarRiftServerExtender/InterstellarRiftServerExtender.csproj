@@ -127,7 +127,8 @@
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\UniverseController.cs" />
-    <Compile Include="EntityWrappers\PlayerWrapper.cs" />
+    <Compile Include="GUI\ObjectManipulator\ManipulatorWrapper.cs" />
+    <Compile Include="GUI\ObjectManipulator\Wrappers\PlayerWrapper.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="GUI\Forms\Browser\BBCodeHTML.cs" />
     <Compile Include="GUI\Forms\Browser\BrowserForm.cs">
