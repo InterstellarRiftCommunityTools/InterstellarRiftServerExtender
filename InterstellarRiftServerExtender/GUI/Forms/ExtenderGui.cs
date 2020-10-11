@@ -243,6 +243,21 @@ namespace IRSE.GUI.Forms
                     if (!plugins_tab_pluginslist.Items.ContainsKey(item.Name))
                         plugins_tab_pluginslist.Items.Add(item);
 
+                    if (plugin.Loaded)
+                    {
+                        BTN_Plugins_Reload.Enabled = true;
+                        BTN_Plugins_Enable.Text = "Disable";
+                        SelectedPluginStateLabel.ForeColor = Color.Green;
+                        SelectedPluginStateStatus.Text = "Enabled";
+                    }
+                    else
+                    {
+                        BTN_Plugins_Reload.Enabled = false;
+                        BTN_Plugins_Enable.Text = "Enable";
+                        SelectedPluginStateLabel.ForeColor = Color.Red;
+                        SelectedPluginStateStatus.Text = "Disabled";
+                    }
+
                 }
 
                 foreach (ListViewItem item in plugins_tab_pluginslist.Items)
@@ -255,6 +270,8 @@ namespace IRSE.GUI.Forms
                             plugins_tab_pluginslist.Items.RemoveByKey(item.Name);
                     }
                 }
+
+
             }
             catch (Exception)
             {
@@ -617,6 +634,9 @@ namespace IRSE.GUI.Forms
 
                 ServerInstance.Instance.PluginManager.ShutdownPlugin(pluginInfo);
                 ServerInstance.Instance.PluginManager.LoadPlugin(pluginInfo);
+
+                if(ServerInstance.Instance.IsRunning)
+                    ServerInstance.Instance.PluginManager.InitializePlugin(pluginInfo);
             }
             catch (Exception ex)
             {
@@ -691,20 +711,6 @@ namespace IRSE.GUI.Forms
 
                 // Set state
 
-                if (pluginInfo.Loaded)
-                {
-                    BTN_Plugins_Reload.Enabled = true;
-                    BTN_Plugins_Enable.Text = "Disable";
-                    SelectedPluginStateLabel.ForeColor = Color.Green;
-                    SelectedPluginStateStatus.Text = "Enabled";
-                }
-                else
-                {
-                    BTN_Plugins_Reload.Enabled = false;
-                    BTN_Plugins_Enable.Text = "Enable";
-                    SelectedPluginStateLabel.ForeColor = Color.Red;
-                    SelectedPluginStateStatus.Text = "Disabled";
-                }
             }
             catch (Exception)
             {

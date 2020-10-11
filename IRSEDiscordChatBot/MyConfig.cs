@@ -12,56 +12,74 @@ namespace IRSEDiscordChatBot
     [Serializable]
     public class Settings
     {
-
+        [Category("Login")]
         [Description("The Discord Token that the bot will use.")]
-        public string DiscordToken;
+        [PasswordPropertyText(true)]
+        public string DiscordToken { get; set; }
 
+        [Category("Login")]
+        [Description("Bot Enabled?")]
+        public bool Enabled { get; set; }
+
+        [Category("Login")]
         [Description("The Client ID of your Discord Bot")]
-        public ulong BotClientID;
+        public ulong BotClientID { get; set; }
 
+        [Category("General")]
+        [Description("Enable debug prints to the console.")]
+        public bool DebugMode { get; set; }
+
+        [Category("Channels")]
         [Description("The Main Channel ID That the bot will be in.")]
-        public ulong MainChannelID;
+        public ulong MainChannelID { get; set; }
 
+        [Category("Channels")]
         [Description("The Discord Channel ID for Connect/Disconnect messages. IF blank it uses MainChannelID")]
-        public ulong CDCChannelID;
+        public ulong CDCChannelID { get; set; }
 
+        [Category("Messages")]
         [Description("Allows discord log (connects/disconnects/etc) to display in the server console.")]
         public bool PrintDiscordLogToConsole { get; set; }
 
+        [Category("Messages")]
         [Description("Allows discord chat to display in the server console.")]
         public bool PrintDiscordChatToConsole { get; set; }
 
+        [Category("Messages")]
         [Description("The message to display in discord when the person is spawning/connecting in. Supports Replacers, see example.")]
         public string PlayerSpawningMessage { get; set; }
 
+        [Category("Messages")]
         [Description("The message to display in discord when the person is respawning. Supports Replacers, see example.")]
         public string PlayerRespawningMessage { get; set; }
 
+        [Category("Messages")]
         [Description("The message to display in discord when the person is leaving/disconnecting. Supports Replacers, see example.")]
         public string PlayerLeavingMessage { get; set; }
 
+        [Category("Messages")]
         [Description("The message to display in discord when the person is chatting in-game. Supports Replacers, see example.")]
         public string MessageSentToDiscord { get; set; }
 
+        [Category("Messages")]
         [Description("The message to display in-game when the person is chatting in discord. Supports Replacers, see example.")]
         public string MessageSentToGameServer { get; set; }
 
 
-        public bool DebugMode { get; set; }
 
 
         public Settings()
         {
-
+            Enabled = true;
             DiscordToken = "discordtokenhere";
             BotClientID = 0;
             MainChannelID = 0;
             CDCChannelID = 0;
-            DebugMode = true;
+            DebugMode = false;
             PrintDiscordLogToConsole = true;
             PrintDiscordChatToConsole = true;
             PlayerSpawningMessage = $"(%PlayerName%) connected at (%CurrentDateTime%)";
-            PlayerRespawningMessage = $"(%PlayerName%) has respawned at (% CurrentDateTime %)";
+            PlayerRespawningMessage = $"(%PlayerName%) has re-spawned at (%CurrentDateTime%)";
             PlayerLeavingMessage = $"(%PlayerName%) has left the game server at (%CurrentDateTime%)";
             MessageSentToDiscord = $"IRSE Server - (%PlayerName%): (%ChatMessage%) ";
             MessageSentToGameServer = $"Discord [(%DiscordChannelName%)]- (%DiscordUserName%): (%ChatMessage%)";
