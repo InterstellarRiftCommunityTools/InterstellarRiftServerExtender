@@ -67,7 +67,7 @@ namespace IRSE.Managers
 
         public Boolean IsRunning => m_isRunning;
 
-        public Boolean IsStarting => m_isRunning;
+        public Boolean IsStarting => m_isStarting;
 
         #endregion Properties
 
@@ -101,6 +101,8 @@ namespace IRSE.Managers
 
             // Wrap both assemblies
             m_serverWrapper = new ServerWrapper(m_assembly, m_frameworkAssembly);
+
+            m_pluginManager = new PluginManager();
         }
 
         #region Methods
@@ -156,7 +158,6 @@ namespace IRSE.Managers
 
                 // plugin loader
                 mainLog.Info("IRSE: Initializing Plugins...");
-                m_pluginManager = new PluginManager();
                 m_pluginManager.InitializeAllPlugins();
 
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning

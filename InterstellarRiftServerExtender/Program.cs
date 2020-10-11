@@ -108,6 +108,12 @@ namespace IRSE
             m_config = new Config();
             debugMode = m_config.Settings.DebugMode;
 
+            string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
+            LogManager.Configuration = new XmlLoggingConfiguration(configPath);
+
+            m_localization = new Localization();
+            m_localization.Load(m_config.Settings.CurrentLanguage.ToString().Substring(0, 2));
+
             AppDomain.CurrentDomain.AssemblyResolve += (sender, rArgs) =>
             {
                 Assembly executingAssembly = Assembly.GetExecutingAssembly();
@@ -146,8 +152,6 @@ namespace IRSE
                 }
             };
 
-            string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
-            LogManager.Configuration = new XmlLoggingConfiguration(configPath);
 
             Console.WriteLine($"Interstellar Rift Extended Server v{Version} Initializing....");
 
@@ -243,7 +247,7 @@ namespace IRSE
             Console.ResetColor();
 
             updateManager = new UpdateManager(); // REPO NEEDS TO BE PUBLIC
-
+           
             Instance = new Program();
             Instance.Run(args);
         }
@@ -252,9 +256,6 @@ namespace IRSE
         private void Run(string[] args)
         {
             mainLog = LogManager.GetCurrentClassLogger();
-
-            m_localization = new Localization();
-            m_localization.Load(m_config.Settings.CurrentLanguage.ToString().Substring(0, 2));
 
             //Build IR's paths so we can use the Localization system
             Game.Program.InitFileSystems();
@@ -287,6 +288,8 @@ namespace IRSE
             else
                 if (m_useGui)
                 SetupGUI();
+
+            m_serverInstance.PluginManager.LoadAllPlugins();
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("IRSE: Ready for Input, try /help !");

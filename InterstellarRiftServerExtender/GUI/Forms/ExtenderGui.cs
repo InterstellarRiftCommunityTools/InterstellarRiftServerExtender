@@ -7,12 +7,15 @@ using IRSE.Managers;
 using IRSE.Managers.Plugins;
 using IRSE.Modules;
 using IRSE.Modules.GameConfig;
+using MarkdownDeep;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -25,8 +28,13 @@ namespace IRSE.GUI.Forms
         private Timer ObjectManipulationRefreshTimer = new Timer();
         private Timer PlayersRefreshTimer = new Timer();
         private Timer PluginsRefreshTimer = new Timer();
+        private Timer GlobalKeyPressTimer = new Timer();
+
+        private bool _isHoldingAlt = false;
         public ExtenderGui()
         {
+
+
             InitializeComponent();
 
             AddChatLine("Waiting for server to start..");
@@ -35,6 +43,7 @@ namespace IRSE.GUI.Forms
 
             ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
             ServerInstance.Instance.OnServerStopped += Instance_OnServerStopped;
+            ServerInstance.Instance.OnServerStarting += Instance_OnServerStarting;
 
             new ServerConfigProperties();
             serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
@@ -56,6 +65,17 @@ namespace IRSE.GUI.Forms
             server_hesNewsLabel.Text =
                 "Welcome to IRSE!\nIt's Almost Ready!!\n" +
                 "Woot!";
+
+            GlobalKeyPressTimer.Tick += GlobalKeyPressTimer_Tick;
+            GlobalKeyPressTimer.Enabled = true;
+            GlobalKeyPressTimer.Start();
+
+            UpdatePluginTab();
+        }
+
+        private void Instance_OnServerStarting()
+        {
+            server_config_startserver.Enabled = false;
         }
 
         private void DisableControls(bool disable = true)
@@ -74,7 +94,7 @@ namespace IRSE.GUI.Forms
             server_config_stopserver.Enabled = !disable;
             server_config_startserver.Enabled = disable;
 
-            objectManipulation_grid.Enabled = !disable;
+            //objectManipulation_grid.Enabled = !disable;
             objectManipulation_treeview.Enabled = !disable;
 
         }
@@ -92,17 +112,17 @@ namespace IRSE.GUI.Forms
 
                 UpdatePlayersTree();
                 UpdateChatPlayers();
-
+                
 
                 PlayersRefreshTimer.Enabled = true;
                 PluginsRefreshTimer.Enabled = true;
                 ObjectManipulationRefreshTimer.Enabled = true;
 
-                var test = new CommandVisualizer();
-                test.BuildLayout();
+                //var test = new CommandVisualizer();
+                //test.BuildLayout();
 
-                foreach (var name in test.Map)
-                    cv_tab_list.Items.Add(name.Key);
+                //foreach (var name in test.Map)
+                    //cv_tab_list.Items.Add(name.Key);
 
 
                 ObjectManipulationRefreshTimer.Interval = (1000); // 1 secs
@@ -110,12 +130,17 @@ namespace IRSE.GUI.Forms
                 {
                     UpdatePlayersTree();
                     //UpdateGalaxyTree();
+
+                    if (!_isHoldingAlt) 
+                        objectManipulation_grid.Refresh();
+
+                    objectManipulation_treeview.Refresh();
                 };
 
                 PlayersRefreshTimer.Interval = (1000); // 1 secs
                 PlayersRefreshTimer.Tick += delegate (object sender, EventArgs e)
                 {
-                    UpdateChatPlayers();
+                    UpdateChatPlayers();                    
                 };
 
                 PluginsRefreshTimer.Interval = (1000); // 1 secs
@@ -250,6 +275,8 @@ namespace IRSE.GUI.Forms
         public List<Player> MyPlayers = new List<Player>();
         public List<SolarSystem> MySystems = new List<SolarSystem>();
 
+
+
         public void UpdateGalaxyTree()
         {
             try
@@ -324,15 +351,8 @@ namespace IRSE.GUI.Forms
                        // galaxy.Nodes.Add(system);
                     }
 
-                    objectManipulation_treeview.Refresh();
-                    objectManipulation_grid.Refresh();
-
                 }
 
-
-
-                objectManipulation_treeview.Refresh();
-                objectManipulation_grid.Refresh();
             }
             catch (Exception)
             {
@@ -374,9 +394,6 @@ namespace IRSE.GUI.Forms
                     if (treeNodeList.ContainsKey(_player.ID.ToString()))
                         treeNodeList.RemoveByKey(_player.ID.ToString());
 
-                    objectManipulation_treeview.Refresh();
-                    objectManipulation_grid.Refresh();
-
                     continue;
                 }
 
@@ -402,8 +419,6 @@ namespace IRSE.GUI.Forms
                 }
             }
 
-            objectManipulation_treeview.Refresh();
-            objectManipulation_grid.Refresh();
         }
 
         private void objectManipulation_treeview_AfterSelect(object sender, TreeViewEventArgs e)
@@ -591,86 +606,119 @@ namespace IRSE.GUI.Forms
 
         #region Plugins
 
+        private void BTN_Plugins_Reload_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems == null)
+                    return;
+
+                var pluginInfo = plugins_tab_pluginslist.SelectedItems[0].Tag as PluginInfo;
+
+                ServerInstance.Instance.PluginManager.ShutdownPlugin(pluginInfo);
+                ServerInstance.Instance.PluginManager.LoadPlugin(pluginInfo);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+
+        private void BTN_Plugins_Enable_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems == null)
+                    return;
+
+                var pluginInfo = plugins_tab_pluginslist.SelectedItems[0].Tag as PluginInfo;
+
+                ServerInstance.Instance.PluginManager.LoadedPlugins.Find(p => p == pluginInfo).MainClass.Enabled = BTN_Plugins_Enable.Text == "Disable";
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
 
 
+        }
 
         private void plugins_tab_pluginslist_SelectedIndexChanged(object sender, EventArgs e)
         {
+            try
+            {
+                if (plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems == null)
+                    return;
 
-            if(plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems == null)
-                return;
+                var pluginInfo = plugins_tab_pluginslist.SelectedItems[0].Tag as PluginInfo;
 
-            var pluginInfo = plugins_tab_pluginslist.SelectedItems[0].Tag as PluginInfo;
+                Type pluginType = pluginInfo.MainClassType;
 
-            Type pluginType = pluginInfo.MainClassType;
+                if (pluginType == null)
+                    return;
 
-            if (pluginType == null)
-                return;
-
-
-
-           // PropertyInfo info = pluginType.GetProperty("PluginControlForm");
-           // if (info != null)// Form view
-            //{
-                //plugins_tab_propertyGrid.Visible = false;
-
-                //Form value = (Form)info.GetValue(pluginType, null);
-
-                //foreach (Control control in plugins_tab_settingsPanel.Controls)
-                //{
-                    //if (control.Visible)
-                        //control.Visible = false;
-                //}
-
-                //if (!plugins_tab_settingsPanel.Controls.Contains(value))
-                //{
-                   // value.TopLevel = false;
-                    //plugins_tab_settingsPanel.Controls.Add(value);
-               // }
+                string path = Path.Combine(pluginInfo.Directory, "information.md");
+                if (File.Exists(path))              
+                    plugins_tab_browser.DocumentText = new Markdown().Transform(File.ReadAllText(path));               
+                else             
+                    plugins_tab_browser.DocumentText = new Markdown().Transform( "#" + pluginInfo.Name.ToUpper());
                 
-               // value.Dock = DockStyle.Fill;
-                //value.FormBorderStyle = FormBorderStyle.None;
-                //value.Visible = true;
-           // }
-           // else // Default PropertyGrid view
-           // {
-                //plugins_tab_settingsPanel.Visible = false;
-                //foreach (Control ctl in plugins_tab_settingsPanel.Controls)
-               // {
-                    //if (ctl.Visible)
-                   // {
-                    //    ctl.Visible = false;
-                   // }
-               // }
+                PropertyInfo info = pluginType.GetProperty("PluginControlForm");
+                if (info != null)// Form view
+                {
 
-                plugins_tab_propertyGrid.Visible = true;
-                plugins_tab_propertyGrid.SelectedObject = pluginInfo.MainClass.Config;
+                    Form value = (Form)info.GetValue(pluginInfo.MainClass, null);
 
-           // }
+                    foreach (Control control in PluginSettingsFormPanel.Controls)
+                    {
+                        if (control.Visible)
+                            control.Visible = false;
+                    }
 
-            /*
-            // Set state
-            bool pluginState = ServerInstance.Instance.PluginManager.
-            if (pluginState)
-            {
-                BTN_Plugins_Reload.Enabled = true;
-                BTN_Plugins_Enable.Text = "Disable";
+                    if (!PluginSettingsFormPanel.Controls.Contains(value))
+                    {
+                        value.TopLevel = false;
+                        PluginSettingsFormPanel.Controls.Add(value);
+                    }
+
+                    value.Dock = DockStyle.Fill;
+                    value.FormBorderStyle = FormBorderStyle.None;
+                    value.Visible = true;
+                }
+
+                // Set state
+
+                if (pluginInfo.Loaded)
+                {
+                    BTN_Plugins_Reload.Enabled = true;
+                    BTN_Plugins_Enable.Text = "Disable";
+                    SelectedPluginStateLabel.ForeColor = Color.Green;
+                    SelectedPluginStateStatus.Text = "Enabled";
+                }
+                else
+                {
+                    BTN_Plugins_Reload.Enabled = false;
+                    BTN_Plugins_Enable.Text = "Enable";
+                    SelectedPluginStateLabel.ForeColor = Color.Red;
+                    SelectedPluginStateStatus.Text = "Disabled";
+                }
             }
-            else
+            catch (Exception)
             {
-                BTN_Plugins_Reload.Enabled = false;
-                BTN_Plugins_Enable.Text = "Enable";
+
+                
             }
-            */
+
+
+            
         }
         #endregion Plugins
         private void Default_SettingsSaving(object sender, CancelEventArgs e)
         {
             StatusBar.Text = "GUI Settings Changed";
-        }
-
-        private void objectManipulation_grid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
-        {
         }
 
         private void Tabs_Selected(object sender, TabControlEventArgs e)
@@ -684,12 +732,13 @@ namespace IRSE.GUI.Forms
                 case 0: // Server
                     break;
 
-                case 1:  // Server Players
+                case 1:  // Server Chat
                     //PlayersRefreshTimer.Enabled = true;
                     break;
 
                 case 2: // Object Manipulation
                     //ObjectManipulationRefreshTimer.Enabled = true;
+                    objectManipulation_grid.Focus();
                     break;
 
                 case 3: // Plugins
@@ -780,11 +829,52 @@ namespace IRSE.GUI.Forms
             e.Cancel = true;
         }
 
-        private void plugins_manager_browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
+        #region Global Keys
 
+        private void GlobalKeyPressTimer_Tick(object sender, EventArgs e)
+        {
+            if (objectManipulation_grid.Focused)
+            {
+                Console.WriteLine("grid focus!");
+                GlobalKeyPressTimer.Enabled = false;
+
+                if (!wasPressed && globalKeyThread(Keys.Alt))
+                {
+                    Console.WriteLine("ALT hold");
+                    wasPressed = true;
+                }
+                else if (wasPressed)
+                {
+                    wasPressed = false;
+                    Console.WriteLine("ALT hold");
+                }
+
+                GlobalKeyPressTimer.Enabled = true;
+            }
+           
         }
 
+        private bool wasPressed = false;
+        private bool globalKeyThread(Keys key)
+        {
+            int state;
+            state = Convert.ToInt32(GetAsyncKeyState(key));
+            if (state == -32767)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        [DllImport("User32.dll")]
+        private static extern short GetAsyncKeyState(Keys vKey);
+
+        #endregion
+
+        private void objectManipulation_grid_Click(object sender, EventArgs e)
+        {
+            objectManipulation_grid.Focus();
+        }
 
     }
 }

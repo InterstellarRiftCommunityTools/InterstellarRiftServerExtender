@@ -9,7 +9,7 @@ namespace IRSE.Modules
     public class Localization
     {
         public static string PathFolder = Path.Combine(FolderStructure.IRSEFolderPath, "localization");
-        public static string Version = "0.01";
+        public static string Version = "0.02";
         private Dictionary<string, string> m_sentences = new Dictionary<string, string>();
         private static NLog.Logger mainLog; //mainLog.Error
 
@@ -22,17 +22,28 @@ namespace IRSE.Modules
         {
             get
             {
-                return this.m_sentences;
+                try
+                {
+                    return this.m_sentences;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Missing Localization Key");
+                    
+                }
+                return null;
             }
         }
 
         public void Load(string FileName)
         {
-            if (File.Exists(Localization.PathFolder + FileName + ".resx"))
+            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", FileName + ".resx");
+
+            if (File.Exists(path))
             {
-                if (new ResXResourceSet(Localization.PathFolder + FileName + ".resx").GetString("version") == Localization.Version)
+                if (new ResXResourceSet(path).GetString("version") == Localization.Version)
                 {
-                    using (ResXResourceReader resXresourceReader = new ResXResourceReader(Localization.PathFolder + FileName + ".resx"))
+                    using (ResXResourceReader resXresourceReader = new ResXResourceReader(path))
                     {
                         foreach (DictionaryEntry dictionaryEntry in resXresourceReader)
                             this.m_sentences.Add((string)dictionaryEntry.Key, (string)dictionaryEntry.Value);
@@ -55,11 +66,13 @@ namespace IRSE.Modules
 
         public static void CreateDefault()
         {
-            if (File.Exists(Localization.PathFolder + "En.resx"))
-                File.Delete(Localization.PathFolder + "En.resx");
-            Directory.CreateDirectory(Localization.PathFolder);
-            File.Create(Localization.PathFolder + "En.resx").Close();
-            using (ResXResourceWriter resXresourceWriter = new ResXResourceWriter(Localization.PathFolder + "En.resx"))
+            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", "En.resx");
+
+            if (File.Exists(path))
+                File.Delete(path);
+
+            File.Create(path).Close();
+            using (ResXResourceWriter resXresourceWriter = new ResXResourceWriter(path))
             {
                 resXresourceWriter.AddResource("version", Localization.Version);
                 resXresourceWriter.AddResource("Initialization", "Hellion Extended Server v{0} Initialized.");
@@ -79,14 +92,16 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("PlayersCommand", "/players " + Environment.NewLine + "\t -count - returns the current amount of online players" + Environment.NewLine + "\t -list - returns the full list of connected players" + Environment.NewLine + "\t -all - returns every player that has ever been on the server. And if they're online.");
                 resXresourceWriter.AddResource("MsgCommand", "/send (name) text - send a message to the specified player");
                 resXresourceWriter.AddResource("KickCommand", "/kick (name) - kick the specified player from the server");
-                resXresourceWriter.AddResource("Closing", "CLOSING HELLION EXTENDED SERVER");
+                resXresourceWriter.AddResource("Closing", "CLOSING INTERSTELLAR RIFT EXTENDED SERVER");
                 resXresourceWriter.AddResource("ChatMsgListener", "Chat Message Listener Added.");
-                resXresourceWriter.AddResource("FailedInitPlugin", "Failed initialization of Plugin {0}. Uncaught Exception: {1}");
+                resXresourceWriter.AddResource("FailedInitPlugin", "Failed initialization of Plugin {0}. Exception: {1}");
+                resXresourceWriter.AddResource("FailedLoadPlugin", "Failed load of Plugin {0}. Exception: {1}");
                 resXresourceWriter.AddResource("FailedLoadAssembly", "Failed to load assembly : {0} : {1}");
                 resXresourceWriter.AddResource("FailedShutdownPlugin", "Uncaught Exception in Plugin {0}. Exception: {1}");
                 resXresourceWriter.AddResource("InitializationPlugin", "Initialization of Plugin {0} failed. Could not find a public, parameterless constructor for {0}");
                 resXresourceWriter.AddResource("InitializingPlugin", "Initializing Plugin : {0}");
-                resXresourceWriter.AddResource("LoadingDedicated", "Loading HELLION Dedicated...");
+                resXresourceWriter.AddResource("LoadingPlugin", "Loading Plugin : {0}");
+                resXresourceWriter.AddResource("LoadingDedicated", "Loading IRSE Dedicated Server...");
                 resXresourceWriter.AddResource("NetControlerLoaded", "Network Controller Loaded!");
                 resXresourceWriter.AddResource("NewPlayer", "A new player is arrived : {0}");
                 resXresourceWriter.AddResource("PlayerOnServerListener", "Player On Server Listener Added.");

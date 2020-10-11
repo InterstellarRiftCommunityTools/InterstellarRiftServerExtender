@@ -65,31 +65,35 @@
             this.cpc_chat_list = new System.Windows.Forms.TextBox();
             this.cpc_chat_send = new System.Windows.Forms.Button();
             this.cpc_messagebox = new System.Windows.Forms.TextBox();
-            this.CommandVisualizerTab = new System.Windows.Forms.TabPage();
             this.ObjectManipulationTab = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.objectManipulation_treeview = new System.Windows.Forms.TreeView();
+            this.objectmanipulator_grid_isEditing = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.objectManipulation_grid = new System.Windows.Forms.PropertyGrid();
             this.PluginsTab = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.SelectedPluginStateStatus = new System.Windows.Forms.Label();
+            this.SelectedPluginStateLabel = new System.Windows.Forms.Label();
             this.plugins_tab_pluginslist = new System.Windows.Forms.ListView();
             this.nameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.stateColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.plugins_tab_informationTab = new System.Windows.Forms.TabPage();
-            this.plugins_tab_browser = new System.Windows.Forms.WebBrowser();
-            this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
-            this.plugins_tab_propertyGrid = new System.Windows.Forms.PropertyGrid();
+            this.CommandVisualizerTab = new System.Windows.Forms.TabPage();
+            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
+            this.cv_tab_list = new System.Windows.Forms.ListBox();
             this.ExtenderWebsite = new System.Windows.Forms.TabPage();
             this.hesw_Website = new System.Windows.Forms.WebBrowser();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.development_label = new System.Windows.Forms.Label();
-            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.cv_tab_list = new System.Windows.Forms.ListBox();
+            this.BTN_Plugins_Reload = new System.Windows.Forms.Button();
+            this.BTN_Plugins_Enable = new System.Windows.Forms.Button();
+            this.plugins_tab_informationTab = new System.Windows.Forms.TabPage();
+            this.plugins_tab_browser = new System.Windows.Forms.WebBrowser();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
+            this.PluginSettingsFormPanel = new System.Windows.Forms.Panel();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -120,7 +124,6 @@
             this.splitContainer3.SuspendLayout();
             this.cpc_chat_tabs.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.CommandVisualizerTab.SuspendLayout();
             this.ObjectManipulationTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -135,24 +138,23 @@
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.plugins_tab_informationTab.SuspendLayout();
-            this.plugins_tab_settingsTab.SuspendLayout();
-            this.ExtenderWebsite.SuspendLayout();
-            this.statusStrip.SuspendLayout();
+            this.CommandVisualizerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.SuspendLayout();
+            this.ExtenderWebsite.SuspendLayout();
+            this.statusStrip.SuspendLayout();
+            this.plugins_tab_informationTab.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.plugins_tab_settingsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
             // 
             this.Tabs.Controls.Add(this.ServerTab);
             this.Tabs.Controls.Add(this.ChatTab);
-            //this.Tabs.Controls.Add(this.CommandVisualizerTab);
             this.Tabs.Controls.Add(this.ObjectManipulationTab);
             this.Tabs.Controls.Add(this.PluginsTab);
-            //this.Tabs.Controls.Add(this.ExtenderWebsite);
             this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabs.Location = new System.Drawing.Point(0, 0);
             this.Tabs.Name = "Tabs";
@@ -555,17 +557,6 @@
             this.cpc_messagebox.TabIndex = 0;
             this.cpc_messagebox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cpc_messagebox_KeyDown);
             // 
-            // CommandVisualizerTab
-            // 
-            this.CommandVisualizerTab.Controls.Add(this.splitContainer7);
-            this.CommandVisualizerTab.Location = new System.Drawing.Point(4, 22);
-            this.CommandVisualizerTab.Name = "CommandVisualizerTab";
-            this.CommandVisualizerTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CommandVisualizerTab.Size = new System.Drawing.Size(772, 469);
-            this.CommandVisualizerTab.TabIndex = 6;
-            this.CommandVisualizerTab.Text = "Command Visualizer";
-            this.CommandVisualizerTab.UseVisualStyleBackColor = true;
-            // 
             // ObjectManipulationTab
             // 
             this.ObjectManipulationTab.Controls.Add(this.splitContainer1);
@@ -589,6 +580,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.Controls.Add(this.objectmanipulator_grid_isEditing);
+            this.splitContainer1.Panel2.Controls.Add(this.label4);
             this.splitContainer1.Panel2.Controls.Add(this.objectManipulation_grid);
             this.splitContainer1.Size = new System.Drawing.Size(766, 463);
             this.splitContainer1.SplitterDistance = 262;
@@ -611,6 +604,25 @@
             this.objectManipulation_treeview.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.objectManipulation_treeview_AfterSelect);
             this.objectManipulation_treeview.Click += new System.EventHandler(this.objectManipulation_treeview_Click);
             // 
+            // objectmanipulator_grid_isEditing
+            // 
+            this.objectmanipulator_grid_isEditing.AutoSize = true;
+            this.objectmanipulator_grid_isEditing.ForeColor = System.Drawing.Color.Lime;
+            this.objectmanipulator_grid_isEditing.Location = new System.Drawing.Point(436, 6);
+            this.objectmanipulator_grid_isEditing.Name = "objectmanipulator_grid_isEditing";
+            this.objectmanipulator_grid_isEditing.Size = new System.Drawing.Size(0, 13);
+            this.objectmanipulator_grid_isEditing.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.ForeColor = System.Drawing.Color.DarkRed;
+            this.label4.Location = new System.Drawing.Point(147, 6);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(252, 13);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Tip: Holding ALT while editing stops the grid refresh!";
+            // 
             // objectManipulation_grid
             // 
             this.objectManipulation_grid.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -619,7 +631,7 @@
             this.objectManipulation_grid.Name = "objectManipulation_grid";
             this.objectManipulation_grid.Size = new System.Drawing.Size(500, 463);
             this.objectManipulation_grid.TabIndex = 0;
-            this.objectManipulation_grid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.objectManipulation_grid_PropertyValueChanged);
+            this.objectManipulation_grid.Click += new System.EventHandler(this.objectManipulation_grid_Click);
             // 
             // PluginsTab
             // 
@@ -657,34 +669,36 @@
             // 
             // splitContainer6.Panel1
             // 
-            this.splitContainer6.Panel1.Controls.Add(this.label3);
-            this.splitContainer6.Panel1.Controls.Add(this.label2);
+            this.splitContainer6.Panel1.Controls.Add(this.BTN_Plugins_Enable);
+            this.splitContainer6.Panel1.Controls.Add(this.BTN_Plugins_Reload);
+            this.splitContainer6.Panel1.Controls.Add(this.SelectedPluginStateStatus);
+            this.splitContainer6.Panel1.Controls.Add(this.SelectedPluginStateLabel);
             // 
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.plugins_tab_pluginslist);
             this.splitContainer6.Size = new System.Drawing.Size(213, 469);
-            this.splitContainer6.SplitterDistance = 34;
+            this.splitContainer6.SplitterDistance = 68;
             this.splitContainer6.TabIndex = 0;
             // 
-            // label3
+            // SelectedPluginStateStatus
             // 
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.Lime;
-            this.label3.Location = new System.Drawing.Point(135, 9);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(46, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Enabled";
+            this.SelectedPluginStateStatus.AutoSize = true;
+            this.SelectedPluginStateStatus.ForeColor = System.Drawing.Color.Lime;
+            this.SelectedPluginStateStatus.Location = new System.Drawing.Point(135, 9);
+            this.SelectedPluginStateStatus.Name = "SelectedPluginStateStatus";
+            this.SelectedPluginStateStatus.Size = new System.Drawing.Size(46, 13);
+            this.SelectedPluginStateStatus.TabIndex = 1;
+            this.SelectedPluginStateStatus.Text = "Enabled";
             // 
-            // label2
+            // SelectedPluginStateLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(112, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Selected Plugin State:";
+            this.SelectedPluginStateLabel.AutoSize = true;
+            this.SelectedPluginStateLabel.Location = new System.Drawing.Point(22, 9);
+            this.SelectedPluginStateLabel.Name = "SelectedPluginStateLabel";
+            this.SelectedPluginStateLabel.Size = new System.Drawing.Size(112, 13);
+            this.SelectedPluginStateLabel.TabIndex = 0;
+            this.SelectedPluginStateLabel.Text = "Selected Plugin State:";
             // 
             // plugins_tab_pluginslist
             // 
@@ -700,7 +714,7 @@
             this.plugins_tab_pluginslist.Name = "plugins_tab_pluginslist";
             this.plugins_tab_pluginslist.ShowGroups = false;
             this.plugins_tab_pluginslist.ShowItemToolTips = true;
-            this.plugins_tab_pluginslist.Size = new System.Drawing.Size(213, 431);
+            this.plugins_tab_pluginslist.Size = new System.Drawing.Size(213, 397);
             this.plugins_tab_pluginslist.TabIndex = 0;
             this.plugins_tab_pluginslist.UseCompatibleStateImageBehavior = false;
             this.plugins_tab_pluginslist.View = System.Windows.Forms.View.Details;
@@ -716,59 +730,38 @@
             this.stateColumn.Text = "State";
             this.stateColumn.Width = 70;
             // 
-            // tabControl1
+            // CommandVisualizerTab
             // 
-            this.tabControl1.Controls.Add(this.plugins_tab_informationTab);
-            this.tabControl1.Controls.Add(this.plugins_tab_settingsTab);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(555, 469);
-            this.tabControl1.TabIndex = 0;
+            this.CommandVisualizerTab.Controls.Add(this.splitContainer7);
+            this.CommandVisualizerTab.Location = new System.Drawing.Point(4, 22);
+            this.CommandVisualizerTab.Name = "CommandVisualizerTab";
+            this.CommandVisualizerTab.Padding = new System.Windows.Forms.Padding(3);
+            this.CommandVisualizerTab.Size = new System.Drawing.Size(772, 469);
+            this.CommandVisualizerTab.TabIndex = 6;
+            this.CommandVisualizerTab.Text = "Command Visualizer";
+            this.CommandVisualizerTab.UseVisualStyleBackColor = true;
             // 
-            // plugins_tab_informationTab
+            // splitContainer7
             // 
-            this.plugins_tab_informationTab.Controls.Add(this.plugins_tab_browser);
-            this.plugins_tab_informationTab.Location = new System.Drawing.Point(4, 22);
-            this.plugins_tab_informationTab.Name = "plugins_tab_informationTab";
-            this.plugins_tab_informationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.plugins_tab_informationTab.Size = new System.Drawing.Size(547, 443);
-            this.plugins_tab_informationTab.TabIndex = 0;
-            this.plugins_tab_informationTab.Text = "Information";
-            this.plugins_tab_informationTab.UseVisualStyleBackColor = true;
+            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer7.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer7.Name = "splitContainer7";
             // 
-            // plugins_tab_browser
+            // splitContainer7.Panel1
             // 
-            this.plugins_tab_browser.AllowNavigation = false;
-            this.plugins_tab_browser.AllowWebBrowserDrop = false;
-            this.plugins_tab_browser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plugins_tab_browser.IsWebBrowserContextMenuEnabled = false;
-            this.plugins_tab_browser.Location = new System.Drawing.Point(3, 3);
-            this.plugins_tab_browser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.plugins_tab_browser.Name = "plugins_tab_browser";
-            this.plugins_tab_browser.ScriptErrorsSuppressed = true;
-            this.plugins_tab_browser.Size = new System.Drawing.Size(541, 437);
-            this.plugins_tab_browser.TabIndex = 0;
+            this.splitContainer7.Panel1.Controls.Add(this.cv_tab_list);
+            this.splitContainer7.Size = new System.Drawing.Size(766, 463);
+            this.splitContainer7.SplitterDistance = 226;
+            this.splitContainer7.TabIndex = 0;
             // 
-            // plugins_tab_settingsTab
+            // cv_tab_list
             // 
-            this.plugins_tab_settingsTab.Controls.Add(this.plugins_tab_propertyGrid);
-            this.plugins_tab_settingsTab.Location = new System.Drawing.Point(4, 22);
-            this.plugins_tab_settingsTab.Name = "plugins_tab_settingsTab";
-            this.plugins_tab_settingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.plugins_tab_settingsTab.Size = new System.Drawing.Size(547, 443);
-            this.plugins_tab_settingsTab.TabIndex = 1;
-            this.plugins_tab_settingsTab.Text = "Settings";
-            this.plugins_tab_settingsTab.UseVisualStyleBackColor = true;
-            // 
-            // plugins_tab_propertyGrid
-            // 
-            this.plugins_tab_propertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plugins_tab_propertyGrid.Location = new System.Drawing.Point(3, 3);
-            this.plugins_tab_propertyGrid.Name = "plugins_tab_propertyGrid";
-            this.plugins_tab_propertyGrid.Size = new System.Drawing.Size(541, 437);
-            this.plugins_tab_propertyGrid.TabIndex = 1;
+            this.cv_tab_list.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cv_tab_list.FormattingEnabled = true;
+            this.cv_tab_list.Location = new System.Drawing.Point(0, 0);
+            this.cv_tab_list.Name = "cv_tab_list";
+            this.cv_tab_list.Size = new System.Drawing.Size(226, 463);
+            this.cv_tab_list.TabIndex = 0;
             // 
             // ExtenderWebsite
             // 
@@ -821,33 +814,86 @@
             this.development_label.Size = new System.Drawing.Size(0, 13);
             this.development_label.TabIndex = 3;
             // 
-            // splitContainer7
+            // BTN_Plugins_Reload
             // 
-            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer7.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer7.Name = "splitContainer7";
+            this.BTN_Plugins_Reload.Location = new System.Drawing.Point(25, 35);
+            this.BTN_Plugins_Reload.Name = "BTN_Plugins_Reload";
+            this.BTN_Plugins_Reload.Size = new System.Drawing.Size(75, 23);
+            this.BTN_Plugins_Reload.TabIndex = 2;
+            this.BTN_Plugins_Reload.Text = "Reload";
+            this.BTN_Plugins_Reload.UseVisualStyleBackColor = true;
+            this.BTN_Plugins_Reload.Click += new System.EventHandler(this.BTN_Plugins_Reload_Click);
             // 
-            // splitContainer7.Panel1
+            // BTN_Plugins_Enable
             // 
-            this.splitContainer7.Panel1.Controls.Add(this.cv_tab_list);
-            this.splitContainer7.Size = new System.Drawing.Size(766, 463);
-            this.splitContainer7.SplitterDistance = 226;
-            this.splitContainer7.TabIndex = 0;
+            this.BTN_Plugins_Enable.Location = new System.Drawing.Point(106, 35);
+            this.BTN_Plugins_Enable.Name = "BTN_Plugins_Enable";
+            this.BTN_Plugins_Enable.Size = new System.Drawing.Size(75, 23);
+            this.BTN_Plugins_Enable.TabIndex = 3;
+            this.BTN_Plugins_Enable.Text = "Disable";
+            this.BTN_Plugins_Enable.UseVisualStyleBackColor = true;
+            this.BTN_Plugins_Enable.Click += new System.EventHandler(this.BTN_Plugins_Enable_Click);
             // 
-            // cv_tab_list
+            // plugins_tab_informationTab
             // 
-            this.cv_tab_list.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cv_tab_list.FormattingEnabled = true;
-            this.cv_tab_list.Location = new System.Drawing.Point(0, 0);
-            this.cv_tab_list.Name = "cv_tab_list";
-            this.cv_tab_list.Size = new System.Drawing.Size(226, 463);
-            this.cv_tab_list.TabIndex = 0;
+            this.plugins_tab_informationTab.Controls.Add(this.plugins_tab_browser);
+            this.plugins_tab_informationTab.Location = new System.Drawing.Point(4, 22);
+            this.plugins_tab_informationTab.Name = "plugins_tab_informationTab";
+            this.plugins_tab_informationTab.Padding = new System.Windows.Forms.Padding(3);
+            this.plugins_tab_informationTab.Size = new System.Drawing.Size(547, 443);
+            this.plugins_tab_informationTab.TabIndex = 0;
+            this.plugins_tab_informationTab.Text = "Information";
+            this.plugins_tab_informationTab.UseVisualStyleBackColor = true;
+            // 
+            // plugins_tab_browser
+            // 
+            this.plugins_tab_browser.AllowNavigation = false;
+            this.plugins_tab_browser.AllowWebBrowserDrop = false;
+            this.plugins_tab_browser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plugins_tab_browser.IsWebBrowserContextMenuEnabled = false;
+            this.plugins_tab_browser.Location = new System.Drawing.Point(3, 3);
+            this.plugins_tab_browser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.plugins_tab_browser.Name = "plugins_tab_browser";
+            this.plugins_tab_browser.ScriptErrorsSuppressed = true;
+            this.plugins_tab_browser.Size = new System.Drawing.Size(541, 437);
+            this.plugins_tab_browser.TabIndex = 0;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.plugins_tab_informationTab);
+            this.tabControl1.Controls.Add(this.plugins_tab_settingsTab);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(555, 469);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // plugins_tab_settingsTab
+            // 
+            this.plugins_tab_settingsTab.Controls.Add(this.PluginSettingsFormPanel);
+            this.plugins_tab_settingsTab.Location = new System.Drawing.Point(4, 22);
+            this.plugins_tab_settingsTab.Name = "plugins_tab_settingsTab";
+            this.plugins_tab_settingsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.plugins_tab_settingsTab.Size = new System.Drawing.Size(547, 443);
+            this.plugins_tab_settingsTab.TabIndex = 1;
+            this.plugins_tab_settingsTab.Text = "Settings";
+            this.plugins_tab_settingsTab.UseVisualStyleBackColor = true;
+            // 
+            // PluginSettingsFormPanel
+            // 
+            this.PluginSettingsFormPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PluginSettingsFormPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PluginSettingsFormPanel.Location = new System.Drawing.Point(3, 3);
+            this.PluginSettingsFormPanel.Name = "PluginSettingsFormPanel";
+            this.PluginSettingsFormPanel.Size = new System.Drawing.Size(541, 437);
+            this.PluginSettingsFormPanel.TabIndex = 0;
             // 
             // ExtenderGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(780, 517);
             this.Controls.Add(this.development_label);
             this.Controls.Add(this.Tabs);
@@ -855,7 +901,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ExtenderGui";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "-";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExtenderGui_FormClosing);
             this.Load += new System.EventHandler(this.ExtenderGui_Load);
             this.Tabs.ResumeLayout(false);
@@ -891,10 +936,10 @@
             this.cpc_chat_tabs.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.CommandVisualizerTab.ResumeLayout(false);
             this.ObjectManipulationTab.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.PluginsTab.ResumeLayout(false);
@@ -907,15 +952,16 @@
             this.splitContainer6.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.plugins_tab_informationTab.ResumeLayout(false);
-            this.plugins_tab_settingsTab.ResumeLayout(false);
-            this.ExtenderWebsite.ResumeLayout(false);
-            this.statusStrip.ResumeLayout(false);
-            this.statusStrip.PerformLayout();
+            this.CommandVisualizerTab.ResumeLayout(false);
             this.splitContainer7.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
             this.splitContainer7.ResumeLayout(false);
+            this.ExtenderWebsite.ResumeLayout(false);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
+            this.plugins_tab_informationTab.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.plugins_tab_settingsTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -968,20 +1014,24 @@
         private System.Windows.Forms.Button pc_kickplayer;
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.SplitContainer splitContainer6;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label SelectedPluginStateStatus;
+        private System.Windows.Forms.Label SelectedPluginStateLabel;
         private System.Windows.Forms.ListView plugins_tab_pluginslist;
         private System.Windows.Forms.ColumnHeader nameColumn;
         private System.Windows.Forms.ColumnHeader stateColumn;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage plugins_tab_informationTab;
-        private System.Windows.Forms.WebBrowser plugins_tab_browser;
-        private System.Windows.Forms.TabPage plugins_tab_settingsTab;
-        private System.Windows.Forms.PropertyGrid plugins_tab_propertyGrid;
         private System.Windows.Forms.Label development_label;
         private System.Windows.Forms.TabPage CommandVisualizerTab;
         private System.Windows.Forms.SplitContainer splitContainer7;
         private System.Windows.Forms.ListBox cv_tab_list;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label objectmanipulator_grid_isEditing;
+        private System.Windows.Forms.Button BTN_Plugins_Enable;
+        private System.Windows.Forms.Button BTN_Plugins_Reload;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage plugins_tab_informationTab;
+        private System.Windows.Forms.WebBrowser plugins_tab_browser;
+        private System.Windows.Forms.TabPage plugins_tab_settingsTab;
+        private System.Windows.Forms.Panel PluginSettingsFormPanel;
     }
 }
 
