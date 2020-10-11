@@ -36,7 +36,6 @@ namespace IRSE
         private static ServerInstance m_serverInstance;
         private static EventHandler _handler;
 
-        private static Boolean m_useGui = true;
         private static Thread uiThread;
 
         private static NLog.Logger mainLog;
@@ -51,6 +50,7 @@ namespace IRSE
         public static IEnumerator ConsoleCoroutine;
 
         public static bool PendingServerStart;
+        private static bool _useGui;
 
         #endregion Fields
 
@@ -82,7 +82,7 @@ namespace IRSE
         #endregion Properties
 
         public Program()
-        {         
+        {
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
 
@@ -152,6 +152,7 @@ namespace IRSE
                 }
             };
 
+            mainLog = LogManager.GetCurrentClassLogger();
 
             Console.WriteLine($"Interstellar Rift Extended Server v{Version} Initializing....");
 
@@ -159,16 +160,36 @@ namespace IRSE
             Console.WriteLine($"Repo URL: {ThisAssembly.Git.RepositoryUrl}");
             Console.WriteLine($"Git Branch: {ThisAssembly.Git.Branch}");
             if (Dev)
-            {              
+            {
                 Console.WriteLine($"Git Commit Date: {ThisAssembly.Git.CommitDate}");
                 Console.WriteLine($"Git Commit: {ThisAssembly.Git.Commit}");
                 Console.WriteLine($"Git SHA: {ThisAssembly.Git.Sha}");
             }
             Console.WriteLine();
+
+            if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "IR.exe")))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("IRSE: IR.EXE wasn't found.");
+                Console.WriteLine("Make sure IRSE.exe is in the same folder as IR.exe.");
+                Console.WriteLine("Press enter to close.");
+                Console.ReadLine();
+                Environment.Exit(0);
+            }
+
+            Instance = new Program();
+            Instance.Run(args);
+        }
+
+        // this is where stuff goes!
+        private void Run(string[] args)
+        {
             // This is for args that should be used before IRSE loads
             bool noUpdateIRSE = false;
             bool noUpdateIR = false;
             bool usePrereleaseVersions = false;
+            bool autoStart = false;
+            _useGui = true;
             Console.ForegroundColor = ConsoleColor.Green;
             foreach (string arg in args)
             {
@@ -180,6 +201,12 @@ namespace IRSE
 
                 if (arg.Equals("-usedevversion"))
                     usePrereleaseVersions = true;
+
+                if (arg.Equals("-nogui"))
+                    _useGui = false;
+
+                if (arg.Equals("-autostart"))
+                    autoStart = true;
             }
 
             if (usePrereleaseVersions || Config.Settings.EnableDevelopmentVersion)
@@ -198,22 +225,13 @@ namespace IRSE
                 SteamCMD.AutoUpdateIR = false;
                 Console.WriteLine("IRSE: (Arg: -noupdateir is set) IsR Dedicated Serevr will not be auto-updated.");
             }
+
             Console.WriteLine();
             Console.ResetColor();
 
             //new SteamCMD().GetSteamCMD();
 
             // Run anything that doesn't require the loading of IR references above here
-
-            if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "IR.exe")))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("IRSE: IR.EXE wasn't found.");
-                Console.WriteLine("Make sure IRSE.exe is in the same folder as IR.exe.");
-                Console.WriteLine("Press enter to close.");
-                Console.ReadLine();
-                Environment.Exit(0);
-            }
 
             m_serverInstance = new ServerInstance();
             ThisGameVersion = m_serverInstance.Assembly.GetName().Version.ToString();
@@ -247,62 +265,28 @@ namespace IRSE
             Console.ResetColor();
 
             updateManager = new UpdateManager(); // REPO NEEDS TO BE PUBLIC
-           
-            Instance = new Program();
-            Instance.Run(args);
-        }
-
-        // this is where stuff goes!
-        private void Run(string[] args)
-        {
-            mainLog = LogManager.GetCurrentClassLogger();
 
             //Build IR's paths so we can use the Localization system
             Game.Program.InitFileSystems();
             Game.Program.InitGameDirectory("InterstellarRift");
-
-            //new ServerConfigConverter().BuildAndUpdateConfigProperties();
-
-            // They initialize it as (string[])null, not good for us trying to use their static classes, this fixes it
             Game.Program.CommandLineArgs = new string[1];
-
-            bool autoStart = Config.Settings.AutoStartEnable;
-            Console.ForegroundColor = ConsoleColor.Green;
-            foreach (string arg in args)
-            {
-                if (arg.Equals("-nogui"))
-                {
-                    m_useGui = false;
-
-                    if (!m_form.Visible)
-                        Console.WriteLine("IRSE: (Arg: -nogui is set) GUI Disabled, use /showgui to Enable it for this session.");
-                }
-                autoStart = arg.Equals("-autostart");
-            }
-            Console.ResetColor();
-
-            if (!Environment.UserInteractive)
-            {
-                Console.WriteLine("Non interactive environment detected, GUI disabled");
-            }
-            else
-                if (m_useGui)
-                SetupGUI();
 
             m_serverInstance.PluginManager.LoadAllPlugins();
 
+            SetupGUI();
+
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("IRSE: Ready for Input, try /help !");
+            Console.ResetColor();
 
-            if (autoStart)
+            if (autoStart || Config.Settings.AutoStartEnable)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("IRSE: Arg: -autostart or Gui's Autostart Checkbox was Checked)");
                 Console.ResetColor();
-                ServerInstance.Instance.Start();
+                PendingServerStart = true;
             }
 
-            Console.ResetColor();
             //console logic for commands
             ReadConsoleCommands(args);
         }
@@ -314,6 +298,18 @@ namespace IRSE
         /// </summary>
         internal static void SetupGUI()
         {
+            if (!Environment.UserInteractive)
+            {
+                Console.WriteLine("Non interactive environment detected, GUI disabled");
+                return;
+            }
+
+            if (!_useGui)
+            {
+                Console.WriteLine("GUI Disabled");
+                return;
+            }
+
             if (uiThread != null)
             {
                 if (m_form.InvokeRequired)
@@ -406,7 +402,7 @@ namespace IRSE
         /// <summary>
         /// This contains the console commands
         /// </summary>
-        public void ReadConsoleCommands(string[] commandLineArgs)
+        public void ReadConsoleCommands(string[] args)
         {
             HWnd = Process.GetCurrentProcess().MainWindowHandle;
             string line = null;
@@ -432,7 +428,7 @@ namespace IRSE
                     }
 
                     string cmd = line.Split(" ".ToCharArray())[0].Replace("/", "");
-                    string[] args = line.Split(" ".ToCharArray()).Skip(1).ToArray();
+                    string[] lineArgs = line.Split(" ".ToCharArray()).Skip(1).ToArray();
 
                     //if (ServerInstance.Instance.CommandManager.HandleConsoleCommand(cmmd, args)) continue;
 
@@ -485,10 +481,7 @@ namespace IRSE
 
                     if (stringList[1] == "opengui")
                     {
-                        if (Environment.UserInteractive && m_useGui)
-                            SetupGUI();
-                        else
-                            Console.WriteLine("GUI DISABLED");
+                        SetupGUI();
                         flag = true;
                     }
 

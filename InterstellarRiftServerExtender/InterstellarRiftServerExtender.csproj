@@ -82,6 +82,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Resources\MarkdownDeep.dll" />
     <None Include="Resources\System.Net.Http.Formatting.dll" />
     <None Include="Resources\System.Web.Http.dll" />
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.resx">
@@ -100,7 +101,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Resources\Newtonsoft.Json.dll" />
+    <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
     <None Include="Resources\NLog.dll" />
     <None Include="Resources\Octokit.dll" />
     <None Include="App.config" />
@@ -116,8 +117,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="Resources\log4net.config" />
-    <EmbeddedResource Include="Resources\NLog.config" />
+    <None Include="Resources\log4net.config" />
+    <None Include="Resources\NLog.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Chat.cs" />
@@ -303,9 +304,16 @@ echo Running build event for $(ProjectName)..
 xcopy "$(TargetDir)$(TargetFileName)" "$(ProjectDir)bin\IRSERelease\"  /y
 xcopy "$(TargetDir)$(TargetFileName).config" "$(ProjectDir)bin\IRSERelease\" /y
 
-xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\" /y
-xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\" /y
-xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\" /y
+echo THESE ARE REQUIRED
+
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE" md "$(ProjectDir)bin\IRSERelease\IRSE"
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\bin" md "$(ProjectDir)bin\IRSERelease\IRSE\bin"
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\config" md "$(ProjectDir)bin\IRSERelease\IRSE\config"
+
+xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\IRSE\config" /y
+xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 
 echo $(ProjectName) files have been copied to "$(ProjectDir)bin\IRSERelease\".
 
