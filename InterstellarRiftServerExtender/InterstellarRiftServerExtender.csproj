@@ -210,6 +210,9 @@
     <Compile Include="API\ResultObjects\ServerStatusResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.0.2\lib\net472\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="AlunaNetFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>I:\steam\steamapps\common\Interstellar Rift\Build\AlunaNetFramework.dll</HintPath>
@@ -258,6 +261,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
@@ -312,6 +316,7 @@ IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\config" md "$(ProjectDir)bin\IRS
 
 xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 
+xcopy "$(TargetDir)0Harmony.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)MarkdownDeep.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\IRSE\config" /y
 xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y

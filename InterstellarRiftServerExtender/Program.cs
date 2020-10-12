@@ -17,6 +17,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using Localization = IRSE.Modules.Localization;
+using HarmonyLib;
 
 namespace IRSE
 {
@@ -69,6 +70,8 @@ namespace IRSE
         public static Program Instance { get; private set; }
         public static ExtenderGui GUI { get; private set; }
 
+        public static Harmony Harmony { get; private set; }
+
         public static Assembly EntryAssembly => Assembly.GetEntryAssembly();
         public static Version Version => EntryAssembly.GetName().Version;
 
@@ -88,7 +91,7 @@ namespace IRSE
 
             if (!Dev)
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
-
+           
             CurrentGameVerson = SteamCMD.GetGameVersion();
             Console.Title = WindowTitle;
         }
@@ -184,6 +187,9 @@ namespace IRSE
         // this is where stuff goes!
         private void Run(string[] args)
         {
+            Harmony.DEBUG = Dev;
+            Harmony = new Harmony("com.tse.irse");
+
             // This is for args that should be used before IRSE loads
             bool noUpdateIRSE = false;
             bool noUpdateIR = false;
