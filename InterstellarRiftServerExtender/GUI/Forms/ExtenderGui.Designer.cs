@@ -28,8 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Players");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Universe");
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExtenderGui));
             this.Tabs = new System.Windows.Forms.TabControl();
             this.ServerTab = new System.Windows.Forms.TabPage();
@@ -48,15 +47,26 @@
             this.server_config_save = new System.Windows.Forms.Button();
             this.server_config_stopserver = new System.Windows.Forms.Button();
             this.server_config_startserver = new System.Windows.Forms.Button();
-            this.ChatTab = new System.Windows.Forms.TabPage();
+            this.PlayersAndChatTab = new System.Windows.Forms.TabPage();
             this.ChatPlayerContainer = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.sc_onlineplayers_label = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.listView1 = new System.Windows.Forms.ListView();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
+            this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.sc_playerslist_listview = new System.Windows.Forms.ListView();
+            this.PlayerColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.IsAdminColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.sc_playerbans_listview = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.pc_killplayer = new System.Windows.Forms.Button();
+            this.pc_toggleadmin = new System.Windows.Forms.Button();
+            this.pc_forgetplayer = new System.Windows.Forms.Button();
             this.pc_banplayer = new System.Windows.Forms.Button();
             this.pc_kickplayer = new System.Windows.Forms.Button();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
@@ -65,17 +75,19 @@
             this.cpc_chat_list = new System.Windows.Forms.TextBox();
             this.cpc_chat_send = new System.Windows.Forms.Button();
             this.cpc_messagebox = new System.Windows.Forms.TextBox();
-            this.ObjectManipulationTab = new System.Windows.Forms.TabPage();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.objectManipulation_treeview = new System.Windows.Forms.TreeView();
-            this.objectmanipulator_grid_isEditing = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.objectManipulation_grid = new System.Windows.Forms.PropertyGrid();
+            this.CommandVisualizerTab = new System.Windows.Forms.TabPage();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.CV_PLAYERS_TAB = new System.Windows.Forms.TabPage();
+            this.CV_SYSTEMS_TAB = new System.Windows.Forms.TabPage();
+            this.CV_SHIPS_TAB = new System.Windows.Forms.TabPage();
+            this.CV_CREW_TAB = new System.Windows.Forms.TabPage();
+            this.CV_FLEET_TAB = new System.Windows.Forms.TabPage();
+            this.CV_ASTEROIDS_TAB = new System.Windows.Forms.TabPage();
+            this.CV_RIFTS_TAB = new System.Windows.Forms.TabPage();
             this.PluginsTab = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.BTN_Plugins_Enable = new System.Windows.Forms.Button();
-            this.BTN_Plugins_Reload = new System.Windows.Forms.Button();
             this.SelectedPluginStateStatus = new System.Windows.Forms.Label();
             this.SelectedPluginStateLabel = new System.Windows.Forms.Label();
             this.plugins_tab_pluginslist = new System.Windows.Forms.ListView();
@@ -86,14 +98,19 @@
             this.plugins_tab_browser = new System.Windows.Forms.WebBrowser();
             this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
             this.PluginSettingsFormPanel = new System.Windows.Forms.Panel();
-            this.CommandVisualizerTab = new System.Windows.Forms.TabPage();
-            this.splitContainer7 = new System.Windows.Forms.SplitContainer();
-            this.cv_tab_list = new System.Windows.Forms.ListBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label4 = new System.Windows.Forms.Label();
             this.ExtenderWebsite = new System.Windows.Forms.TabPage();
             this.hesw_Website = new System.Windows.Forms.WebBrowser();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.development_label = new System.Windows.Forms.Label();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.kickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.banToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forgetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -104,7 +121,7 @@
             this.ServerConfig.SuspendLayout();
             this.ExtenderConfig.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.ChatTab.SuspendLayout();
+            this.PlayersAndChatTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ChatPlayerContainer)).BeginInit();
             this.ChatPlayerContainer.Panel1.SuspendLayout();
             this.ChatPlayerContainer.Panel2.SuspendLayout();
@@ -117,6 +134,9 @@
             this.splitContainer4.Panel1.SuspendLayout();
             this.splitContainer4.Panel2.SuspendLayout();
             this.splitContainer4.SuspendLayout();
+            this.tabControl3.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
             this.splitContainer3.Panel1.SuspendLayout();
@@ -124,11 +144,8 @@
             this.splitContainer3.SuspendLayout();
             this.cpc_chat_tabs.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.ObjectManipulationTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            this.CommandVisualizerTab.SuspendLayout();
+            this.tabControl2.SuspendLayout();
             this.PluginsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
             this.splitContainer5.Panel1.SuspendLayout();
@@ -141,19 +158,18 @@
             this.tabControl1.SuspendLayout();
             this.plugins_tab_informationTab.SuspendLayout();
             this.plugins_tab_settingsTab.SuspendLayout();
-            this.CommandVisualizerTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
-            this.splitContainer7.Panel1.SuspendLayout();
-            this.splitContainer7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.SuspendLayout();
             this.ExtenderWebsite.SuspendLayout();
             this.statusStrip.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
             // 
             this.Tabs.Controls.Add(this.ServerTab);
-            this.Tabs.Controls.Add(this.ChatTab);
-            this.Tabs.Controls.Add(this.ObjectManipulationTab);
+            this.Tabs.Controls.Add(this.PlayersAndChatTab);
+            this.Tabs.Controls.Add(this.CommandVisualizerTab);
             this.Tabs.Controls.Add(this.PluginsTab);
             this.Tabs.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Tabs.Location = new System.Drawing.Point(0, 0);
@@ -171,7 +187,7 @@
             this.ServerTab.Padding = new System.Windows.Forms.Padding(3);
             this.ServerTab.Size = new System.Drawing.Size(772, 469);
             this.ServerTab.TabIndex = 0;
-            this.ServerTab.Text = "Server";
+            this.ServerTab.Text = "Server Control";
             this.ServerTab.UseVisualStyleBackColor = true;
             // 
             // ServerContainer
@@ -346,16 +362,16 @@
             this.server_config_startserver.UseVisualStyleBackColor = true;
             this.server_config_startserver.Click += new System.EventHandler(this.server_config_startserver_Click);
             // 
-            // ChatTab
+            // PlayersAndChatTab
             // 
-            this.ChatTab.Controls.Add(this.ChatPlayerContainer);
-            this.ChatTab.Location = new System.Drawing.Point(4, 22);
-            this.ChatTab.Name = "ChatTab";
-            this.ChatTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ChatTab.Size = new System.Drawing.Size(772, 469);
-            this.ChatTab.TabIndex = 1;
-            this.ChatTab.Text = "Players & Chat";
-            this.ChatTab.UseVisualStyleBackColor = true;
+            this.PlayersAndChatTab.Controls.Add(this.ChatPlayerContainer);
+            this.PlayersAndChatTab.Location = new System.Drawing.Point(4, 22);
+            this.PlayersAndChatTab.Name = "PlayersAndChatTab";
+            this.PlayersAndChatTab.Padding = new System.Windows.Forms.Padding(3);
+            this.PlayersAndChatTab.Size = new System.Drawing.Size(772, 469);
+            this.PlayersAndChatTab.TabIndex = 1;
+            this.PlayersAndChatTab.Text = "Players & Chat";
+            this.PlayersAndChatTab.UseVisualStyleBackColor = true;
             // 
             // ChatPlayerContainer
             // 
@@ -371,7 +387,7 @@
             // 
             this.ChatPlayerContainer.Panel2.Controls.Add(this.splitContainer3);
             this.ChatPlayerContainer.Size = new System.Drawing.Size(766, 463);
-            this.ChatPlayerContainer.SplitterDistance = 204;
+            this.ChatPlayerContainer.SplitterDistance = 196;
             this.ChatPlayerContainer.TabIndex = 0;
             // 
             // splitContainer2
@@ -390,7 +406,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer2.Size = new System.Drawing.Size(204, 463);
+            this.splitContainer2.Size = new System.Drawing.Size(196, 463);
             this.splitContainer2.SplitterDistance = 30;
             this.splitContainer2.TabIndex = 0;
             // 
@@ -418,7 +434,7 @@
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(204, 30);
+            this.listView1.Size = new System.Drawing.Size(196, 30);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
@@ -432,57 +448,159 @@
             // 
             // splitContainer4.Panel1
             // 
-            this.splitContainer4.Panel1.Controls.Add(this.sc_playerslist_listview);
+            this.splitContainer4.Panel1.Controls.Add(this.tabControl3);
             // 
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer4.Size = new System.Drawing.Size(204, 429);
-            this.splitContainer4.SplitterDistance = 314;
+            this.splitContainer4.Size = new System.Drawing.Size(196, 429);
+            this.splitContainer4.SplitterDistance = 341;
             this.splitContainer4.TabIndex = 0;
+            // 
+            // tabControl3
+            // 
+            this.tabControl3.Controls.Add(this.tabPage1);
+            this.tabControl3.Controls.Add(this.tabPage2);
+            this.tabControl3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl3.Location = new System.Drawing.Point(0, 0);
+            this.tabControl3.Name = "tabControl3";
+            this.tabControl3.SelectedIndex = 0;
+            this.tabControl3.Size = new System.Drawing.Size(196, 341);
+            this.tabControl3.TabIndex = 0;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.sc_playerslist_listview);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(188, 315);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Online";
+            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // sc_playerslist_listview
             // 
+            this.sc_playerslist_listview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.PlayerColumn,
+            this.IsAdminColumn});
             this.sc_playerslist_listview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sc_playerslist_listview.HideSelection = false;
-            this.sc_playerslist_listview.Location = new System.Drawing.Point(0, 0);
+            this.sc_playerslist_listview.Location = new System.Drawing.Point(3, 3);
             this.sc_playerslist_listview.Name = "sc_playerslist_listview";
-            this.sc_playerslist_listview.Size = new System.Drawing.Size(204, 314);
-            this.sc_playerslist_listview.TabIndex = 0;
+            this.sc_playerslist_listview.Size = new System.Drawing.Size(182, 309);
+            this.sc_playerslist_listview.TabIndex = 1;
             this.sc_playerslist_listview.UseCompatibleStateImageBehavior = false;
-            this.sc_playerslist_listview.View = System.Windows.Forms.View.List;
+            this.sc_playerslist_listview.View = System.Windows.Forms.View.Details;
+            // 
+            // PlayerColumn
+            // 
+            this.PlayerColumn.Text = "Player";
+            this.PlayerColumn.Width = 125;
+            // 
+            // IsAdminColumn
+            // 
+            this.IsAdminColumn.Text = "Admin";
+            this.IsAdminColumn.Width = 50;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.sc_playerbans_listview);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(188, 315);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Bans";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // sc_playerbans_listview
+            // 
+            this.sc_playerbans_listview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
+            this.sc_playerbans_listview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sc_playerbans_listview.HideSelection = false;
+            this.sc_playerbans_listview.Location = new System.Drawing.Point(3, 3);
+            this.sc_playerbans_listview.Name = "sc_playerbans_listview";
+            this.sc_playerbans_listview.Size = new System.Drawing.Size(182, 309);
+            this.sc_playerbans_listview.TabIndex = 2;
+            this.sc_playerbans_listview.UseCompatibleStateImageBehavior = false;
+            this.sc_playerbans_listview.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Player";
+            this.columnHeader1.Width = 176;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Ban Date";
             // 
             // groupBox2
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.pc_killplayer);
+            this.groupBox2.Controls.Add(this.pc_toggleadmin);
+            this.groupBox2.Controls.Add(this.pc_forgetplayer);
             this.groupBox2.Controls.Add(this.pc_banplayer);
             this.groupBox2.Controls.Add(this.pc_kickplayer);
-            this.groupBox2.Location = new System.Drawing.Point(8, 8);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(182, 85);
-            this.groupBox2.TabIndex = 6;
+            this.groupBox2.Size = new System.Drawing.Size(196, 84);
+            this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Player Control";
+            this.groupBox2.Text = "Quick Player Control";
+            // 
+            // pc_killplayer
+            // 
+            this.pc_killplayer.Location = new System.Drawing.Point(57, 55);
+            this.pc_killplayer.Name = "pc_killplayer";
+            this.pc_killplayer.Size = new System.Drawing.Size(41, 23);
+            this.pc_killplayer.TabIndex = 7;
+            this.pc_killplayer.Text = "Kill";
+            this.pc_killplayer.UseVisualStyleBackColor = true;
+            this.pc_killplayer.Click += new System.EventHandler(this.pc_killplayer_Click);
+            // 
+            // pc_toggleadmin
+            // 
+            this.pc_toggleadmin.Location = new System.Drawing.Point(141, 19);
+            this.pc_toggleadmin.Name = "pc_toggleadmin";
+            this.pc_toggleadmin.Size = new System.Drawing.Size(48, 59);
+            this.pc_toggleadmin.TabIndex = 6;
+            this.pc_toggleadmin.Text = "Toggle Admin";
+            this.pc_toggleadmin.UseVisualStyleBackColor = true;
+            this.pc_toggleadmin.Click += new System.EventHandler(this.pc_toggleadmin_Click);
+            // 
+            // pc_forgetplayer
+            // 
+            this.pc_forgetplayer.Location = new System.Drawing.Point(4, 55);
+            this.pc_forgetplayer.Name = "pc_forgetplayer";
+            this.pc_forgetplayer.Size = new System.Drawing.Size(47, 23);
+            this.pc_forgetplayer.TabIndex = 5;
+            this.pc_forgetplayer.Text = "Forget";
+            this.pc_forgetplayer.UseVisualStyleBackColor = true;
+            this.pc_forgetplayer.Click += new System.EventHandler(this.pc_forgetplayer_Click);
             // 
             // pc_banplayer
             // 
-            this.pc_banplayer.Location = new System.Drawing.Point(88, 30);
+            this.pc_banplayer.Location = new System.Drawing.Point(57, 19);
             this.pc_banplayer.Name = "pc_banplayer";
-            this.pc_banplayer.Size = new System.Drawing.Size(63, 23);
+            this.pc_banplayer.Size = new System.Drawing.Size(41, 23);
             this.pc_banplayer.TabIndex = 4;
             this.pc_banplayer.Text = "Ban";
             this.pc_banplayer.UseVisualStyleBackColor = true;
+            this.pc_banplayer.Click += new System.EventHandler(this.pc_banplayer_Click);
             // 
             // pc_kickplayer
             // 
-            this.pc_kickplayer.Location = new System.Drawing.Point(19, 30);
+            this.pc_kickplayer.Location = new System.Drawing.Point(4, 19);
             this.pc_kickplayer.Name = "pc_kickplayer";
-            this.pc_kickplayer.Size = new System.Drawing.Size(63, 23);
+            this.pc_kickplayer.Size = new System.Drawing.Size(47, 23);
             this.pc_kickplayer.TabIndex = 3;
             this.pc_kickplayer.Text = "Kick";
             this.pc_kickplayer.UseVisualStyleBackColor = true;
+            this.pc_kickplayer.Click += new System.EventHandler(this.pc_kickplayer_Click);
             // 
             // splitContainer3
             // 
@@ -499,8 +617,8 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.cpc_chat_send);
             this.splitContainer3.Panel2.Controls.Add(this.cpc_messagebox);
-            this.splitContainer3.Size = new System.Drawing.Size(558, 463);
-            this.splitContainer3.SplitterDistance = 431;
+            this.splitContainer3.Size = new System.Drawing.Size(566, 463);
+            this.splitContainer3.SplitterDistance = 412;
             this.splitContainer3.TabIndex = 0;
             // 
             // cpc_chat_tabs
@@ -511,7 +629,7 @@
             this.cpc_chat_tabs.Location = new System.Drawing.Point(0, 0);
             this.cpc_chat_tabs.Name = "cpc_chat_tabs";
             this.cpc_chat_tabs.SelectedIndex = 0;
-            this.cpc_chat_tabs.Size = new System.Drawing.Size(558, 431);
+            this.cpc_chat_tabs.Size = new System.Drawing.Size(566, 412);
             this.cpc_chat_tabs.TabIndex = 0;
             // 
             // tabPage3
@@ -520,7 +638,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(550, 405);
+            this.tabPage3.Size = new System.Drawing.Size(558, 386);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Chat";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -532,13 +650,13 @@
             this.cpc_chat_list.Multiline = true;
             this.cpc_chat_list.Name = "cpc_chat_list";
             this.cpc_chat_list.ReadOnly = true;
-            this.cpc_chat_list.Size = new System.Drawing.Size(544, 399);
+            this.cpc_chat_list.Size = new System.Drawing.Size(552, 380);
             this.cpc_chat_list.TabIndex = 2;
             // 
             // cpc_chat_send
             // 
             this.cpc_chat_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cpc_chat_send.Location = new System.Drawing.Point(507, 3);
+            this.cpc_chat_send.Location = new System.Drawing.Point(487, 3);
             this.cpc_chat_send.Name = "cpc_chat_send";
             this.cpc_chat_send.Size = new System.Drawing.Size(50, 23);
             this.cpc_chat_send.TabIndex = 1;
@@ -553,85 +671,99 @@
             this.cpc_messagebox.Location = new System.Drawing.Point(3, 5);
             this.cpc_messagebox.Name = "cpc_messagebox";
             this.cpc_messagebox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.cpc_messagebox.Size = new System.Drawing.Size(498, 20);
+            this.cpc_messagebox.Size = new System.Drawing.Size(478, 20);
             this.cpc_messagebox.TabIndex = 0;
             this.cpc_messagebox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cpc_messagebox_KeyDown);
             // 
-            // ObjectManipulationTab
+            // CommandVisualizerTab
             // 
-            this.ObjectManipulationTab.Controls.Add(this.splitContainer1);
-            this.ObjectManipulationTab.Location = new System.Drawing.Point(4, 22);
-            this.ObjectManipulationTab.Name = "ObjectManipulationTab";
-            this.ObjectManipulationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ObjectManipulationTab.Size = new System.Drawing.Size(772, 469);
-            this.ObjectManipulationTab.TabIndex = 2;
-            this.ObjectManipulationTab.Text = "Object Manipulation";
-            this.ObjectManipulationTab.UseVisualStyleBackColor = true;
+            this.CommandVisualizerTab.Controls.Add(this.tabControl2);
+            this.CommandVisualizerTab.Location = new System.Drawing.Point(4, 22);
+            this.CommandVisualizerTab.Name = "CommandVisualizerTab";
+            this.CommandVisualizerTab.Padding = new System.Windows.Forms.Padding(3);
+            this.CommandVisualizerTab.Size = new System.Drawing.Size(772, 469);
+            this.CommandVisualizerTab.TabIndex = 6;
+            this.CommandVisualizerTab.Text = "Command Visualizer";
+            this.CommandVisualizerTab.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1
+            // tabControl2
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer1.Name = "splitContainer1";
+            this.tabControl2.Controls.Add(this.CV_PLAYERS_TAB);
+            this.tabControl2.Controls.Add(this.CV_SYSTEMS_TAB);
+            this.tabControl2.Controls.Add(this.CV_SHIPS_TAB);
+            this.tabControl2.Controls.Add(this.CV_CREW_TAB);
+            this.tabControl2.Controls.Add(this.CV_FLEET_TAB);
+            this.tabControl2.Controls.Add(this.CV_ASTEROIDS_TAB);
+            this.tabControl2.Controls.Add(this.CV_RIFTS_TAB);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(3, 3);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(766, 463);
+            this.tabControl2.TabIndex = 0;
             // 
-            // splitContainer1.Panel1
+            // CV_PLAYERS_TAB
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.objectManipulation_treeview);
+            this.CV_PLAYERS_TAB.Location = new System.Drawing.Point(4, 22);
+            this.CV_PLAYERS_TAB.Name = "CV_PLAYERS_TAB";
+            this.CV_PLAYERS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_PLAYERS_TAB.TabIndex = 3;
+            this.CV_PLAYERS_TAB.Text = "Players";
+            this.CV_PLAYERS_TAB.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1.Panel2
+            // CV_SYSTEMS_TAB
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.objectmanipulator_grid_isEditing);
-            this.splitContainer1.Panel2.Controls.Add(this.label4);
-            this.splitContainer1.Panel2.Controls.Add(this.objectManipulation_grid);
-            this.splitContainer1.Size = new System.Drawing.Size(766, 463);
-            this.splitContainer1.SplitterDistance = 262;
-            this.splitContainer1.TabIndex = 0;
+            this.CV_SYSTEMS_TAB.Location = new System.Drawing.Point(4, 22);
+            this.CV_SYSTEMS_TAB.Name = "CV_SYSTEMS_TAB";
+            this.CV_SYSTEMS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_SYSTEMS_TAB.TabIndex = 6;
+            this.CV_SYSTEMS_TAB.Text = "Systems";
+            this.CV_SYSTEMS_TAB.UseVisualStyleBackColor = true;
             // 
-            // objectManipulation_treeview
+            // CV_SHIPS_TAB
             // 
-            this.objectManipulation_treeview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.objectManipulation_treeview.Location = new System.Drawing.Point(0, 0);
-            this.objectManipulation_treeview.Name = "objectManipulation_treeview";
-            treeNode1.Name = "PlayersNode";
-            treeNode1.Text = "Players";
-            treeNode2.Name = "UniverseNode";
-            treeNode2.Text = "Universe";
-            this.objectManipulation_treeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            this.objectManipulation_treeview.Size = new System.Drawing.Size(262, 463);
-            this.objectManipulation_treeview.TabIndex = 0;
-            this.objectManipulation_treeview.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.objectManipulation_treeview_AfterSelect);
-            this.objectManipulation_treeview.Click += new System.EventHandler(this.objectManipulation_treeview_Click);
+            this.CV_SHIPS_TAB.Location = new System.Drawing.Point(4, 22);
+            this.CV_SHIPS_TAB.Name = "CV_SHIPS_TAB";
+            this.CV_SHIPS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_SHIPS_TAB.TabIndex = 0;
+            this.CV_SHIPS_TAB.Text = "Ships";
+            this.CV_SHIPS_TAB.UseVisualStyleBackColor = true;
             // 
-            // objectmanipulator_grid_isEditing
+            // CV_CREW_TAB
             // 
-            this.objectmanipulator_grid_isEditing.AutoSize = true;
-            this.objectmanipulator_grid_isEditing.ForeColor = System.Drawing.Color.Lime;
-            this.objectmanipulator_grid_isEditing.Location = new System.Drawing.Point(436, 6);
-            this.objectmanipulator_grid_isEditing.Name = "objectmanipulator_grid_isEditing";
-            this.objectmanipulator_grid_isEditing.Size = new System.Drawing.Size(0, 13);
-            this.objectmanipulator_grid_isEditing.TabIndex = 2;
+            this.CV_CREW_TAB.Location = new System.Drawing.Point(4, 22);
+            this.CV_CREW_TAB.Name = "CV_CREW_TAB";
+            this.CV_CREW_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_CREW_TAB.TabIndex = 4;
+            this.CV_CREW_TAB.Text = "Crew";
+            this.CV_CREW_TAB.UseVisualStyleBackColor = true;
             // 
-            // label4
+            // CV_FLEET_TAB
             // 
-            this.label4.AutoSize = true;
-            this.label4.ForeColor = System.Drawing.Color.DarkRed;
-            this.label4.Location = new System.Drawing.Point(147, 6);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(252, 13);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "Tip: Holding ALT while editing stops the grid refresh!";
+            this.CV_FLEET_TAB.Location = new System.Drawing.Point(4, 22);
+            this.CV_FLEET_TAB.Name = "CV_FLEET_TAB";
+            this.CV_FLEET_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_FLEET_TAB.TabIndex = 5;
+            this.CV_FLEET_TAB.Text = "Fleet";
+            this.CV_FLEET_TAB.UseVisualStyleBackColor = true;
             // 
-            // objectManipulation_grid
+            // CV_ASTEROIDS_TAB
             // 
-            this.objectManipulation_grid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.objectManipulation_grid.LineColor = System.Drawing.SystemColors.ControlDark;
-            this.objectManipulation_grid.Location = new System.Drawing.Point(0, 0);
-            this.objectManipulation_grid.Name = "objectManipulation_grid";
-            this.objectManipulation_grid.Size = new System.Drawing.Size(500, 463);
-            this.objectManipulation_grid.TabIndex = 0;
-            this.objectManipulation_grid.Click += new System.EventHandler(this.objectManipulation_grid_Click);
+            this.CV_ASTEROIDS_TAB.Location = new System.Drawing.Point(4, 22);
+            this.CV_ASTEROIDS_TAB.Name = "CV_ASTEROIDS_TAB";
+            this.CV_ASTEROIDS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_ASTEROIDS_TAB.TabIndex = 1;
+            this.CV_ASTEROIDS_TAB.Text = "Asteroids";
+            this.CV_ASTEROIDS_TAB.UseVisualStyleBackColor = true;
+            // 
+            // CV_RIFTS_TAB
+            // 
+            this.CV_RIFTS_TAB.Location = new System.Drawing.Point(4, 22);
+            this.CV_RIFTS_TAB.Name = "CV_RIFTS_TAB";
+            this.CV_RIFTS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_RIFTS_TAB.TabIndex = 2;
+            this.CV_RIFTS_TAB.Text = "Rifts";
+            this.CV_RIFTS_TAB.UseVisualStyleBackColor = true;
             // 
             // PluginsTab
             // 
@@ -670,7 +802,6 @@
             // splitContainer6.Panel1
             // 
             this.splitContainer6.Panel1.Controls.Add(this.BTN_Plugins_Enable);
-            this.splitContainer6.Panel1.Controls.Add(this.BTN_Plugins_Reload);
             this.splitContainer6.Panel1.Controls.Add(this.SelectedPluginStateStatus);
             this.splitContainer6.Panel1.Controls.Add(this.SelectedPluginStateLabel);
             // 
@@ -683,23 +814,13 @@
             // 
             // BTN_Plugins_Enable
             // 
-            this.BTN_Plugins_Enable.Location = new System.Drawing.Point(106, 35);
+            this.BTN_Plugins_Enable.Location = new System.Drawing.Point(25, 35);
             this.BTN_Plugins_Enable.Name = "BTN_Plugins_Enable";
-            this.BTN_Plugins_Enable.Size = new System.Drawing.Size(75, 23);
+            this.BTN_Plugins_Enable.Size = new System.Drawing.Size(156, 23);
             this.BTN_Plugins_Enable.TabIndex = 3;
             this.BTN_Plugins_Enable.Text = "Disable";
             this.BTN_Plugins_Enable.UseVisualStyleBackColor = true;
             this.BTN_Plugins_Enable.Click += new System.EventHandler(this.BTN_Plugins_Enable_Click);
-            // 
-            // BTN_Plugins_Reload
-            // 
-            this.BTN_Plugins_Reload.Location = new System.Drawing.Point(25, 35);
-            this.BTN_Plugins_Reload.Name = "BTN_Plugins_Reload";
-            this.BTN_Plugins_Reload.Size = new System.Drawing.Size(75, 23);
-            this.BTN_Plugins_Reload.TabIndex = 2;
-            this.BTN_Plugins_Reload.Text = "Reload";
-            this.BTN_Plugins_Reload.UseVisualStyleBackColor = true;
-            this.BTN_Plugins_Reload.Click += new System.EventHandler(this.BTN_Plugins_Reload_Click);
             // 
             // SelectedPluginStateStatus
             // 
@@ -805,38 +926,19 @@
             this.PluginSettingsFormPanel.Size = new System.Drawing.Size(541, 437);
             this.PluginSettingsFormPanel.TabIndex = 0;
             // 
-            // CommandVisualizerTab
+            // splitContainer1
             // 
-            this.CommandVisualizerTab.Controls.Add(this.splitContainer7);
-            this.CommandVisualizerTab.Location = new System.Drawing.Point(4, 22);
-            this.CommandVisualizerTab.Name = "CommandVisualizerTab";
-            this.CommandVisualizerTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CommandVisualizerTab.Size = new System.Drawing.Size(772, 469);
-            this.CommandVisualizerTab.TabIndex = 6;
-            this.CommandVisualizerTab.Text = "Command Visualizer";
-            this.CommandVisualizerTab.UseVisualStyleBackColor = true;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Size = new System.Drawing.Size(150, 100);
+            this.splitContainer1.TabIndex = 0;
             // 
-            // splitContainer7
+            // label4
             // 
-            this.splitContainer7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer7.Location = new System.Drawing.Point(3, 3);
-            this.splitContainer7.Name = "splitContainer7";
-            // 
-            // splitContainer7.Panel1
-            // 
-            this.splitContainer7.Panel1.Controls.Add(this.cv_tab_list);
-            this.splitContainer7.Size = new System.Drawing.Size(766, 463);
-            this.splitContainer7.SplitterDistance = 226;
-            this.splitContainer7.TabIndex = 0;
-            // 
-            // cv_tab_list
-            // 
-            this.cv_tab_list.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cv_tab_list.FormattingEnabled = true;
-            this.cv_tab_list.Location = new System.Drawing.Point(0, 0);
-            this.cv_tab_list.Name = "cv_tab_list";
-            this.cv_tab_list.Size = new System.Drawing.Size(226, 463);
-            this.cv_tab_list.TabIndex = 0;
+            this.label4.Location = new System.Drawing.Point(0, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(100, 23);
+            this.label4.TabIndex = 0;
             // 
             // ExtenderWebsite
             // 
@@ -889,6 +991,49 @@
             this.development_label.Size = new System.Drawing.Size(0, 13);
             this.development_label.TabIndex = 3;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.kickToolStripMenuItem,
+            this.banToolStripMenuItem,
+            this.forgetToolStripMenuItem,
+            this.killToolStripMenuItem,
+            this.toggleAdminToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 114);
+            this.contextMenuStrip1.Text = "Control";
+            // 
+            // kickToolStripMenuItem
+            // 
+            this.kickToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.kickToolStripMenuItem.Name = "kickToolStripMenuItem";
+            this.kickToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.kickToolStripMenuItem.Text = "Kick";
+            // 
+            // banToolStripMenuItem
+            // 
+            this.banToolStripMenuItem.Name = "banToolStripMenuItem";
+            this.banToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.banToolStripMenuItem.Text = "Ban";
+            // 
+            // forgetToolStripMenuItem
+            // 
+            this.forgetToolStripMenuItem.Name = "forgetToolStripMenuItem";
+            this.forgetToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.forgetToolStripMenuItem.Text = "Forget";
+            // 
+            // killToolStripMenuItem
+            // 
+            this.killToolStripMenuItem.Name = "killToolStripMenuItem";
+            this.killToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.killToolStripMenuItem.Text = "Kill";
+            // 
+            // toggleAdminToolStripMenuItem
+            // 
+            this.toggleAdminToolStripMenuItem.Name = "toggleAdminToolStripMenuItem";
+            this.toggleAdminToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.toggleAdminToolStripMenuItem.Text = "Toggle Admin";
+            // 
             // ExtenderGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -902,7 +1047,6 @@
             this.Name = "ExtenderGui";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExtenderGui_FormClosing);
-            this.Load += new System.EventHandler(this.ExtenderGui_Load);
             this.Tabs.ResumeLayout(false);
             this.ServerTab.ResumeLayout(false);
             this.ServerContainer.Panel1.ResumeLayout(false);
@@ -913,7 +1057,7 @@
             this.ServerConfig.ResumeLayout(false);
             this.ExtenderConfig.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.ChatTab.ResumeLayout(false);
+            this.PlayersAndChatTab.ResumeLayout(false);
             this.ChatPlayerContainer.Panel1.ResumeLayout(false);
             this.ChatPlayerContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ChatPlayerContainer)).EndInit();
@@ -927,6 +1071,9 @@
             this.splitContainer4.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer4)).EndInit();
             this.splitContainer4.ResumeLayout(false);
+            this.tabControl3.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
             this.splitContainer3.Panel2.ResumeLayout(false);
@@ -936,12 +1083,8 @@
             this.cpc_chat_tabs.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.ObjectManipulationTab.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.CommandVisualizerTab.ResumeLayout(false);
+            this.tabControl2.ResumeLayout(false);
             this.PluginsTab.ResumeLayout(false);
             this.splitContainer5.Panel1.ResumeLayout(false);
             this.splitContainer5.Panel2.ResumeLayout(false);
@@ -955,13 +1098,12 @@
             this.tabControl1.ResumeLayout(false);
             this.plugins_tab_informationTab.ResumeLayout(false);
             this.plugins_tab_settingsTab.ResumeLayout(false);
-            this.CommandVisualizerTab.ResumeLayout(false);
-            this.splitContainer7.Panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
-            this.splitContainer7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ExtenderWebsite.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -978,14 +1120,8 @@
         private System.Windows.Forms.Button server_config_cancel;
         private System.Windows.Forms.Button server_config_save;
         private System.Windows.Forms.ToolStripStatusLabel StatusBar;
-        private System.Windows.Forms.TabPage ChatTab;
+        private System.Windows.Forms.TabPage PlayersAndChatTab;
         private System.Windows.Forms.SplitContainer ChatPlayerContainer;
-        private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.TabControl cpc_chat_tabs;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TextBox cpc_chat_list;
-        private System.Windows.Forms.Button cpc_chat_send;
-        private System.Windows.Forms.TextBox cpc_messagebox;
         public System.Windows.Forms.Button server_config_startserver;
         private System.Windows.Forms.Button server_config_reload;
         private System.Windows.Forms.TabPage ObjectManipulationTab;
@@ -996,22 +1132,12 @@
         private System.Windows.Forms.Label sc_onlineplayers_label;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.SplitContainer splitContainer4;
-        private System.Windows.Forms.ListView sc_playerslist_listview;
         private System.Windows.Forms.TabPage ExtenderWebsite;
         private System.Windows.Forms.WebBrowser hesw_Website;
         private System.Windows.Forms.TabPage PluginsTab;
-        private System.Windows.Forms.TabControl server_server_Tabs;
-        private System.Windows.Forms.TabPage ServerConfig;
-        private System.Windows.Forms.TabPage ExtenderConfig;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label server_hesNewsLabel;
         private System.Windows.Forms.Button serverconfig_checkForUpdates;
-        private System.Windows.Forms.PropertyGrid serverconfig_properties;
-        private System.Windows.Forms.PropertyGrid extenderconfig_properties;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button pc_banplayer;
-        private System.Windows.Forms.Button pc_kickplayer;
         private System.Windows.Forms.SplitContainer splitContainer5;
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.Label SelectedPluginStateStatus;
@@ -1021,17 +1147,55 @@
         private System.Windows.Forms.ColumnHeader stateColumn;
         private System.Windows.Forms.Label development_label;
         private System.Windows.Forms.TabPage CommandVisualizerTab;
-        private System.Windows.Forms.SplitContainer splitContainer7;
-        private System.Windows.Forms.ListBox cv_tab_list;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label objectmanipulator_grid_isEditing;
         private System.Windows.Forms.Button BTN_Plugins_Enable;
-        private System.Windows.Forms.Button BTN_Plugins_Reload;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage plugins_tab_informationTab;
         private System.Windows.Forms.WebBrowser plugins_tab_browser;
         private System.Windows.Forms.TabPage plugins_tab_settingsTab;
         private System.Windows.Forms.Panel PluginSettingsFormPanel;
+        private System.Windows.Forms.TabControl server_server_Tabs;
+        private System.Windows.Forms.TabPage ServerConfig;
+        private System.Windows.Forms.PropertyGrid serverconfig_properties;
+        private System.Windows.Forms.TabPage ExtenderConfig;
+        private System.Windows.Forms.PropertyGrid extenderconfig_properties;
+        private System.Windows.Forms.SplitContainer splitContainer4;
+        private System.Windows.Forms.TabControl tabControl3;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.ListView sc_playerslist_listview;
+        private System.Windows.Forms.ColumnHeader PlayerColumn;
+        private System.Windows.Forms.ColumnHeader IsAdminColumn;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button pc_killplayer;
+        private System.Windows.Forms.Button pc_toggleadmin;
+        private System.Windows.Forms.Button pc_forgetplayer;
+        private System.Windows.Forms.Button pc_banplayer;
+        private System.Windows.Forms.Button pc_kickplayer;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.TabControl cpc_chat_tabs;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TextBox cpc_chat_list;
+        private System.Windows.Forms.Button cpc_chat_send;
+        private System.Windows.Forms.TextBox cpc_messagebox;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage CV_PLAYERS_TAB;
+        private System.Windows.Forms.TabPage CV_SYSTEMS_TAB;
+        private System.Windows.Forms.TabPage CV_SHIPS_TAB;
+        private System.Windows.Forms.TabPage CV_CREW_TAB;
+        private System.Windows.Forms.TabPage CV_FLEET_TAB;
+        private System.Windows.Forms.TabPage CV_ASTEROIDS_TAB;
+        private System.Windows.Forms.TabPage CV_RIFTS_TAB;
+        private System.Windows.Forms.ListView sc_playerbans_listview;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem kickToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem banToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem forgetToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem killToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toggleAdminToolStripMenuItem;
     }
 }
 
