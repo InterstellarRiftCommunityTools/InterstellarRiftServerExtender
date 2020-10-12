@@ -74,11 +74,18 @@
             this.PluginsTab = new System.Windows.Forms.TabPage();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.BTN_Plugins_Enable = new System.Windows.Forms.Button();
+            this.BTN_Plugins_Reload = new System.Windows.Forms.Button();
             this.SelectedPluginStateStatus = new System.Windows.Forms.Label();
             this.SelectedPluginStateLabel = new System.Windows.Forms.Label();
             this.plugins_tab_pluginslist = new System.Windows.Forms.ListView();
             this.nameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.stateColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.plugins_tab_informationTab = new System.Windows.Forms.TabPage();
+            this.plugins_tab_browser = new System.Windows.Forms.WebBrowser();
+            this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
+            this.PluginSettingsFormPanel = new System.Windows.Forms.Panel();
             this.CommandVisualizerTab = new System.Windows.Forms.TabPage();
             this.splitContainer7 = new System.Windows.Forms.SplitContainer();
             this.cv_tab_list = new System.Windows.Forms.ListBox();
@@ -87,13 +94,6 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.development_label = new System.Windows.Forms.Label();
-            this.BTN_Plugins_Reload = new System.Windows.Forms.Button();
-            this.BTN_Plugins_Enable = new System.Windows.Forms.Button();
-            this.plugins_tab_informationTab = new System.Windows.Forms.TabPage();
-            this.plugins_tab_browser = new System.Windows.Forms.WebBrowser();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
-            this.PluginSettingsFormPanel = new System.Windows.Forms.Panel();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -138,15 +138,15 @@
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.plugins_tab_informationTab.SuspendLayout();
+            this.plugins_tab_settingsTab.SuspendLayout();
             this.CommandVisualizerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).BeginInit();
             this.splitContainer7.Panel1.SuspendLayout();
             this.splitContainer7.SuspendLayout();
             this.ExtenderWebsite.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.plugins_tab_informationTab.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.plugins_tab_settingsTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -354,7 +354,7 @@
             this.ChatTab.Padding = new System.Windows.Forms.Padding(3);
             this.ChatTab.Size = new System.Drawing.Size(772, 469);
             this.ChatTab.TabIndex = 1;
-            this.ChatTab.Text = "Server Chat";
+            this.ChatTab.Text = "Players & Chat";
             this.ChatTab.UseVisualStyleBackColor = true;
             // 
             // ChatPlayerContainer
@@ -681,6 +681,26 @@
             this.splitContainer6.SplitterDistance = 68;
             this.splitContainer6.TabIndex = 0;
             // 
+            // BTN_Plugins_Enable
+            // 
+            this.BTN_Plugins_Enable.Location = new System.Drawing.Point(106, 35);
+            this.BTN_Plugins_Enable.Name = "BTN_Plugins_Enable";
+            this.BTN_Plugins_Enable.Size = new System.Drawing.Size(75, 23);
+            this.BTN_Plugins_Enable.TabIndex = 3;
+            this.BTN_Plugins_Enable.Text = "Disable";
+            this.BTN_Plugins_Enable.UseVisualStyleBackColor = true;
+            this.BTN_Plugins_Enable.Click += new System.EventHandler(this.BTN_Plugins_Enable_Click);
+            // 
+            // BTN_Plugins_Reload
+            // 
+            this.BTN_Plugins_Reload.Location = new System.Drawing.Point(25, 35);
+            this.BTN_Plugins_Reload.Name = "BTN_Plugins_Reload";
+            this.BTN_Plugins_Reload.Size = new System.Drawing.Size(75, 23);
+            this.BTN_Plugins_Reload.TabIndex = 2;
+            this.BTN_Plugins_Reload.Text = "Reload";
+            this.BTN_Plugins_Reload.UseVisualStyleBackColor = true;
+            this.BTN_Plugins_Reload.Click += new System.EventHandler(this.BTN_Plugins_Reload_Click);
+            // 
             // SelectedPluginStateStatus
             // 
             this.SelectedPluginStateStatus.AutoSize = true;
@@ -729,6 +749,61 @@
             // 
             this.stateColumn.Text = "State";
             this.stateColumn.Width = 70;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.plugins_tab_informationTab);
+            this.tabControl1.Controls.Add(this.plugins_tab_settingsTab);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(555, 469);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // plugins_tab_informationTab
+            // 
+            this.plugins_tab_informationTab.Controls.Add(this.plugins_tab_browser);
+            this.plugins_tab_informationTab.Location = new System.Drawing.Point(4, 22);
+            this.plugins_tab_informationTab.Name = "plugins_tab_informationTab";
+            this.plugins_tab_informationTab.Padding = new System.Windows.Forms.Padding(3);
+            this.plugins_tab_informationTab.Size = new System.Drawing.Size(547, 443);
+            this.plugins_tab_informationTab.TabIndex = 0;
+            this.plugins_tab_informationTab.Text = "Information";
+            this.plugins_tab_informationTab.UseVisualStyleBackColor = true;
+            // 
+            // plugins_tab_browser
+            // 
+            this.plugins_tab_browser.AllowNavigation = false;
+            this.plugins_tab_browser.AllowWebBrowserDrop = false;
+            this.plugins_tab_browser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plugins_tab_browser.IsWebBrowserContextMenuEnabled = false;
+            this.plugins_tab_browser.Location = new System.Drawing.Point(3, 3);
+            this.plugins_tab_browser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.plugins_tab_browser.Name = "plugins_tab_browser";
+            this.plugins_tab_browser.ScriptErrorsSuppressed = true;
+            this.plugins_tab_browser.Size = new System.Drawing.Size(541, 437);
+            this.plugins_tab_browser.TabIndex = 0;
+            // 
+            // plugins_tab_settingsTab
+            // 
+            this.plugins_tab_settingsTab.Controls.Add(this.PluginSettingsFormPanel);
+            this.plugins_tab_settingsTab.Location = new System.Drawing.Point(4, 22);
+            this.plugins_tab_settingsTab.Name = "plugins_tab_settingsTab";
+            this.plugins_tab_settingsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.plugins_tab_settingsTab.Size = new System.Drawing.Size(547, 443);
+            this.plugins_tab_settingsTab.TabIndex = 1;
+            this.plugins_tab_settingsTab.Text = "Settings";
+            this.plugins_tab_settingsTab.UseVisualStyleBackColor = true;
+            // 
+            // PluginSettingsFormPanel
+            // 
+            this.PluginSettingsFormPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.PluginSettingsFormPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PluginSettingsFormPanel.Location = new System.Drawing.Point(3, 3);
+            this.PluginSettingsFormPanel.Name = "PluginSettingsFormPanel";
+            this.PluginSettingsFormPanel.Size = new System.Drawing.Size(541, 437);
+            this.PluginSettingsFormPanel.TabIndex = 0;
             // 
             // CommandVisualizerTab
             // 
@@ -814,81 +889,6 @@
             this.development_label.Size = new System.Drawing.Size(0, 13);
             this.development_label.TabIndex = 3;
             // 
-            // BTN_Plugins_Reload
-            // 
-            this.BTN_Plugins_Reload.Location = new System.Drawing.Point(25, 35);
-            this.BTN_Plugins_Reload.Name = "BTN_Plugins_Reload";
-            this.BTN_Plugins_Reload.Size = new System.Drawing.Size(75, 23);
-            this.BTN_Plugins_Reload.TabIndex = 2;
-            this.BTN_Plugins_Reload.Text = "Reload";
-            this.BTN_Plugins_Reload.UseVisualStyleBackColor = true;
-            this.BTN_Plugins_Reload.Click += new System.EventHandler(this.BTN_Plugins_Reload_Click);
-            // 
-            // BTN_Plugins_Enable
-            // 
-            this.BTN_Plugins_Enable.Location = new System.Drawing.Point(106, 35);
-            this.BTN_Plugins_Enable.Name = "BTN_Plugins_Enable";
-            this.BTN_Plugins_Enable.Size = new System.Drawing.Size(75, 23);
-            this.BTN_Plugins_Enable.TabIndex = 3;
-            this.BTN_Plugins_Enable.Text = "Disable";
-            this.BTN_Plugins_Enable.UseVisualStyleBackColor = true;
-            this.BTN_Plugins_Enable.Click += new System.EventHandler(this.BTN_Plugins_Enable_Click);
-            // 
-            // plugins_tab_informationTab
-            // 
-            this.plugins_tab_informationTab.Controls.Add(this.plugins_tab_browser);
-            this.plugins_tab_informationTab.Location = new System.Drawing.Point(4, 22);
-            this.plugins_tab_informationTab.Name = "plugins_tab_informationTab";
-            this.plugins_tab_informationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.plugins_tab_informationTab.Size = new System.Drawing.Size(547, 443);
-            this.plugins_tab_informationTab.TabIndex = 0;
-            this.plugins_tab_informationTab.Text = "Information";
-            this.plugins_tab_informationTab.UseVisualStyleBackColor = true;
-            // 
-            // plugins_tab_browser
-            // 
-            this.plugins_tab_browser.AllowNavigation = false;
-            this.plugins_tab_browser.AllowWebBrowserDrop = false;
-            this.plugins_tab_browser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plugins_tab_browser.IsWebBrowserContextMenuEnabled = false;
-            this.plugins_tab_browser.Location = new System.Drawing.Point(3, 3);
-            this.plugins_tab_browser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.plugins_tab_browser.Name = "plugins_tab_browser";
-            this.plugins_tab_browser.ScriptErrorsSuppressed = true;
-            this.plugins_tab_browser.Size = new System.Drawing.Size(541, 437);
-            this.plugins_tab_browser.TabIndex = 0;
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.plugins_tab_informationTab);
-            this.tabControl1.Controls.Add(this.plugins_tab_settingsTab);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(555, 469);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // plugins_tab_settingsTab
-            // 
-            this.plugins_tab_settingsTab.Controls.Add(this.PluginSettingsFormPanel);
-            this.plugins_tab_settingsTab.Location = new System.Drawing.Point(4, 22);
-            this.plugins_tab_settingsTab.Name = "plugins_tab_settingsTab";
-            this.plugins_tab_settingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.plugins_tab_settingsTab.Size = new System.Drawing.Size(547, 443);
-            this.plugins_tab_settingsTab.TabIndex = 1;
-            this.plugins_tab_settingsTab.Text = "Settings";
-            this.plugins_tab_settingsTab.UseVisualStyleBackColor = true;
-            // 
-            // PluginSettingsFormPanel
-            // 
-            this.PluginSettingsFormPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.PluginSettingsFormPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PluginSettingsFormPanel.Location = new System.Drawing.Point(3, 3);
-            this.PluginSettingsFormPanel.Name = "PluginSettingsFormPanel";
-            this.PluginSettingsFormPanel.Size = new System.Drawing.Size(541, 437);
-            this.PluginSettingsFormPanel.TabIndex = 0;
-            // 
             // ExtenderGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -952,6 +952,9 @@
             this.splitContainer6.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.plugins_tab_informationTab.ResumeLayout(false);
+            this.plugins_tab_settingsTab.ResumeLayout(false);
             this.CommandVisualizerTab.ResumeLayout(false);
             this.splitContainer7.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer7)).EndInit();
@@ -959,9 +962,6 @@
             this.ExtenderWebsite.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.plugins_tab_informationTab.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.plugins_tab_settingsTab.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
