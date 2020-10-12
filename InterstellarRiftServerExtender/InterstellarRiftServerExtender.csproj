@@ -311,6 +311,8 @@ IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\bin" md "$(ProjectDir)bin\IRSERe
 IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\config" md "$(ProjectDir)bin\IRSERelease\IRSE\config"
 
 xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+
+xcopy "$(TargetDir)MarkdownDeep.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\IRSE\config" /y
 xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y

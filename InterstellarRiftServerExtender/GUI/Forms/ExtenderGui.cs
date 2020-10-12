@@ -229,6 +229,9 @@ namespace IRSE.GUI.Forms
             {
                 List<PluginInfo> pluginsArray = ServerInstance.Instance.PluginManager.LoadedPlugins;
 
+                if (pluginsArray.Count == 0)
+                    return;
+
                 foreach (PluginInfo plugin in pluginsArray)
                 {
                     string name = plugin.Name;
@@ -627,6 +630,9 @@ namespace IRSE.GUI.Forms
         {
             try
             {
+                if (plugins_tab_pluginslist.SelectedItems.Count == 0)
+                    return;
+
                 if (plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems == null)
                     return;
 
@@ -650,6 +656,9 @@ namespace IRSE.GUI.Forms
         {
             try
             {
+                if (plugins_tab_pluginslist.SelectedItems.Count == 0)
+                    return;
+
                 if (plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems == null)
                     return;
 
@@ -670,6 +679,9 @@ namespace IRSE.GUI.Forms
         {
             try
             {
+                if (plugins_tab_pluginslist.SelectedItems.Count == 0)
+                    return;
+
                 if (plugins_tab_pluginslist.SelectedItems.Count != 1 && plugins_tab_pluginslist.SelectedItems == null)
                     return;
 
