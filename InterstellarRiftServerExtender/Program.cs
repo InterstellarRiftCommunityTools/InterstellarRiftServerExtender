@@ -289,9 +289,6 @@ namespace IRSE
 
             SetupGUI();
 
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("IRSE: Ready for Input, try /help !");
-            Console.ResetColor();
 
             if (autoStart || Config.Settings.AutoStartEnable)
             {
@@ -300,6 +297,10 @@ namespace IRSE
                 Console.ResetColor();
                 PendingServerStart = true;
             }
+
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("IRSE: Ready for Input, try /help !");
+            Console.ResetColor();
 
             //console logic for commands
             ReadConsoleCommands(args);
@@ -323,6 +324,8 @@ namespace IRSE
                 Console.WriteLine("GUI Disabled");
                 return;
             }
+
+            Console.WriteLine("Loading GUI..");
 
             if (uiThread != null)
             {
@@ -367,8 +370,7 @@ namespace IRSE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-            Console.WriteLine("Loading GUI..");
+         
 
             if (m_form == null || m_form.IsDisposed)
             {
@@ -414,15 +416,15 @@ namespace IRSE
         {
             IRSEConsoleCommands["help"] = (args) =>
             {
-                Console.ForegroundColor = ConsoleColor.Red;
+                Console.ForegroundColor = ConsoleColor.Yellow;
 
-                Console.WriteLine("/help - This page!");
-                Console.WriteLine("/opengui - If closed, will open and/or focus the GUI to the front.");
-                Console.WriteLine("/start - Starts the server if its not running!");
-                Console.WriteLine("/stop - Stops the server if its running!");
-                Console.WriteLine("/restart - Restarts IRSE, if autostart is set the server will start automatically.");
-                Console.WriteLine("/checkupdate - Checks for IRSE updates. Prompts user with new update details.");
-                Console.WriteLine("/forceupdate - Forces an Update of IRSE with no prompts.");
+                Console.WriteLine("help - This page!");
+                Console.WriteLine("opengui - If closed, will open and/or focus the GUI to the front.");
+                Console.WriteLine("start - Starts the server if its not running!");
+                Console.WriteLine("stop - Stops the server if its running!");
+                Console.WriteLine("restart - Restarts IRSE, if autostart is set the server will start automatically.");
+                Console.WriteLine("checkupdate - Checks for IRSE updates. Prompts user with new update details.");
+                Console.WriteLine("forceupdate - Forces an Update of IRSE with no prompts.");
                 Console.ResetColor();
             };
 
@@ -477,10 +479,6 @@ namespace IRSE
 
                 if (!string.IsNullOrEmpty(line) && line.Length > 1 && !ServerInstance.Instance.IsRunning)
                 {
-                    if (!line.StartsWith("/"))
-                    {
-                        continue;
-                    }
 
                     string cmd = line.Split(" ".ToCharArray())[0].Replace("/", "");
                     string[] lineArgs = line.Split(" ".ToCharArray()).Skip(1).ToArray();
