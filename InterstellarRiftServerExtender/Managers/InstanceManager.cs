@@ -193,23 +193,29 @@ namespace IRSE.Managers
 
         public void Stop()
         {
-            Console.WriteLine("Shutting Down IR.");
-            Thread.Sleep(2000);
-            SetIsRunning(false);
 
-            try
+            if (ServerInstance.Instance.IsRunning)
             {
-                Console.WriteLine("Saving Galaxy...");
-                Handlers.UniverseHandler.ForceGalaxySave();
-                Console.WriteLine("Shutting down plugins...");
-                PluginManager.ShutdownAllPlugins();
-                Console.WriteLine("Stopping server..");
-                ServerWrapper.Program.StopServer();
-                m_serverThread.Abort();
-            }
-            catch (Exception)
-            {
-                // as long as the server saves, who cares
+
+                Console.WriteLine("Shutting Down IR.");
+                Thread.Sleep(2000);
+                SetIsRunning(false);
+
+                try
+                {
+                    Console.WriteLine("Saving Galaxy...");
+                    Save();
+                    Console.WriteLine("Shutting down plugins...");
+                    PluginManager.ShutdownAllPlugins();
+                    Console.WriteLine("Stopping server..");
+                    ServerWrapper.Program.StopServer();
+
+                    m_serverThread.Abort();
+                }
+                catch (Exception)
+                {
+                    // as long as the server saves, who cares
+                }
             }
 
         }

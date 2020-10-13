@@ -95,23 +95,17 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("NoUpdateIR", "IRSE: (Arg: -noupdateir is set) IsR Dedicated Server will not be auto-updated.");
                 resXresourceWriter.AddResource("AutoStart", "IRSE: Arg: -autostart or Gui's Autostart Checkbox was Checked)");
                 resXresourceWriter.AddResource("NonInteractive", "Non interactive environment detected, GUI disabled");
-                resXresourceWriter.AddResource("GUIDisabled", "GUI Disabled");
+                resXresourceWriter.AddResource("GUIDisabled", "IRSE: GUI Disabled");
                 resXresourceWriter.AddResource("CommandNoExist", "IRSE: command Doesn't Exist.");
-                resXresourceWriter.AddResource("CommandException", "Loading GUI...");
-                resXresourceWriter.AddResource("BadSyntax", "Bad syntax ! Use / help to watch all valid commands");
+                resXresourceWriter.AddResource("CommandException", "IRSE: Command exception!");
                 // Program.cs - Versioning
                 resXresourceWriter.AddResource("ForGameVersion", "For Game Version: ");
                 resXresourceWriter.AddResource("ThisGameVersion", "This Game Version: ");
                 resXresourceWriter.AddResource("OnlineGameVersion", "Online Game Version: ");
                 resXresourceWriter.AddResource("NewIRVersion", "There is a new version of Interstellar Rift! Update your IR Installation!");
                 resXresourceWriter.AddResource("IRNewer", "Interstellar Rifts Version is newer than what this version of IRSE Supports, Check for IRSE updates!");
-
-
-
-
-
+                // Program.cs - Console Commands
                 resXresourceWriter.AddResource("LoadingGUI", "Loading GUI...");
-
                 resXresourceWriter.AddResource("HelpCommand", "help - this page ;)");
                 resXresourceWriter.AddResource("OpenGUICommand", "opengui - If closed, will open and/or focus the GUI to the front.");
                 resXresourceWriter.AddResource("StartCommand", "start - Starts the server if its not running!");
