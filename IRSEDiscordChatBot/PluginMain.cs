@@ -5,7 +5,9 @@ using IRSE.Managers;
 using IRSE.Managers.Events;
 using IRSE.Managers.Plugins;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,10 +18,19 @@ namespace IRSEDiscordChatBot
     {
         private static bool debugMode;
         private static MyConfig MyConfig;
-
         private static Form form;
+
+
+        /// <summary>
+        /// T  his is pulled from IRSE to add the control to the plugin tab
+        /// </summary>
         public Form PluginControlForm => form == null ? form = new Form1() : form;
 
+
+        /// <summary>
+        /// this is ran when IRSE loads plugins, construct your stuff here!
+        /// </summary>
+        /// <param name="directory"></param>
         public override void OnLoad(string directory)
         {
             try
@@ -37,14 +48,20 @@ namespace IRSEDiscordChatBot
             }
         }
 
+        /// <summary>
+        /// this is ran when the plugin is shutdown
+        /// </summary>
         public override void Shutdown()
         {
-            if(DiscordClient.SocketClient.ConnectionState == Discord.ConnectionState.Connected)
+            if (DiscordClient.SocketClient.ConnectionState == Discord.ConnectionState.Connected)
                 DiscordClient.Instance.StopBot();
 
             DiscordClient.Instance = null;
         }
 
+        /// <summary>
+        ///     this is ran when IRSE starts the server and the server is ready for plugins to run code.
+        /// </summary>
         public override void Init()
         {
             try
@@ -62,6 +79,38 @@ namespace IRSEDiscordChatBot
             }
         }
 
+        // These commands are implemented into IR's command system, using their system as well!
+        // requiredRight:  1 is anyone, 3 is Admin/Console
+        // argumentIDs - if there isn't an argument that suits you in intellisense , leave it like new SvCommandMethod.ArgumentID[] { }
+
+        //[TalkCommand] if this is enabled, it will only work from within the game. remove the requiredRight section with this to make it ingame only
+        [SvCommandMethod(names:"discordsay|saydiscord", description: "IRSEDiscordChatBot - Send message to discord bypassing game.", requiredRight: 1 , argumentIDs: new SvCommandMethod.ArgumentID[] { SvCommandMethod.ArgumentID.message })]
+        
+        public static void c_discordSay(object sender, List<string> parameters) // make sure this name is unique
+        {
+            // its best to do error catching if you can, if it doesn't need checking, wrap it anyways! dont break irse!
+            try
+            {
+                if (MyConfig.Instance.Settings.MainChannelID.ToString().StartsWith("null")) return;
+
+                string message = parameters[1].TrimStart(' ');
+
+                Player author = sender as Player;
+
+                string outMessage = $"[Discord Only] {(author == null ? "Server" : author.Name)}: {message}";
+
+                DiscordClient.SendMessageToChannel(MyConfig.Instance.Settings.MainChannelID, outMessage);
+                Console.WriteLine(outMessage);
+            }
+            catch (Exception)
+            {
+            }         
+        }
+
+        /// <summary>
+        /// // You can see the event types by starting to type Client into an event attribute using intellisense
+        /// </summary>
+        /// <param name="evt"></param>
         [IRSEEvent(EventType = typeof(ClientRespawn))]
         public void OnPacketRespawn(GenericEvent evt)
         {

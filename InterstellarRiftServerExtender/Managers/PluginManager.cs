@@ -357,7 +357,7 @@ namespace IRSE.Managers
         {
             ///Permission.Admin
 
-            foreach (MethodInfo method in typeof(PluginBase).GetMethods(BindingFlags.Static | BindingFlags.Public))
+            foreach (MethodInfo method in Plugin.MainClassType.GetMethods(BindingFlags.Static | BindingFlags.Public))
             {
                 object[] customAttributes1 = method.GetCustomAttributes(typeof(SvCommandMethod), false);
                 if (((IEnumerable<object>)customAttributes1).Count<object>() != 0)
