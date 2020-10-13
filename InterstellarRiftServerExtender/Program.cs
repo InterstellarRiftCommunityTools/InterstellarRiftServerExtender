@@ -405,14 +405,13 @@ namespace IRSE
             thisProcess.Kill();
         }
 
-        [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
-        public static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
-
         /// <summary>
         /// This contains the console commands
         /// </summary>
         public void ReadConsoleCommands(string[] args)
         {
+            ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
+
             HWnd = Process.GetCurrentProcess().MainWindowHandle;
             string line = null;
 
@@ -424,6 +423,16 @@ namespace IRSE
                 {
                     PendingServerStart = false;
                     StartServer();
+                    
+                }
+
+                if (ServerInstance.Instance.IsRunning)
+                {                  
+                    while (ServerInstance.Instance.IsRunning)
+                    {
+                        ConsoleCoroutine.MoveNext();
+                        Thread.Sleep(50);
+                    }                   
                 }
 
                 if (ServerInstance.Instance.IsRunning)
@@ -474,8 +483,7 @@ namespace IRSE
 
                     if (stringList[1] == "start")
                     {
-                        StartServer();
-
+                        PendingServerStart = true;
                         flag = true;
                     }
 
@@ -499,6 +507,11 @@ namespace IRSE
                 }
             }
         }
+        private void Instance_OnServerStarted()
+        {
+            mainLog.Warn("IRSE: Game Console Commands Enabled.");
+            Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
+        }
 
         private static void StartServer()
         {
@@ -509,15 +522,13 @@ namespace IRSE
                     CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete);
 
                 ServerInstance.Instance.Start();
-                while (ServerInstance.Instance.IsRunning)
-                {
-                    ConsoleCoroutine.MoveNext();
-                    Thread.Sleep(50);
-                }
             }
             else
                 Console.WriteLine("The server is already running.");
         }
+
+        [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
+        public static extern bool PostMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
