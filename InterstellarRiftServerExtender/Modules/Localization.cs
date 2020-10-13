@@ -83,7 +83,7 @@ namespace IRSE.Modules
 
                 // Program.cs
                 resXresourceWriter.AddResource("version", Localization.Version.ToString());
-               
+
                 resXresourceWriter.AddResource("Initialization", "Interstellar Rift Extended Server v{0} Initializing....");
                 resXresourceWriter.AddResource("IRNotFound", "IRSE: IR.EXE wasn't found.\nMake sure IRSE.exe is in the same folder as IR.exe.\nPress enter to close.");
                 resXresourceWriter.AddResource("GameConsoleEnabled", "IRSE: Game Console Commands Enabled.");
@@ -91,7 +91,7 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("StopRunningServers", "Attempting to stop any running servers.");
                 // Program.cs - Command Line Args
                 resXresourceWriter.AddResource("UseDevVersion", "IRSE: (Arg: -usedevversion is set) IRSE Will use Pre-releases versions");
-                resXresourceWriter.AddResource("NoUpdate", "IRSE: (Arg: -noupdate is set or option in IRSE config is enabled) IRSE will not be auto-updated.");               
+                resXresourceWriter.AddResource("NoUpdate", "IRSE: (Arg: -noupdate is set or option in IRSE config is enabled) IRSE will not be auto-updated.");
                 resXresourceWriter.AddResource("NoUpdateIR", "IRSE: (Arg: -noupdateir is set) IsR Dedicated Server will not be auto-updated.");
                 resXresourceWriter.AddResource("AutoStart", "IRSE: Arg: -autostart or Gui's Autostart Checkbox was Checked)");
                 resXresourceWriter.AddResource("NonInteractive", "Non interactive environment detected, GUI disabled");
@@ -109,7 +109,7 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("HelpCommand", "help - this page ;)");
                 resXresourceWriter.AddResource("OpenGUICommand", "opengui - If closed, will open and/or focus the GUI to the front.");
                 resXresourceWriter.AddResource("StartCommand", "start - Starts the server if its not running!");
-                resXresourceWriter.AddResource("StopCommand",  "stop - stops the server if it's running!");
+                resXresourceWriter.AddResource("StopCommand", "stop - stops the server if it's running!");
                 resXresourceWriter.AddResource("RestartCommand", "restart - Restarts IRSE, if autostart is set the server will start automatically.");
                 resXresourceWriter.AddResource("CheckUpdateCommand", "checkupdate - Checks for IRSE updates. Prompts user with new update details.");
                 resXresourceWriter.AddResource("ForceUpdateCommand", "forceupdate - Forces an Update of IRSE with no prompts.");
@@ -140,6 +140,9 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("NotInstalled", "Interstellar Rift has NOT been installed!");
                 resXresourceWriter.AddResource("Success", "Interstellar Rift has been successfully installed or updated!");
                 resXresourceWriter.AddResource("NoGameVersion", "Could not get game version from {0}");
+
+                //InstanceManager.cs
+
 
             }
         }

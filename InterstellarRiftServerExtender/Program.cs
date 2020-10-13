@@ -68,7 +68,7 @@ namespace IRSE
             }
         }
 
-        public static Localization Localization => m_localization;
+        public static Localization Localization{ get{ return m_localization; } internal set { m_localization = value; } }
         public static Program Instance { get; private set; }
         public static ExtenderGui GUI { get; private set; }
 

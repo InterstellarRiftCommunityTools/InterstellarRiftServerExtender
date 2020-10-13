@@ -101,13 +101,10 @@
             this.stateColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.plugins_tab_informationTab = new System.Windows.Forms.TabPage();
-            this.plugins_tab_browser = new System.Windows.Forms.WebBrowser();
             this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
             this.PluginSettingsFormPanel = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label4 = new System.Windows.Forms.Label();
-            this.ExtenderWebsite = new System.Windows.Forms.TabPage();
-            this.hesw_Website = new System.Windows.Forms.WebBrowser();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.development_label = new System.Windows.Forms.Label();
@@ -163,11 +160,9 @@
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.plugins_tab_informationTab.SuspendLayout();
             this.plugins_tab_settingsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.SuspendLayout();
-            this.ExtenderWebsite.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.ts_sc_ctxmenu.SuspendLayout();
             this.SuspendLayout();
@@ -940,7 +935,6 @@
             // 
             // plugins_tab_informationTab
             // 
-            this.plugins_tab_informationTab.Controls.Add(this.plugins_tab_browser);
             this.plugins_tab_informationTab.Location = new System.Drawing.Point(4, 22);
             this.plugins_tab_informationTab.Name = "plugins_tab_informationTab";
             this.plugins_tab_informationTab.Padding = new System.Windows.Forms.Padding(3);
@@ -948,19 +942,6 @@
             this.plugins_tab_informationTab.TabIndex = 0;
             this.plugins_tab_informationTab.Text = "Information";
             this.plugins_tab_informationTab.UseVisualStyleBackColor = true;
-            // 
-            // plugins_tab_browser
-            // 
-            this.plugins_tab_browser.AllowNavigation = false;
-            this.plugins_tab_browser.AllowWebBrowserDrop = false;
-            this.plugins_tab_browser.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plugins_tab_browser.IsWebBrowserContextMenuEnabled = false;
-            this.plugins_tab_browser.Location = new System.Drawing.Point(3, 3);
-            this.plugins_tab_browser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.plugins_tab_browser.Name = "plugins_tab_browser";
-            this.plugins_tab_browser.ScriptErrorsSuppressed = true;
-            this.plugins_tab_browser.Size = new System.Drawing.Size(646, 462);
-            this.plugins_tab_browser.TabIndex = 0;
             // 
             // plugins_tab_settingsTab
             // 
@@ -995,31 +976,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 23);
             this.label4.TabIndex = 0;
-            // 
-            // ExtenderWebsite
-            // 
-            this.ExtenderWebsite.Controls.Add(this.hesw_Website);
-            this.ExtenderWebsite.Location = new System.Drawing.Point(4, 22);
-            this.ExtenderWebsite.Name = "ExtenderWebsite";
-            this.ExtenderWebsite.Padding = new System.Windows.Forms.Padding(3);
-            this.ExtenderWebsite.Size = new System.Drawing.Size(772, 469);
-            this.ExtenderWebsite.TabIndex = 4;
-            this.ExtenderWebsite.Text = "IRSE GitHub";
-            this.ExtenderWebsite.UseVisualStyleBackColor = true;
-            // 
-            // hesw_Website
-            // 
-            this.hesw_Website.AllowWebBrowserDrop = false;
-            this.hesw_Website.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.hesw_Website.IsWebBrowserContextMenuEnabled = false;
-            this.hesw_Website.Location = new System.Drawing.Point(3, 3);
-            this.hesw_Website.MinimumSize = new System.Drawing.Size(20, 20);
-            this.hesw_Website.Name = "hesw_Website";
-            this.hesw_Website.ScriptErrorsSuppressed = true;
-            this.hesw_Website.Size = new System.Drawing.Size(766, 463);
-            this.hesw_Website.TabIndex = 0;
-            this.hesw_Website.Url = new System.Uri("https://github.com/TheServerExtenders/InterstellarRiftServerExtender", System.UriKind.Absolute);
-            this.hesw_Website.WebBrowserShortcutsEnabled = false;
+
             // 
             // statusStrip
             // 
@@ -1157,11 +1114,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.plugins_tab_informationTab.ResumeLayout(false);
             this.plugins_tab_settingsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.ExtenderWebsite.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
             this.ts_sc_ctxmenu.ResumeLayout(false);
@@ -1190,8 +1145,6 @@
         private System.Windows.Forms.Label sc_onlineplayers_label;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.TabPage ExtenderWebsite;
-        private System.Windows.Forms.WebBrowser hesw_Website;
         private System.Windows.Forms.TabPage PluginsTab;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label server_hesNewsLabel;
@@ -1209,7 +1162,6 @@
         private System.Windows.Forms.Button BTN_Plugins_Enable;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage plugins_tab_informationTab;
-        private System.Windows.Forms.WebBrowser plugins_tab_browser;
         private System.Windows.Forms.TabPage plugins_tab_settingsTab;
         private System.Windows.Forms.Panel PluginSettingsFormPanel;
         private System.Windows.Forms.TabControl server_server_Tabs;

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -32,8 +33,6 @@ namespace IRSE.Modules
 
             manageSteamCmd = true;
 
-
-
             usePreReleaseVersions = EnableDevelopmentVersion;
         }
 
@@ -48,16 +47,26 @@ namespace IRSE.Modules
             "If enabled, Hellion Dedicated will automatically start after IRSE initializes")]
         public bool AutoStartEnable { get; set; }
 
+        private Config.Language m_currentLanguage;
+
         [Category("Main")]
-        [DisplayName("Language - (Default: English)")]
+        [DisplayName("Language - (Default: English) -(Restart Required)")]
         [Description("Language of IRSE.\r\n" +
             "You can find more Languages in our GitHub. Thats if someone has made a new language file for us!")]
-        public Config.Language CurrentLanguage { get; set; }
+        public Config.Language CurrentLanguage
+        {
+            get => m_currentLanguage;
+            set
+            {
+                m_currentLanguage = value;
+                RestartNeeded = true;
+            }
+        }
 
         [Category("Updates")]
         [DisplayName("Enable Automatic Restarts - (Default: False )")]
         [Description("Allow IRSE to Restart itself after a set time elapses.\r\n" +
-            "Used for automatic restarts and releasing IRSE's resources after a set time.")]
+                    "Used for automatic restarts and releasing IRSE's resources after a set time.")]
         public bool AutoRestartsEnable { get; set; }
 
         [ReadOnly(true)]
@@ -110,20 +119,22 @@ namespace IRSE.Modules
         public int CheckUpdatesTime { get; set; }
 
         private bool manageSteamCmd;
+
         [Category("Steam CMD")]
-        [DisplayName("Manage Steam CMD -(Restart Required)")]
+        [DisplayName("Manage Steam CMD - (Restart Required)")]
         [Description("Let IRSE manage Interstellar Rift installations.")]
-        public bool ManageSteamCMD {
+        public bool ManageSteamCMD
+        {
             get
             {
                 return manageSteamCmd;
             }
-            set { 
+            set
+            {
                 manageSteamCmd = value;
-                RestartNeeded = true; 
-            } 
+                RestartNeeded = true;
+            }
         }
-
     }
 
     /// <summary>
@@ -172,6 +183,13 @@ namespace IRSE.Modules
 
                 if (_settings.RestartNeeded)
                 {
+                    DialogResult result = MessageBox.Show("The setting you have changed requires a restart of IRSE. Press 'Yes' to restart now. Or 'No' if you plan to restart later.",
+                 "Restart Needed",
+                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                    if (result == DialogResult.Yes)
+                    {
+                        Program.Restart();
+                    }
                 }
 
                 return true;
@@ -258,6 +276,7 @@ namespace IRSE.Modules
         public enum Language
         {
             English,
+            Russian
         }
     }
 }

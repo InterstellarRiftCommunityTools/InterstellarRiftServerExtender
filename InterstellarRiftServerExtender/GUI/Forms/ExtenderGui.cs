@@ -569,9 +569,9 @@ namespace IRSE.GUI.Forms
 
                 ServerInstance.Instance.PluginManager.LoadedPlugins.Find(p => p == pluginInfo).MainClass.Enabled = BTN_Plugins_Enable.Text == "Disable";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw;
+                
             }
         }
 
@@ -593,10 +593,10 @@ namespace IRSE.GUI.Forms
                     return;
 
                 string path = Path.Combine(pluginInfo.Directory, "information.md");
-                if (File.Exists(path))
-                    plugins_tab_browser.DocumentText = new Markdown().Transform(File.ReadAllText(path));
-                else
-                    plugins_tab_browser.DocumentText = new Markdown().Transform("#" + pluginInfo.Name.ToUpper());
+                //if (File.Exists(path))
+                    //plugins_tab_browser.DocumentText = new Markdown().Transform(File.ReadAllText(path));
+                //else
+                    //plugins_tab_browser.DocumentText = new Markdown().Transform("#" + pluginInfo.Name.ToUpper());
 
                 PropertyInfo info = pluginType.GetProperty("PluginControlForm");
                 if (info != null)// Form view
