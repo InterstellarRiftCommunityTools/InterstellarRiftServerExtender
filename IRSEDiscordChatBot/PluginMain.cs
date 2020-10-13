@@ -5,6 +5,7 @@ using IRSE.Managers;
 using IRSE.Managers.Events;
 using IRSE.Managers.Plugins;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -27,10 +28,14 @@ namespace IRSEDiscordChatBot
         public Form PluginControlForm => form == null ? form = new Form1() : form;
 
 
+        //// dont use constructors, use OnLoad
+        //public PluginMain(){}
+            
+
         /// <summary>
         /// this is ran when IRSE loads plugins, construct your stuff here!
         /// </summary>
-        /// <param name="directory"></param>
+        /// <param name="directory">this is the plugin directory</param>
         public override void OnLoad(string directory)
         {
             try
