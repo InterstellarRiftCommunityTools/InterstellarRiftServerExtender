@@ -41,6 +41,9 @@ namespace IRSE
 
         private static NLog.Logger mainLog;
         private static string[] CommandLineArgs = new string[10];
+
+        public static Dictionary<string, Action<string[]>> IRSEConsoleCommands = new Dictionary<string, Action<string[]>>();
+
         private static bool debugMode = true;
         private static ExtenderGui m_form;
 
@@ -243,6 +246,7 @@ namespace IRSE
             // Run anything that doesn't require the loading of IR references above here
 
             m_serverInstance = new ServerInstance();
+
             ThisGameVersion = m_serverInstance.Assembly.GetName().Version.ToString();
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -273,6 +277,8 @@ namespace IRSE
             Console.WriteLine();
             Console.ResetColor();
 
+            ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
+
             updateManager = new UpdateManager(); // REPO NEEDS TO BE PUBLIC
 
             //Build IR's paths so we can use the Localization system
@@ -281,7 +287,7 @@ namespace IRSE
             Game.Program.CommandLineArgs = new string[1];
 
             m_serverInstance.PluginManager.LoadAllPlugins();
-
+          
             SetupGUI();
 
             Console.ForegroundColor = ConsoleColor.Red;
@@ -405,13 +411,56 @@ namespace IRSE
             thisProcess.Kill();
         }
 
+        public void BuildConsoleCommands()
+        {
+            
+            IRSEConsoleCommands["help"] = (args) => 
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+
+                Console.WriteLine("/help - This page!");
+                Console.WriteLine("/opengui - If closed, will open and/or focus the GUI to the front.");
+                Console.WriteLine("/start - Starts the server if its not running!");
+                Console.WriteLine("/stop - Stops the server if its running!");
+                Console.WriteLine("/restart - Restarts IRSE, if autostart is set the server will start automatically.");
+                Console.WriteLine("/checkupdate - Checks for IRSE updates. Prompts user with new update details.");
+                Console.WriteLine("/forceupdate - Forces an Update of IRSE with no prompts.");
+                Console.ResetColor();
+            };
+
+            IRSEConsoleCommands["start"] = (args) => StartServer();
+
+            IRSEConsoleCommands["stop"] = (args) =>
+            {
+                if (ServerInstance.Instance.IsRunning)
+                    ServerInstance.Instance.Stop();
+                else
+                    Console.WriteLine("The server is not running");
+            };
+
+
+            IRSEConsoleCommands["restart"] = (args) =>
+                Restart();
+
+            IRSEConsoleCommands["opengui"] = (args) =>
+                SetupGUI();
+
+            IRSEConsoleCommands["checkupdate"] = (args) => 
+                updateManager.CheckForUpdates().GetAwaiter().GetResult();
+
+
+            IRSEConsoleCommands["forceupdate"] = (args) => 
+                updateManager.CheckForUpdates(true).GetAwaiter().GetResult();
+           
+        }
+
         /// <summary>
         /// This contains the console commands
         /// </summary>
         public void ReadConsoleCommands(string[] args)
         {
-            ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
-
+            BuildConsoleCommands();
+         
             HWnd = Process.GetCurrentProcess().MainWindowHandle;
             string line = null;
 
@@ -448,63 +497,17 @@ namespace IRSE
                     string cmd = line.Split(" ".ToCharArray())[0].Replace("/", "");
                     string[] lineArgs = line.Split(" ".ToCharArray()).Skip(1).ToArray();
 
-                    //if (ServerInstance.Instance.CommandManager.HandleConsoleCommand(cmmd, args)) continue;
-
-                    string[] strArray = Regex.Split(line, "^/([a-z]+) (\\([a-zA-Z\\(\\)\\[\\]. ]+\\))|([a-zA-Z\\-]+)");
-                    List<string> stringList = new List<string>();
-                    int num = 1;
-
-                    foreach (string str2 in strArray)
+                    try
                     {
-                        if (str2 != "" && str2 != " ")
-                            stringList.Add(str2);
-                        ++num;
+                        IRSEConsoleCommands[cmd](lineArgs);
+                    }
+                    catch (Exception ex)
+                    {
+                        mainLog.Error("IRSE Command run exception", ex);
                     }
 
-                    bool flag = false;
-
-                    if (stringList[1] == "checkupdate")
-                    {
-                        updateManager.CheckForUpdates().GetAwaiter().GetResult();
-                        flag = true;
-                    }
-
-                    if (stringList[1] == "restart")
-                    {
-                        Restart();
-                        flag = true;
-                    }
-
-                    if (stringList[1] == "forceupdate")
-                    {
-                        updateManager.CheckForUpdates(true).GetAwaiter().GetResult();
-                        flag = true;
-                    }
-
-                    if (stringList[1] == "start")
-                    {
-                        PendingServerStart = true;
-                        flag = true;
-                    }
-
-                    if (stringList[1] == "stop")
-                    {
-                        if (ServerInstance.Instance.IsRunning)
-                            ServerInstance.Instance.Stop();
-                        else
-                            Console.WriteLine("The server is not running");
-                        flag = true;
-                    }
-
-                    if (stringList[1] == "opengui")
-                    {
-                        SetupGUI();
-                        flag = true;
-                    }
-
-                    if (!flag)
-                        Console.WriteLine("bad syntax");
                 }
+
             }
         }
         private void Instance_OnServerStarted()
