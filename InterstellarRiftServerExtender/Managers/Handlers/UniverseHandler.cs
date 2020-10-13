@@ -13,6 +13,7 @@ namespace IRSE.Managers.Handlers
         #region Fields
 
         private Logger mainLog = NLog.LogManager.GetCurrentClassLogger();
+        private Game.Server.ControllerManager m_controllers;
 
         #endregion Fields
 
@@ -23,11 +24,9 @@ namespace IRSE.Managers.Handlers
 
         public UniverseHandler(Game.Server.ControllerManager controllerManager)
         {
-            Universe = controllerManager.Universe as Game.Server.UniverseController;
+            m_controllers = controllerManager;
+           Universe = m_controllers.Universe as Game.Server.UniverseController;
 
-
-
-            //Console.WriteLine(test.ActiveSystems.FirstOrDefault());
             try
             {
                 mainLog = NLog.LogManager.GetCurrentClassLogger();
@@ -43,14 +42,26 @@ namespace IRSE.Managers.Handlers
         {
             try
             {
-                //FieldInfo m_packetHandlerField = server.GetType().GetField("m_serverPacketHandlers", BindingFlags.NonPublic | BindingFlags.Instance);
-                //Object m_packetHandler = m_packetHandlerField.GetValue(server);
-                //var m_networkControllerField = m_packetHandler.GetType().GetField("m_network", BindingFlags.NonPublic | BindingFlags.Instance);
-                //m_networkController = m_networkControllerField.GetValue(m_packetHandler) as Game.Server.NetworkController;
+    
             }
             catch (Exception ex)
             {
                 mainLog.Error(ex.ToString());
+            }
+        }
+
+        public void ForceGalaxySave()
+        {
+            if (!ServerInstance.Instance.IsRunning)
+                return;
+
+            try
+            {
+                (m_controllers.Universe.Galaxy as ServerGalaxy).SaveGalaxy(m_controllers, "user", m_controllers.Universe.Galaxy.Name.ToLower(), true);
+            }
+            catch (Exception ex)
+            {
+                mainLog.Error("Save Failed! Exception Info: " + ex.ToString());
             }
         }
     }

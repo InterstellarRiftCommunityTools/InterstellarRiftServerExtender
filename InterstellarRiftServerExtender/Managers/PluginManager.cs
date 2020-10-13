@@ -1,11 +1,16 @@
-﻿using IRSE.Managers.Events;
+﻿using Game.Framework;
+using Game.Server;
+using IRSE.Managers.Events;
+using IRSE.Managers.Plugins;
 using IRSE.Modules;
 using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using IRSE.Managers.Plugins;
+using Logger = NLog.Logger;
+
 namespace IRSE.Managers
 {
     public class PluginManager
@@ -36,12 +41,41 @@ namespace IRSE.Managers
 
         public void InitializeAllPlugins()
         {
-            m_discoveredPlugins = FindAllPlugins();
-            mainLog.Warn(String.Format("Found {0} Plugins!", m_discoveredPlugins.Count));
+            if (m_discoveredPlugins.Count == 0)
+                m_discoveredPlugins = FindAllPlugins();
+
+            //mainLog.Warn(String.Format("Initializing {0} Plugins!", m_discoveredPlugins.Count));
             foreach (PluginInfo Plugin in m_discoveredPlugins)
             {
                 InitializePlugin(Plugin);
             }
+        }
+
+        public void LoadAllPlugins()
+        {
+            m_discoveredPlugins = FindAllPlugins();
+
+            //mainLog.Warn(String.Format("Loading {0} Plugins!", m_discoveredPlugins.Count));
+            foreach (PluginInfo Plugin in m_discoveredPlugins)
+            {                
+                LoadPlugin(Plugin);
+            }
+        }
+
+        public void LoadPlugin(PluginInfo Plugin)
+        {
+            mainLog.Warn(string.Format(Program.Localization.Sentences["LoadingPlugin"], Plugin.Assembly.GetName().Name));
+
+            try
+            {
+                Plugin.MainClass = (PluginBase)Activator.CreateInstance(Plugin.MainClassType);
+                Plugin.MainClass.OnLoad(Plugin.Directory);
+            }
+            catch (Exception ex)
+            {
+                mainLog.Error(string.Format(Program.Localization.Sentences["FailedLoadPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
+            }
+            m_loadedPlugins.Add(Plugin);
         }
 
         public void InitializePlugin(PluginInfo Plugin)
@@ -50,18 +84,20 @@ namespace IRSE.Managers
             mainLog.Warn(string.Format(Program.Localization.Sentences["InitializingPlugin"], Plugin.Assembly.GetName().Name));
             bool PluginInitialized = false;
 
-            if (Plugin.Directory == null)
-                Plugin.Directory = "";
-
             try
             {
-                Plugin.MainClass = (PluginBase)Activator.CreateInstance(Plugin.MainClassType);
+                if (Plugin.MainClass == null)
+                    Plugin.MainClass = (PluginBase)Activator.CreateInstance(Plugin.MainClassType);
 
                 if (Plugin.MainClass != null)
                 {
                     try
                     {
-                        Plugin.MainClass.Init(Plugin.Directory);
+                        SetupTypes(Plugin);
+                        InitPluginCommands(Plugin);
+
+                        Plugin.MainClass.Init();
+
                         PluginInitialized = true;
                     }
                     catch (MissingMethodException)
@@ -78,14 +114,8 @@ namespace IRSE.Managers
             {
                 mainLog.Warn(string.Format(Program.Localization.Sentences["FailedInitPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
             }
-
-            if (PluginInitialized)
-            {
-                //lock (_lockObj)
-                //{
-                    m_loadedPlugins.Add(Plugin);
-               // }
-            }
+            m_loadedPlugins.Find(p => p.MainClass.Enabled == PluginInitialized);
+            
         }
 
         public void ShutdownAllPlugins()
@@ -103,7 +133,7 @@ namespace IRSE.Managers
 
         public void ShutdownPlugin(PluginInfo Plugin)
         {
-            mainLog.Warn(string.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugin.Assembly.GetName().Name));
+            mainLog.Warn(string.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugin.Name));
             lock (_lockObj)
             {
                 try
@@ -117,7 +147,7 @@ namespace IRSE.Managers
                 }
                 catch (Exception ex)
                 {
-                    //Log.Instance.Error("ERror!!!" + ex);
+
                     mainLog.Error(string.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
                 }
                 m_loadedPlugins.Remove(Plugin);
@@ -138,8 +168,9 @@ namespace IRSE.Managers
                         return;
                     }
                     if (pb.GetName.ToLower() == Plugin)
-                    {
-                        mainLog.Warn(String.Format("Shutting down Plugin {0}", Plugininfo.Assembly.GetName().Name));
+                    {                                                     
+                        mainLog.Warn(String.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugininfo.Assembly.GetName().Name));
+
                         pb.DisablePlugin(false);
                         m_loadedPlugins.Remove(Plugininfo);
                         m_discoveredPlugins.Remove(Plugininfo);
@@ -200,7 +231,6 @@ namespace IRSE.Managers
             {
                 LoadPluginReferences(subDirectory);
                 PluginInfo[] Plugins = FindPlugin(subDirectory);
-                
 
                 if (Plugins.Length > 0) foundPlugins.AddRange(Plugins);
             }
@@ -227,94 +257,58 @@ namespace IRSE.Managers
             return found.ToArray();
         }
 
+        private void SetupTypes(PluginInfo plugin)
+        {
+            //Loads Events
+            foreach (MethodInfo method in plugin.MainClassType.GetMethods())
+            {
+                foreach (Attribute attribute in method.GetCustomAttributes(true))
+                {
+                    if (attribute is IRSEEventAttribute)
+                    {
+                        IRSEEventAttribute hea = attribute as IRSEEventAttribute;
+
+                        HandleEvent(method, plugin, hea.EventType);
+                    }
+                }
+            }
+        }
+
+        internal void SetPluginDirectory(PluginInfo pluginInfo, string directory)
+        {
+            pluginInfo.MainClass.Directory = directory;
+        }
+
         private PluginInfo ValidatePlugin(String library)
         {
             byte[] bytes;
             Assembly libraryAssembly;
             try
             {
-                
                 bytes = File.ReadAllBytes(library);
                 libraryAssembly = Assembly.Load(bytes);
-                //Bug Guid is Glitched Right Now
-                //Guid guid = new Guid(((GuidAttribute)libraryAssembly.GetCustomAttributes(typeof(GuidAttribute), true)[0]).Value);
 
-                bool plug = true;
                 PluginInfo plugin = new PluginInfo();
-                //Plugin.Guid = guid;
                 plugin.Assembly = libraryAssembly;
+                plugin.Directory = Path.GetDirectoryName(library);
 
-                //Command[] CommandList;
 
                 Type[] PluginTypes = libraryAssembly.GetExportedTypes();
 
                 foreach (Type PluginType in PluginTypes)
                 {
-                    /*
-                    if (PluginType.BaseType == typeof(Command))
+                    if (PluginType.GetInterface(typeof(IPlugin).FullName) != null)
                     {
-                        plugin.FoundCommands.Add(PluginType);
-                        //Permissions In Command
-                        //Load Permissions
-                        foreach (Attribute attribute in PluginType.GetCustomAttributes(true))
-                        {
-                            if (attribute is PermissionAttribute)
-                            {
-                                PermissionAttribute pa = attribute as PermissionAttribute;
-                                //Add To plugin
-                                //Onplayer Join Event Add Default Perms to player
-                                ServerInstance.Instance.PermissionManager.AddPermissionAttribute(pa);
-                            }
-                        }
-                        continue;
-                    }*/
-
-                    if (PluginType.GetInterface(typeof(IPlugin).FullName) != null && plug)
-                    {
-                        mainLog.Warn("Loading Plugin Located at " + library);
+                        //mainLog.Warn("Loading Plugin Located at " + library);
 
                         PluginAttribute attr = PluginType.GetCustomAttribute<PluginAttribute>();
-
+                    
                         plugin.MainClassType = PluginType;
                         plugin.Name = attr.Name;
-                        plug = false;
                         continue;
                     }
                 }
-                //B4 resturn Check for Events here
-                //Now Look for Events... IN THE PLUGIN TYPE!!!!!!!
-                //Events
-                if (!plug)
-                {
-                    //Loads Events
-                    foreach (MethodInfo method in plugin.MainClassType.GetMethods())
-                    {
-                        foreach (Attribute attribute in method.GetCustomAttributes(true))
-                        {
-                            if (attribute is IRSEEventAttribute)
-                            {
-                                IRSEEventAttribute hea = attribute as IRSEEventAttribute;
 
-                                plugin = HandleEvent(method, plugin, hea.EventType);
-                            }
-                        }
-                    }
-
-
-                    /*
-                    //Load Permissions
-                    foreach (Attribute attribute in plugin.GetType().GetCustomAttributes(true))
-                    {
-                        if (attribute is PermissionAttribute)
-                        {
-                            PermissionAttribute pa = attribute as PermissionAttribute;
-                            //Add To plugin
-                            //Onplayer Join Event Add Default Perms to player
-                            ServerInstance.Instance.PermissionManager.AddPermissionAttribute(pa);
-                        }
-                    }
-                    */
-                }
                 return plugin;
             }
             catch (Exception ex)
@@ -342,7 +336,7 @@ namespace IRSE.Managers
 
             EventManager.Instance.Events[type].Add(listener);
 
-            mainLog.Info("Found Event Function : " + parameters[0].ParameterType.Name + " For EventType : " + type.Name);
+           // mainLog.Info("Found Event Function : " + parameters[0].ParameterType.Name + " For EventType : " + type.Name);
             return plugin;
         }
 
@@ -358,6 +352,24 @@ namespace IRSE.Managers
             {
                 return false;
             }
+        }
+
+        public static void InitPluginCommands(PluginInfo Plugin)
+        {
+            ///Permission.Admin
+
+            foreach (MethodInfo method in Plugin.MainClassType.GetMethods(BindingFlags.Static | BindingFlags.Public))
+            {
+                object[] customAttributes1 = method.GetCustomAttributes(typeof(SvCommandMethod), false);
+                if (((IEnumerable<object>)customAttributes1).Count<object>() != 0)
+                {
+                    object[] customAttributes2 = null;
+                    SvCommandMethod svCommandMethod = customAttributes1[0] as SvCommandMethod;
+                    EventHandler<List<string>> handler = (EventHandler<List<string>>)Delegate.CreateDelegate(typeof(EventHandler<List<string>>), method);
+                    CommandSystem.Singleton.AddCommand(new Command(svCommandMethod.Names, svCommandMethod.Description, svCommandMethod.Arguments, handler, svCommandMethod.RequiredRight, customAttributes2 != null && ((IEnumerable<object>)customAttributes2).Any<object>(), method.GetCustomAttribute<TalkCommandAttribute>() != null), true);
+                }
+            }
+            //CommandSystem.Singleton.SortCommands();
         }
 
         #endregion Methods

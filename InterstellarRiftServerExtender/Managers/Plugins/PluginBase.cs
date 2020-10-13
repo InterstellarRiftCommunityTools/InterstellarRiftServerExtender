@@ -1,7 +1,7 @@
-﻿using Game.Framework.Networking;
-using Game.Server;
+﻿using Game.Server;
 using NLog;
 using System;
+using System.Xml;
 
 namespace IRSE.Managers.Plugins
 {
@@ -9,7 +9,7 @@ namespace IRSE.Managers.Plugins
     {
         #region Fields
 
-        protected String m_directory;
+        protected static String m_directory;
         protected ControllerManager m_controllers;
         protected String m_version;
         protected String m_desc;
@@ -25,7 +25,7 @@ namespace IRSE.Managers.Plugins
         protected PluginBaseConfig m_config;
 
         #endregion Fields
-        
+
 
         #region Properties
 
@@ -38,12 +38,14 @@ namespace IRSE.Managers.Plugins
         public virtual String Directory { get { return m_directory; } internal set { m_directory = value; } }
         public virtual String API { get { return m_api; } internal set { m_api = value; } }
         public virtual String[] Aillias { get { return m_aillias; } internal set { m_aillias = value; } }
-        public virtual ControllerManager GetControllers { get { return m_controllers; } }
+        public virtual ControllerManager GetControllers => ServerInstance.Instance.Handlers.ControllerManager;
 
         public virtual PluginHelper GetPluginHelper { get { return m_plugin_helper; } }
 
         public virtual Logger PluginLog { get { return m_log; } }
-        public virtual PluginBaseConfig Config { get { return m_config; } }
+
+        public virtual Object Settings { get; set; }
+
 
         public Logger GetLogger { get { return LogManager.GetCurrentClassLogger(); ; } }
 
@@ -53,20 +55,21 @@ namespace IRSE.Managers.Plugins
 
         public PluginBase()
         {
-            m_controllers = ServerInstance.Instance.Handlers.ControllerManager;
 
-            m_plugin_helper = new PluginHelper(m_controllers);
-
-            m_log = NLog.LogManager.GetCurrentClassLogger();
 
         }
 
-        public virtual void Init(String modDirectory)
-            => Init();
+        public virtual void OnLoad(string directory)
+        {
+            m_log = NLog.LogManager.GetCurrentClassLogger();
+            Directory = directory;
+        }
 
         public virtual void Init()
         {
-            Enabled = true;
+            m_plugin_helper = new PluginHelper(GetControllers);
+
+
             if (!ServerInstance.Instance.IsRunning)
             {
                 //ERROR! No Server Running!
@@ -82,6 +85,7 @@ namespace IRSE.Managers.Plugins
                 Description = pluginAttribute.Description;
                 Author = pluginAttribute.Author;
                 Enabled = true;
+                OnEnable();
             }
             else
             {
@@ -96,25 +100,19 @@ namespace IRSE.Managers.Plugins
             //#TODO add Logger
         }
 
-        public void Shutdown()
+
+
+        public virtual void Shutdown()
         {
-            DisablePlugin();
+
         }
 
-        public virtual void OnUpdate()
-        {
-            
-        }
 
-        public void OnLoad()
-        {
-        }
 
         public void DisablePlugin(bool remove = true)
         {
-            Enabled = true;
+            Enabled = false;         
             OnDisable();
-            //if (remove) ServerInstance.Instance.PluginManager.ShutdownPlugin(Plugin);
         }
 
         public virtual void OnEnable()
@@ -125,14 +123,7 @@ namespace IRSE.Managers.Plugins
         {
         }
 
-        public virtual void OnCommand(Player p, String command, String[] args)
-        {
-        }
-
-        public virtual void OnConsoleCommand(String command, String[] args)
-        {
-        }
-
-        #endregion Methods
+        #endregion
     }
+
 }

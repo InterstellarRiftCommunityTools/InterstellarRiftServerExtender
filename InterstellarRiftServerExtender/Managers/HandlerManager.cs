@@ -102,26 +102,6 @@ namespace IRSE.Managers
                 return null;
             }
         }
-
-        // todo move to class
-
-        public void ForceGalaxySave()
-        {
-            if (!ServerInstance.Instance.IsRunning)
-                return;
-
-            try
-            {
-                mainLog.Info("Attempting to Force a save!!!!");
-
-                (m_controllerManager.Universe.Galaxy as ServerGalaxy).SaveGalaxy(m_controllerManager, "user", m_controllerManager.Universe.Galaxy.Name.ToLower(), true);
-
-                mainLog.Info("Saved Galaxy!");
-            }
-            catch (Exception ex)
-            {
-                mainLog.Error("Save Failed! Exception Info: " + ex.ToString());
-            }
-        }
+    
     }
 }

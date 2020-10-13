@@ -28,7 +28,9 @@ namespace IRSE.Managers
         private HandlerManager m_handlerManager;
         private DateTime m_launchedTime;
         private static NLog.Logger mainLog; //mainLog.Error
+
         private bool m_isRunning;
+        private bool m_isStarting;
 
         private PluginManager m_pluginManager = null;
 
@@ -47,33 +49,25 @@ namespace IRSE.Managers
 
         public TimeSpan Uptime { get { return DateTime.Now - m_launchedTime; } }
 
-        public Boolean IsRunning
+        private void SetIsRunning(bool run = true)
         {
-            get { return m_isRunning; }
-            private set
-            {
-                if (m_isRunning == value)
-                {
-                    return;
-                }
-
-                m_isRunning = value;
-                if (m_isRunning)
-                {
-                    if (OnServerStarted != null)
-                    {
-                        OnServerStarted();
-                    }
-                }
-                else
-                {
-                    if (OnServerStopped != null)
-                    {
-                        OnServerStopped();
-                    }
-                }
-            }
+            m_isRunning = run;
+            if (run)
+                OnServerStarted?.Invoke();
+            else
+                OnServerStopped?.Invoke();
         }
+
+        internal void SetIsStarting(bool starting = true)
+        {
+            m_isStarting = starting;
+            if (starting)
+                OnServerStarting?.Invoke();
+        }
+
+        public Boolean IsRunning => m_isRunning;
+
+        public Boolean IsStarting => m_isStarting;
 
         #endregion Properties
 
@@ -84,6 +78,8 @@ namespace IRSE.Managers
         public event ServerRunningEvent OnServerStarted;
 
         public event ServerRunningEvent OnServerStopped;
+
+        public event ServerRunningEvent OnServerStarting;
 
         #endregion Events
 
@@ -105,6 +101,8 @@ namespace IRSE.Managers
 
             // Wrap both assemblies
             m_serverWrapper = new ServerWrapper(m_assembly, m_frameworkAssembly);
+
+            m_pluginManager = new PluginManager();
         }
 
         #region Methods
@@ -152,22 +150,21 @@ namespace IRSE.Managers
                 ConsoleCommandManager.InitCommands(controllerManager);
 
                
-
                 // start gamelogic coroutine
                 Program.ConsoleCoroutine = CommandSystem.Singleton.Logic(controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete);
 
 
-                SendKeys.SendWait("{ENTER}"); // activates the game console commands
+                //SendKeys.SendWait("{ENTER}"); // activates the game console commands
 
                 // plugin loader
                 mainLog.Info("IRSE: Initializing Plugins...");
-                m_pluginManager = new PluginManager();
                 m_pluginManager.InitializeAllPlugins();
 
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
-               
+                Thread.Sleep(2000);
                 mainLog.Info("IRSE: Startup Procedure Complete!");
-                IsRunning = true; // Server is running by now
+                SetIsRunning(); // Server is running by now
+                SetIsStarting(false);
             }
             catch (Exception ex)
             {
@@ -189,24 +186,37 @@ namespace IRSE.Managers
                 {
                     "-server",
                 };
-
+         
             m_serverThread = ServerWrapper.Program.StartServer(serverArgs);
             m_serverWrapper.Init();
         }
 
         public void Stop()
         {
-            IsRunning = false;
+            Console.WriteLine("Shutting Down IR.");
+            Thread.Sleep(2000);
+            SetIsRunning(false);
 
-            Console.WriteLine("Shutting down plugins...");
-            PluginManager.ShutdownAllPlugins();
-            Console.WriteLine("Stopping server..");
-            ServerWrapper.Program.StopServer();
-            m_serverThread.Abort();
+            try
+            {
+                Console.WriteLine("Saving Galaxy...");
+                Handlers.UniverseHandler.ForceGalaxySave();
+                Console.WriteLine("Shutting down plugins...");
+                PluginManager.ShutdownAllPlugins();
+                Console.WriteLine("Stopping server..");
+                ServerWrapper.Program.StopServer();
+                m_serverThread.Abort();
+            }
+            catch (Exception)
+            {
+                // as long as the server saves, who cares
+            }
+
         }
 
-        internal void Save(bool v)
+        internal void Save()
         {
+            (Handlers.ControllerManager.Universe.Galaxy as ServerGalaxy).SaveGalaxy(Handlers.ControllerManager, "user", Handlers.ControllerManager.Universe.Galaxy.Name.ToLower(), true);
         }
 
         // will be removed when they fix the ghost client spawner

@@ -9,9 +9,9 @@ namespace IRSE.Modules
     public class Localization
     {
         public static string PathFolder = Path.Combine(FolderStructure.IRSEFolderPath, "localization");
-        public static string Version = "0.01";
+        public static Version Version = new Version("0.0.0.5");
         private Dictionary<string, string> m_sentences = new Dictionary<string, string>();
-        private static NLog.Logger mainLog; //mainLog.Error
+        private static NLog.Logger mainLog;
 
         public Localization()
         {
@@ -22,21 +22,38 @@ namespace IRSE.Modules
         {
             get
             {
-                return this.m_sentences;
+                try
+                {
+                    return this.m_sentences;
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Missing Localization Key");
+                    
+                }
+                return null;
             }
         }
 
         public void Load(string FileName)
         {
-            if (File.Exists(Localization.PathFolder + FileName + ".resx"))
+            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", FileName + ".resx");
+
+            if (File.Exists(path))
             {
-                if (new ResXResourceSet(Localization.PathFolder + FileName + ".resx").GetString("version") == Localization.Version)
+                if (Version.Parse(new ResXResourceSet(path).GetString("version")) == Localization.Version)
                 {
-                    using (ResXResourceReader resXresourceReader = new ResXResourceReader(Localization.PathFolder + FileName + ".resx"))
+                    using (ResXResourceReader resXresourceReader = new ResXResourceReader(path))
                     {
                         foreach (DictionaryEntry dictionaryEntry in resXresourceReader)
                             this.m_sentences.Add((string)dictionaryEntry.Key, (string)dictionaryEntry.Value);
                     }
+                }
+                else if(FileName.StartsWith("En") && Version.Parse(new ResXResourceSet(path).GetString("version")) < Localization.Version)
+                {
+                    mainLog.Info("English language localization file was updated. Loading new one.");
+                    Localization.CreateDefault();
+                    this.Load("En");
                 }
                 else
                 {
@@ -55,56 +72,64 @@ namespace IRSE.Modules
 
         public static void CreateDefault()
         {
-            if (File.Exists(Localization.PathFolder + "En.resx"))
-                File.Delete(Localization.PathFolder + "En.resx");
-            Directory.CreateDirectory(Localization.PathFolder);
-            File.Create(Localization.PathFolder + "En.resx").Close();
-            using (ResXResourceWriter resXresourceWriter = new ResXResourceWriter(Localization.PathFolder + "En.resx"))
+            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", "En.resx");
+
+            if (File.Exists(path))
+                File.Delete(path);
+
+            File.Create(path).Close();
+            using (ResXResourceWriter resXresourceWriter = new ResXResourceWriter(path))
             {
-                resXresourceWriter.AddResource("version", Localization.Version);
-                resXresourceWriter.AddResource("Initialization", "Hellion Extended Server v{0} Initialized.");
-                resXresourceWriter.AddResource("PlayersConnected", "Players Connected : {0}/{1}");
-                resXresourceWriter.AddResource("AllPlayers", "{0} players already played in the server since its launching.");
-                resXresourceWriter.AddResource("PlayerNotConnected", "This player is not connected");
-                resXresourceWriter.AddResource("NoPlayerName", "No player name specified");
-                resXresourceWriter.AddResource("PlayerKicked", "{0} was kicked from the server.");
+
+                // Program.cs
+                resXresourceWriter.AddResource("version", Localization.Version.ToString());
+               
+                resXresourceWriter.AddResource("Initialization", "Interstellar Rift Extended Server v{0} Initializing....");
+                resXresourceWriter.AddResource("IRNotFound", "IRSE: IR.EXE wasn't found.\nMake sure IRSE.exe is in the same folder as IR.exe.\nPress enter to close.");
+                resXresourceWriter.AddResource("GameConsoleEnabled", "IRSE: Game Console Commands Enabled.");
+                resXresourceWriter.AddResource("ServerIsAlreadyRunning", "The server is already running!");
+                resXresourceWriter.AddResource("StopRunningServers", "Attempting to stop any running servers.");
+                // Program.cs - Command Line Args
+                resXresourceWriter.AddResource("UseDevVersion", "IRSE: (Arg: -usedevversion is set) IRSE Will use Pre-releases versions");
+                resXresourceWriter.AddResource("NoUpdate", "IRSE: (Arg: -noupdate is set or option in IRSE config is enabled) IRSE will not be auto-updated.");               
+                resXresourceWriter.AddResource("NoUpdateIR", "IRSE: (Arg: -noupdateir is set) IsR Dedicated Server will not be auto-updated.");
+                resXresourceWriter.AddResource("AutoStart", "IRSE: Arg: -autostart or Gui's Autostart Checkbox was Checked)");
+                resXresourceWriter.AddResource("NonInteractive", "Non interactive environment detected, GUI disabled");
+                resXresourceWriter.AddResource("GUIDisabled", "GUI Disabled");
+                resXresourceWriter.AddResource("CommandNoExist", "IRSE: command Doesn't Exist.");
+                resXresourceWriter.AddResource("CommandException", "Loading GUI...");
                 resXresourceWriter.AddResource("BadSyntax", "Bad syntax ! Use / help to watch all valid commands");
-                resXresourceWriter.AddResource("LoadingGUI", "(WIP)Loading GUI...");
-                resXresourceWriter.AddResource("DescHelp", "Type directly into the console to chat with online players." + Environment.NewLine + "Current commands are : " + Environment.NewLine);
-                resXresourceWriter.AddResource("HelpCommand", "/help - this page ;)");
-                resXresourceWriter.AddResource("SaveCommand", "/save - forces a universe save");
-                resXresourceWriter.AddResource("StartCommand", "/start - start the server");
-                resXresourceWriter.AddResource("StopCommand", "/stop - stop the server");
-                resXresourceWriter.AddResource("OpenGUICommand", "/opengui - open the gui");
-                resXresourceWriter.AddResource("PlayersCommand", "/players " + Environment.NewLine + "\t -count - returns the current amount of online players" + Environment.NewLine + "\t -list - returns the full list of connected players" + Environment.NewLine + "\t -all - returns every player that has ever been on the server. And if they're online.");
-                resXresourceWriter.AddResource("MsgCommand", "/send (name) text - send a message to the specified player");
-                resXresourceWriter.AddResource("KickCommand", "/kick (name) - kick the specified player from the server");
-                resXresourceWriter.AddResource("Closing", "CLOSING HELLION EXTENDED SERVER");
-                resXresourceWriter.AddResource("ChatMsgListener", "Chat Message Listener Added.");
-                resXresourceWriter.AddResource("FailedInitPlugin", "Failed initialization of Plugin {0}. Uncaught Exception: {1}");
+                // Program.cs - Versioning
+                resXresourceWriter.AddResource("ForGameVersion", "For Game Version: ");
+                resXresourceWriter.AddResource("ThisGameVersion", "This Game Version: ");
+                resXresourceWriter.AddResource("OnlineGameVersion", "Online Game Version: ");
+                resXresourceWriter.AddResource("NewIRVersion", "There is a new version of Interstellar Rift! Update your IR Installation!");
+                resXresourceWriter.AddResource("IRNewer", "Interstellar Rifts Version is newer than what this version of IRSE Supports, Check for IRSE updates!");
+
+
+
+
+
+                resXresourceWriter.AddResource("LoadingGUI", "Loading GUI...");
+
+                resXresourceWriter.AddResource("HelpCommand", "help - this page ;)");
+                resXresourceWriter.AddResource("OpenGUICommand", "opengui - If closed, will open and/or focus the GUI to the front.");
+                resXresourceWriter.AddResource("StartCommand", "start - Starts the server if its not running!");
+                resXresourceWriter.AddResource("StopCommand",  "stop - stops the server if it's running!");
+                resXresourceWriter.AddResource("RestartCommand", "restart - Restarts IRSE, if autostart is set the server will start automatically.");
+                resXresourceWriter.AddResource("CheckUpdateCommand", "checkupdate - Checks for IRSE updates. Prompts user with new update details.");
+                resXresourceWriter.AddResource("ForceUpdateCommand", "forceupdate - Forces an Update of IRSE with no prompts.");
+
+
+                // PluginManager.cs
+                resXresourceWriter.AddResource("FailedInitPlugin", "Failed initialization of Plugin {0}. Exception: {1}");
+                resXresourceWriter.AddResource("FailedLoadPlugin", "Failed load of Plugin {0}. Exception: {1}");
                 resXresourceWriter.AddResource("FailedLoadAssembly", "Failed to load assembly : {0} : {1}");
                 resXresourceWriter.AddResource("FailedShutdownPlugin", "Uncaught Exception in Plugin {0}. Exception: {1}");
                 resXresourceWriter.AddResource("InitializationPlugin", "Initialization of Plugin {0} failed. Could not find a public, parameterless constructor for {0}");
                 resXresourceWriter.AddResource("InitializingPlugin", "Initializing Plugin : {0}");
-                resXresourceWriter.AddResource("LoadingDedicated", "Loading HELLION Dedicated...");
-                resXresourceWriter.AddResource("NetControlerLoaded", "Network Controller Loaded!");
-                resXresourceWriter.AddResource("NewPlayer", "A new player is arrived : {0}");
-                resXresourceWriter.AddResource("PlayerOnServerListener", "Player On Server Listener Added.");
-                resXresourceWriter.AddResource("PlayerSpawnChat", "{0} has spawned !");
-                resXresourceWriter.AddResource("PlayerSpawnListener", "Player Spawns Listener Added.");
-                resXresourceWriter.AddResource("PlayerSpawnLog", "{0} spawned ({1})");
-                resXresourceWriter.AddResource("ReadyForConnections", "Ready for connections !");
-                resXresourceWriter.AddResource("SaveAlreadyInProgress", "Save is already in progress!");
-                resXresourceWriter.AddResource("SavedUniverse", "Universe saved");
-                resXresourceWriter.AddResource("SavedUniverseTime", "Universe Saved in {0}ms to {1}");
-                resXresourceWriter.AddResource("SavingUniverse", "Saving Universe...");
-                resXresourceWriter.AddResource("ServerDesc", "==============================================================================" + Environment.NewLine + "\tServer name: {5}" + Environment.NewLine + "\tServer ID: {1}" + Environment.NewLine + "\tStart date: {0}" + Environment.NewLine + "\tServer ticks: {2}{4}" + Environment.NewLine + "\tMax server ticks (not precise): {3}" + Environment.NewLine + "==============================================================================");
+                resXresourceWriter.AddResource("LoadingPlugin", "Loading Plugin : {0}");
                 resXresourceWriter.AddResource("ShutdownPlugin", "Shutting down Plugin {0}");
-                resXresourceWriter.AddResource("ShuttingDown", "Shutting down server...");
-                resXresourceWriter.AddResource("SuccessShutdown", "Server Successfully shutdown.");
-                resXresourceWriter.AddResource("WaitingStart", "Waiting for server to start. This may take at least 10 seconds or longer depending on the size of the current save.");
-                resXresourceWriter.AddResource("Welcome", "Welcome {0} on {1} !");
-                resXresourceWriter.AddResource("WorldInit", "World Initialized !");
             }
         }
     }

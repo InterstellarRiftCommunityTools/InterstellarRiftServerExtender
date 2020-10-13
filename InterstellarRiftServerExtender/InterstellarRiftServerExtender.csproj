@@ -41,6 +41,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,6 +51,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>preview</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>IRSE.Program</StartupObject>
@@ -63,7 +65,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>preview</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
@@ -74,12 +76,13 @@
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>preview</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Resources\MarkdownDeep.dll" />
     <None Include="Resources\System.Net.Http.Formatting.dll" />
     <None Include="Resources\System.Web.Http.dll" />
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.resx">
@@ -98,7 +101,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="Resources\Newtonsoft.Json.dll" />
+    <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
     <None Include="Resources\NLog.dll" />
     <None Include="Resources\Octokit.dll" />
     <None Include="App.config" />
@@ -114,8 +117,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <EmbeddedResource Include="Resources\log4net.config" />
-    <EmbeddedResource Include="Resources\NLog.config" />
+    <None Include="Resources\log4net.config" />
+    <None Include="Resources\NLog.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Chat.cs" />
@@ -125,7 +128,8 @@
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\UniverseController.cs" />
-    <Compile Include="EntityWrappers\PlayerWrapper.cs" />
+    <Compile Include="GUI\ObjectManipulator\ManipulatorWrapper.cs" />
+    <Compile Include="GUI\ObjectManipulator\Wrappers\PlayerWrapper.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="GUI\Forms\Browser\BBCodeHTML.cs" />
     <Compile Include="GUI\Forms\Browser\BrowserForm.cs">
@@ -136,6 +140,7 @@
     </Compile>
     <Compile Include="GUI\Forms\Browser\PluginBrowser.cs" />
     <Compile Include="GUI\Forms\Browser\Resources.cs" />
+    <Compile Include="GUI\Forms\CommandVisualizer.cs" />
     <Compile Include="GUI\Forms\ExtenderGui.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -205,6 +210,9 @@
     <Compile Include="API\ResultObjects\ServerStatusResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="0Harmony, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lib.Harmony.2.0.2\lib\net472\0Harmony.dll</HintPath>
+    </Reference>
     <Reference Include="AlunaNetFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>I:\steam\steamapps\common\Interstellar Rift\Build\AlunaNetFramework.dll</HintPath>
@@ -253,6 +261,7 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
@@ -274,6 +283,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="API\Objects\" />
+    <Folder Include="GUI\Forms\CommandsGui\" />
     <Folder Include="Managers\Plugins\Helpers\" />
   </ItemGroup>
   <ItemGroup>
@@ -298,9 +308,18 @@ echo Running build event for $(ProjectName)..
 xcopy "$(TargetDir)$(TargetFileName)" "$(ProjectDir)bin\IRSERelease\"  /y
 xcopy "$(TargetDir)$(TargetFileName).config" "$(ProjectDir)bin\IRSERelease\" /y
 
-xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\" /y
-xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\" /y
-xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\" /y
+echo THESE ARE REQUIRED
+
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE" md "$(ProjectDir)bin\IRSERelease\IRSE"
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\bin" md "$(ProjectDir)bin\IRSERelease\IRSE\bin"
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\config" md "$(ProjectDir)bin\IRSERelease\IRSE\config"
+
+xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)0Harmony.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)MarkdownDeep.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\IRSE\config" /y
+xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 
 echo $(ProjectName) files have been copied to "$(ProjectDir)bin\IRSERelease\".
 

@@ -24,6 +24,7 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
         private ReflectionMethod m_stopMethod;
 
         private ManualResetEvent m_waitEvent;
+        private Thread serverThread;
 
         #endregion Fields
 
@@ -74,21 +75,17 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
         public Thread StartServer(Object args)
         {
-            mainLog.Info("IRSE: Loading server.");
 
-            Thread serverThread = new Thread(new ParameterizedThreadStart(this.ThreadStart));
+            if (serverThread == null) {
 
-            serverThread.IsBackground = false;
-            serverThread.CurrentCulture = CultureInfo.InvariantCulture;
-            serverThread.CurrentUICulture = CultureInfo.InvariantCulture;
-            serverThread.Start(args);
+                mainLog.Info("IRSE: Launching Server...");
+                serverThread = new Thread(new ParameterizedThreadStart(this.ThreadStart));
 
-            Console.WriteLine(serverThread.IsAlive ? "Starting" : "");
-
-            Thread.Sleep(2000);
-            SendKeys.SendWait("{ENTER}");
-            Thread.Sleep(2000);
-            SendKeys.SendWait("{ENTER}");// twice because i have no idea what else to do, hitting enter makes it start
+                serverThread.IsBackground = false;
+                serverThread.CurrentCulture = CultureInfo.InvariantCulture;
+                serverThread.CurrentUICulture = CultureInfo.InvariantCulture;
+                serverThread.Start(args);
+            }
 
             return serverThread;
         }
@@ -101,32 +98,43 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
             }
             catch (Exception ex)
             {
-                mainLog.Error("Unhandled Exception caused server to crash. Exception: " + ex.ToString());
+                mainLog.Fatal(ex, "IRSE: Could not initialize the wrapper. This is a fatal error, please report the exception to the github issues. Shutting Down...");
             }
         }
 
         private void Start(Object[] args)
         {
-            m_startupArgsField.SetValue(null, args as String[]);
-
-            m_startupMethod.Call(null, null);
-
-
-
-            mainLog.Info("IRSE: Waiting for server....");
-
-            object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
-
-            while (gameServer == null)
+            try
             {
-                Thread.Sleep(1000);
-                if (gameServer != null)
-                {
-                    break;
-                }
-            }
+                m_startupArgsField.SetValue(null, args as String[]);
+                m_startupMethod.Call(null, null);
 
-            ServerInstance.Instance.Hook();
+                mainLog.Info("IRSE: Waiting for server....");
+
+                ServerInstance.Instance.SetIsStarting();
+
+                // just making sure 
+                object gameServer = assembly.GetType("Game.GameStates.GameState").GetProperty("ActiveState").GetValue(null);
+
+                while (gameServer == null)
+                {
+                    Thread.Sleep(1000);
+                    if (gameServer != null)
+                    {
+                        break;
+                    }
+                }
+
+                
+
+                ServerInstance.Instance.Hook();
+            }
+            catch (Exception ex)
+            {
+
+                mainLog.Fatal(ex, "IR.exe code was probably changed, this is a fatal error, please report the error below to the github issues.");
+            }
+ 
         }
 
         #endregion Methods

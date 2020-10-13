@@ -11,7 +11,8 @@ namespace IRSE.Modules.GameConfig
 {
     public class ServerConfigProperties
     {
-        private static ServerConfigProperties m_instance; public static ServerConfigProperties Instance => m_instance == null ? m_instance = new ServerConfigProperties() : m_instance;
+        private static ServerConfigProperties m_instance; 
+        public static ServerConfigProperties Instance => m_instance == null ? m_instance = new ServerConfigProperties() : m_instance;
 
         public ServerConfigProperties()
         {
@@ -128,9 +129,11 @@ namespace IRSE.Modules.GameConfig
         public System.Int32 ActiveDronesInTileRemovalThreshold
         { get { return ServerConfig.Singleton.ActiveDronesInTileRemovalThreshold; } set { ServerConfig.Singleton.ActiveDronesInTileRemovalThreshold = value; } }
 
+        // MODIFIED WHILE GHOST CLIENTS ON SP SIDE ARE BAD
+        [ReadOnly(true)]
         [DisplayName("Create Ghost Clients")]
         [Category("Ghost Clients")]
-        [Description("Whether or not ther server will run separate processes so it can save without stalling.")]
+        [Description("(DISABLED. IRSE STARTS THEM) Whether or not the server will run separate processes so it can save without stalling.")]
         public System.Boolean CreateGhostClients
         { get { return ServerConfig.Singleton.CreateGhostClients; } set { ServerConfig.Singleton.CreateGhostClients = value; } }
 
