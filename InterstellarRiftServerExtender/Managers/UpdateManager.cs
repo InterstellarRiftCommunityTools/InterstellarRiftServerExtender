@@ -12,7 +12,7 @@ namespace IRSE.Managers
 {
     public class UpdateManager
     {
-        private readonly string Organization = "TheServerExtenders";
+        private readonly string Organization = "InterstellarRiftCommunityTools";
         private readonly string Repository = "InterstellarRiftServerExtender";
 
         private static NLog.Logger mainLog; //mainLog.Error
