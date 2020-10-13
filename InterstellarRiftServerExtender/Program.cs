@@ -161,7 +161,9 @@ namespace IRSE
 
             mainLog = LogManager.GetCurrentClassLogger();
 
-            Console.WriteLine($"Interstellar Rift Extended Server v{Version} Initializing....");
+            
+
+            Console.WriteLine(string.Format(Program.Localization.Sentences["Initialization"], Version));
 
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"Repo URL: {ThisAssembly.Git.RepositoryUrl}");
@@ -177,9 +179,7 @@ namespace IRSE
             if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "IR.exe")))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("IRSE: IR.EXE wasn't found.");
-                Console.WriteLine("Make sure IRSE.exe is in the same folder as IR.exe.");
-                Console.WriteLine("Press enter to close.");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["IRNotFound"]));
                 Console.ReadLine();
                 Environment.Exit(0);
             }
@@ -222,19 +222,20 @@ namespace IRSE
 
             if (usePrereleaseVersions || Config.Settings.EnableDevelopmentVersion)
             {
-                Console.WriteLine("IRSE: (Arg: -usedevversion is set) IRSE Will use Pre-releases versions");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["UseDevVersion"]));
             }
 
             if (noUpdateIRSE || !Config.Settings.EnableExtenderAutomaticUpdates)
             {
                 UpdateManager.EnableAutoUpdates = false;
-                Console.WriteLine("IRSE: (Arg: -noupdate is set or option in IRSE config is enabled) IRSE will not be auto-updated.");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["NoUpdate"]));
+                Console.WriteLine();
             }
 
             if (noUpdateIR || !Config.Settings.EnableAutomaticUpdates)
             {
                 SteamCMD.AutoUpdateIR = false;
-                Console.WriteLine("IRSE: (Arg: -noupdateir is set) IsR Dedicated Serevr will not be auto-updated.");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["NoUpdateIR"]));
             }
 
             Console.WriteLine();
@@ -249,15 +250,15 @@ namespace IRSE
             ThisGameVersion = m_serverInstance.Assembly.GetName().Version.ToString();
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("For Game Version: ");
+            Console.Write(string.Format(Program.Localization.Sentences["ForGameVersion"]));
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(ForGameVersion + "\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("This Game Version: ");
+            Console.Write(string.Format(Program.Localization.Sentences["ThisGameVersion"]));
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(ThisGameVersion + "\n");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("Online Game Version: ");
+            Console.Write(string.Format(Program.Localization.Sentences["OnlineGameVersion"]));
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(SteamCMD.GetGameVersion() + "\n");
             Console.ForegroundColor = ConsoleColor.White;
@@ -265,12 +266,12 @@ namespace IRSE
             Console.ForegroundColor = ConsoleColor.Yellow;
             if (new Version(ThisGameVersion) < SteamCMD.GetGameVersion())
             {
-                Console.WriteLine("There is a new version of Interstellar Rift! Update your IR Installation!");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["NewIRVersion"]));
             }
 
             if (new Version(ForGameVersion) < new Version(ThisGameVersion))
             {
-                Console.WriteLine("Interstellar Rifts Version is newer than what this version of IRSE Supports, Check for IRSE updates!");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["IRNewer"]));
             }
 
             Console.WriteLine();
@@ -296,7 +297,7 @@ namespace IRSE
             if (autoStart || Config.Settings.AutoStartEnable)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("IRSE: Arg: -autostart or Gui's Autostart Checkbox was Checked)");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["AutoStart"]));
                 Console.ResetColor();
                 StartServer();
             }
@@ -314,17 +315,17 @@ namespace IRSE
         {
             if (!Environment.UserInteractive)
             {
-                Console.WriteLine("Non interactive environment detected, GUI disabled");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["NonInteractive"]));
                 return;
             }
 
             if (!_useGui)
             {
-                Console.WriteLine("GUI Disabled");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["GUIDisabled"]));
                 return;
             }
 
-            Console.WriteLine("Loading GUI..");
+            Console.WriteLine(string.Format(Program.Localization.Sentences["LoadingGUI"]));
 
             if (uiThread != null)
             {
@@ -415,14 +416,13 @@ namespace IRSE
             IRSEConsoleCommands["help"] = (args) =>
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-
-                Console.WriteLine("help - This page!");
-                Console.WriteLine("opengui - If closed, will open and/or focus the GUI to the front.");
-                Console.WriteLine("start - Starts the server if its not running!");
-                Console.WriteLine("stop - Stops the server if its running!");
-                Console.WriteLine("restart - Restarts IRSE, if autostart is set the server will start automatically.");
-                Console.WriteLine("checkupdate - Checks for IRSE updates. Prompts user with new update details.");
-                Console.WriteLine("forceupdate - Forces an Update of IRSE with no prompts.");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["HelpCommand"]));
+                Console.WriteLine(string.Format(Program.Localization.Sentences["OpenGUICommand"]));
+                Console.WriteLine(string.Format(Program.Localization.Sentences["StartCommand"]));
+                Console.WriteLine(string.Format(Program.Localization.Sentences["StopCommand"]));
+                Console.WriteLine(string.Format(Program.Localization.Sentences["RestartCommand"]));
+                Console.WriteLine(string.Format(Program.Localization.Sentences["CheckUpdateCommand"]));
+                Console.WriteLine(string.Format(Program.Localization.Sentences["ForceUpdateCommand"]));
                 Console.ResetColor();
             };
 
@@ -432,8 +432,6 @@ namespace IRSE
             {
                 if (ServerInstance.Instance.IsRunning)
                     ServerInstance.Instance.Stop();
-                else
-                    Console.WriteLine("The server is not running");
             };
 
             IRSEConsoleCommands["restart"] = (args) =>
@@ -486,11 +484,12 @@ namespace IRSE
                     }
                     catch (KeyNotFoundException)
                     {
-                        mainLog.Error("IRSE: Command doesn't exist.");
+
+                        mainLog.Error(string.Format(Program.Localization.Sentences["CommandNoExist"]));
                     }
                     catch (Exception ex)
                     {
-                        mainLog.Error(ex, "IRSE: Command exception.");
+                        mainLog.Error(string.Format(Program.Localization.Sentences["CommandException"]));
                     }
                 }
             }
@@ -498,7 +497,7 @@ namespace IRSE
 
         private void Instance_OnServerStarted()
         {
-            mainLog.Warn("IRSE: Game Console Commands Enabled.");
+            mainLog.Warn(string.Format(Program.Localization.Sentences["GameConsoleEnabled"]));
             Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
         }
 
@@ -513,7 +512,7 @@ namespace IRSE
                 ServerInstance.Instance.Start();
             }
             else
-                Console.WriteLine("The server is already running.");
+                Console.WriteLine(string.Format(Program.Localization.Sentences["ServerIsAlreadyRunning"]));
         }
 
         [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
@@ -540,12 +539,10 @@ namespace IRSE
         {
             if (sig == CtrlType.CTRL_C_EVENT || sig == CtrlType.CTRL_BREAK_EVENT || (sig == CtrlType.CTRL_LOGOFF_EVENT || sig == CtrlType.CTRL_SHUTDOWN_EVENT) || sig == CtrlType.CTRL_CLOSE_EVENT)
             {
-                Console.WriteLine("Attempting to stop any running servers.");
+                mainLog.Warn(string.Format(Program.Localization.Sentences["StopRunningServers"]));
                 if (ServerInstance.Instance != null)
                     ServerInstance.Instance.Stop();
-                Console.WriteLine("Closing. Press any key to quit");
 
-                Console.ReadKey(true);
             }
             return false;
         }
