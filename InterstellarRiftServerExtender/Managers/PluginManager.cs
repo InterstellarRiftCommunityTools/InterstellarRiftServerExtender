@@ -147,7 +147,7 @@ namespace IRSE.Managers
                 }
                 catch (Exception ex)
                 {
-                    //Log.Instance.Error("ERror!!!" + ex);
+
                     mainLog.Error(string.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
                 }
                 m_loadedPlugins.Remove(Plugin);
@@ -168,8 +168,9 @@ namespace IRSE.Managers
                         return;
                     }
                     if (pb.GetName.ToLower() == Plugin)
-                    {
-                        mainLog.Warn(String.Format("Shutting down Plugin {0}", Plugininfo.Assembly.GetName().Name));
+                    {                                                     
+                        mainLog.Warn(String.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugininfo.Assembly.GetName().Name));
+
                         pb.DisablePlugin(false);
                         m_loadedPlugins.Remove(Plugininfo);
                         m_discoveredPlugins.Remove(Plugininfo);
@@ -335,7 +336,7 @@ namespace IRSE.Managers
 
             EventManager.Instance.Events[type].Add(listener);
 
-            mainLog.Info("Found Event Function : " + parameters[0].ParameterType.Name + " For EventType : " + type.Name);
+           // mainLog.Info("Found Event Function : " + parameters[0].ParameterType.Name + " For EventType : " + type.Name);
             return plugin;
         }
 
