@@ -98,19 +98,20 @@ namespace IRSE.Modules
             {
                 try
                 {
-                    mainLog.Info("SteamCMD does not exist, downloading!");
+                    mainLog.Info(string.Format(Program.Localization.Sentences["SteamCmdNoExist"]));
 
                     using (var client = new WebClient())
                         client.DownloadFile("https://steamcdn-a.akamaihd.net/client/installer/steamcmd.zip", SteamCMDZip);
 
-                    mainLog.Info("Done! Unpacking and starting SteamCMD to install Interstellar Rift Dedicated Server");
+                    mainLog.Info(string.Format(Program.Localization.Sentences["Unpacking"]));
 
                     ZipFile.ExtractToDirectory(SteamCMDZip, SteamCMDDir);
                     File.Delete(SteamCMDZip);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    mainLog.Error("Could not download or unpack SteamCMD. Going into manual mode. Please install Interstellar Rift and copy IRSE there!");
+
+                    mainLog.Error(ex, string.Format(Program.Localization.Sentences["ManualModeUnpack"]));
                     return false;
                 }
             }
@@ -119,7 +120,7 @@ namespace IRSE.Modules
 
             try
             {
-                mainLog.Info("Checking/Updating IR");
+                mainLog.Info(string.Format(Program.Localization.Sentences["CheckingIR"]));
 
                 var steamCmdinfo = new ProcessStartInfo(SteamCMDExe, script)
                 {
@@ -141,16 +142,16 @@ namespace IRSE.Modules
                     count++;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                mainLog.Error("Could not start SteamCMD. Going into manual mode. Please run SteamCMD manually to install or update the dedicated server!");
+                mainLog.Error(ex, string.Format(Program.Localization.Sentences["ManualModeStart"]));
                 return false;
             }
 
             if (errored || count == 1)
-                mainLog.Warn("Interstellar Rift has NOT been installed!");
+                mainLog.Warn(string.Format(Program.Localization.Sentences["NotInstalled"]));
             else
-                mainLog.Info("Interstellar Rift has been successfully installed or updated!");
+                mainLog.Info(string.Format(Program.Localization.Sentences["Success"]));
 
             return true;
         }
@@ -174,12 +175,13 @@ namespace IRSE.Modules
                     if (match.Success)
                         return new Version(match.Value);
                     else
-                        throw new Exception("Could not match version from URL, Please use github issues at our repository.");
+                        throw new Exception("Could not match version from URL");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine("Could not get game version from " + GameNewsURL + "\n" + ex.ToString());
+
+                Console.WriteLine(string.Format(Program.Localization.Sentences["NoGameVersion"], GameNewsURL ));
             }
             return null;
         }

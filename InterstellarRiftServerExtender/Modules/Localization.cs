@@ -9,7 +9,7 @@ namespace IRSE.Modules
     public class Localization
     {
         public static string PathFolder = Path.Combine(FolderStructure.IRSEFolderPath, "localization");
-        public static Version Version = new Version("0.0.0.5");
+        public static Version Version = new Version("0.0.0.6");
         private Dictionary<string, string> m_sentences = new Dictionary<string, string>();
         private static NLog.Logger mainLog;
 
@@ -130,6 +130,17 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("NoInitWrapper", "IRSE: Could not initialize the wrapper. This is a fatal error, please report the exception to the github issues. Shutting Down...");
                 resXresourceWriter.AddResource("WaitingForServer", "IRSE: Waiting for server");
                 resXresourceWriter.AddResource("GameBaseCode", "IR.exe base game code was probably changed, this is a fatal error, please report the error below to the github issues.");
+
+                // SteamCMD.cs
+                resXresourceWriter.AddResource("SteamCMDNoExist", "SteamCMD does not exist, downloading!");
+                resXresourceWriter.AddResource("Unpacking", "Done! Unpacking and starting SteamCMD to install Interstellar Rift Dedicated Server");
+                resXresourceWriter.AddResource("ManualModeUnpack", "Could not download or unpack SteamCMD. Going into manual mode. Please install Interstellar Rift and copy IRSE there!");
+                resXresourceWriter.AddResource("CheckingIR", "Checking/Updating IR");
+                resXresourceWriter.AddResource("ManualModeStart", "Could not start SteamCMD. Going into manual mode. Please run SteamCMD manually to install or update the dedicated server!");
+                resXresourceWriter.AddResource("NotInstalled", "Interstellar Rift has NOT been installed!");
+                resXresourceWriter.AddResource("Success", "Interstellar Rift has been successfully installed or updated!");
+                resXresourceWriter.AddResource("NoGameVersion", "Could not get game version from {0}");
+
             }
         }
     }
