@@ -59,6 +59,12 @@
             this.sc_playerslist_listview = new System.Windows.Forms.ListView();
             this.PlayerColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.IsAdminColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.sc_playerslist_ctxmenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.kickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.banToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.forgetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.sc_playerbans_listview = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -105,12 +111,12 @@
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.StatusBar = new System.Windows.Forms.ToolStripStatusLabel();
             this.development_label = new System.Windows.Forms.Label();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.kickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.banToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.forgetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.killToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toggleAdminToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ts_sc_ctxmenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.ts_pc_startserver = new System.Windows.Forms.ToolStripMenuItem();
+            this.ts_pc_stopserver = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.ts_pc_restartserver = new System.Windows.Forms.ToolStripMenuItem();
+            this.ts_pc_closeirse = new System.Windows.Forms.ToolStripMenuItem();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -136,6 +142,7 @@
             this.splitContainer4.SuspendLayout();
             this.tabControl3.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.sc_playerslist_ctxmenu.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
@@ -162,7 +169,7 @@
             this.splitContainer1.SuspendLayout();
             this.ExtenderWebsite.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.ts_sc_ctxmenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -175,7 +182,7 @@
             this.Tabs.Location = new System.Drawing.Point(0, 0);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(780, 495);
+            this.Tabs.Size = new System.Drawing.Size(924, 520);
             this.Tabs.TabIndex = 0;
             this.Tabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.Tabs_Selected);
             // 
@@ -185,7 +192,7 @@
             this.ServerTab.Location = new System.Drawing.Point(4, 22);
             this.ServerTab.Name = "ServerTab";
             this.ServerTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ServerTab.Size = new System.Drawing.Size(772, 469);
+            this.ServerTab.Size = new System.Drawing.Size(916, 494);
             this.ServerTab.TabIndex = 0;
             this.ServerTab.Text = "Server Control";
             this.ServerTab.UseVisualStyleBackColor = true;
@@ -211,8 +218,8 @@
             this.ServerContainer.Panel2.Controls.Add(this.server_config_save);
             this.ServerContainer.Panel2.Controls.Add(this.server_config_stopserver);
             this.ServerContainer.Panel2.Controls.Add(this.server_config_startserver);
-            this.ServerContainer.Size = new System.Drawing.Size(766, 463);
-            this.ServerContainer.SplitterDistance = 369;
+            this.ServerContainer.Size = new System.Drawing.Size(910, 488);
+            this.ServerContainer.SplitterDistance = 388;
             this.ServerContainer.TabIndex = 3;
             // 
             // server_server_Tabs
@@ -223,7 +230,7 @@
             this.server_server_Tabs.Location = new System.Drawing.Point(0, 0);
             this.server_server_Tabs.Name = "server_server_Tabs";
             this.server_server_Tabs.SelectedIndex = 0;
-            this.server_server_Tabs.Size = new System.Drawing.Size(766, 369);
+            this.server_server_Tabs.Size = new System.Drawing.Size(910, 388);
             this.server_server_Tabs.TabIndex = 0;
             // 
             // ServerConfig
@@ -232,7 +239,7 @@
             this.ServerConfig.Location = new System.Drawing.Point(4, 22);
             this.ServerConfig.Name = "ServerConfig";
             this.ServerConfig.Padding = new System.Windows.Forms.Padding(3);
-            this.ServerConfig.Size = new System.Drawing.Size(758, 343);
+            this.ServerConfig.Size = new System.Drawing.Size(902, 362);
             this.ServerConfig.TabIndex = 0;
             this.ServerConfig.Text = "Server Config";
             this.ServerConfig.UseVisualStyleBackColor = true;
@@ -242,7 +249,7 @@
             this.serverconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
             this.serverconfig_properties.Location = new System.Drawing.Point(3, 3);
             this.serverconfig_properties.Name = "serverconfig_properties";
-            this.serverconfig_properties.Size = new System.Drawing.Size(752, 337);
+            this.serverconfig_properties.Size = new System.Drawing.Size(896, 356);
             this.serverconfig_properties.TabIndex = 0;
             // 
             // ExtenderConfig
@@ -251,7 +258,7 @@
             this.ExtenderConfig.Location = new System.Drawing.Point(4, 22);
             this.ExtenderConfig.Name = "ExtenderConfig";
             this.ExtenderConfig.Padding = new System.Windows.Forms.Padding(3);
-            this.ExtenderConfig.Size = new System.Drawing.Size(758, 343);
+            this.ExtenderConfig.Size = new System.Drawing.Size(902, 362);
             this.ExtenderConfig.TabIndex = 1;
             this.ExtenderConfig.Text = "Extender Config";
             this.ExtenderConfig.UseVisualStyleBackColor = true;
@@ -261,7 +268,7 @@
             this.extenderconfig_properties.Dock = System.Windows.Forms.DockStyle.Fill;
             this.extenderconfig_properties.Location = new System.Drawing.Point(3, 3);
             this.extenderconfig_properties.Name = "extenderconfig_properties";
-            this.extenderconfig_properties.Size = new System.Drawing.Size(752, 337);
+            this.extenderconfig_properties.Size = new System.Drawing.Size(896, 356);
             this.extenderconfig_properties.TabIndex = 0;
             // 
             // serverconfig_checkForUpdates
@@ -282,7 +289,7 @@
             this.groupBox1.Controls.Add(this.server_hesNewsLabel);
             this.groupBox1.Location = new System.Drawing.Point(183, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(373, 72);
+            this.groupBox1.Size = new System.Drawing.Size(517, 78);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Extender News";
@@ -292,7 +299,7 @@
             this.server_hesNewsLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.server_hesNewsLabel.Location = new System.Drawing.Point(3, 16);
             this.server_hesNewsLabel.Name = "server_hesNewsLabel";
-            this.server_hesNewsLabel.Size = new System.Drawing.Size(367, 53);
+            this.server_hesNewsLabel.Size = new System.Drawing.Size(511, 59);
             this.server_hesNewsLabel.TabIndex = 0;
             this.server_hesNewsLabel.Text = "Configuration options for IRSE have been moved to the Server tab\r\nunder the IRSE " +
     "Config subtab.\r\n";
@@ -300,7 +307,7 @@
             // server_config_reload
             // 
             this.server_config_reload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.server_config_reload.Location = new System.Drawing.Point(562, 57);
+            this.server_config_reload.Location = new System.Drawing.Point(706, 63);
             this.server_config_reload.Name = "server_config_reload";
             this.server_config_reload.Size = new System.Drawing.Size(106, 23);
             this.server_config_reload.TabIndex = 6;
@@ -311,7 +318,7 @@
             // server_config_setdefaults
             // 
             this.server_config_setdefaults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.server_config_setdefaults.Location = new System.Drawing.Point(562, 9);
+            this.server_config_setdefaults.Location = new System.Drawing.Point(706, 15);
             this.server_config_setdefaults.Name = "server_config_setdefaults";
             this.server_config_setdefaults.Size = new System.Drawing.Size(106, 23);
             this.server_config_setdefaults.TabIndex = 4;
@@ -321,7 +328,7 @@
             // server_config_cancel
             // 
             this.server_config_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.server_config_cancel.Location = new System.Drawing.Point(674, 57);
+            this.server_config_cancel.Location = new System.Drawing.Point(818, 63);
             this.server_config_cancel.Name = "server_config_cancel";
             this.server_config_cancel.Size = new System.Drawing.Size(85, 23);
             this.server_config_cancel.TabIndex = 3;
@@ -332,7 +339,7 @@
             // server_config_save
             // 
             this.server_config_save.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.server_config_save.Location = new System.Drawing.Point(674, 9);
+            this.server_config_save.Location = new System.Drawing.Point(818, 15);
             this.server_config_save.Name = "server_config_save";
             this.server_config_save.Size = new System.Drawing.Size(85, 23);
             this.server_config_save.TabIndex = 1;
@@ -343,7 +350,7 @@
             // server_config_stopserver
             // 
             this.server_config_stopserver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.server_config_stopserver.Location = new System.Drawing.Point(96, 55);
+            this.server_config_stopserver.Location = new System.Drawing.Point(96, 61);
             this.server_config_stopserver.Name = "server_config_stopserver";
             this.server_config_stopserver.Size = new System.Drawing.Size(81, 23);
             this.server_config_stopserver.TabIndex = 1;
@@ -354,7 +361,7 @@
             // server_config_startserver
             // 
             this.server_config_startserver.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.server_config_startserver.Location = new System.Drawing.Point(7, 55);
+            this.server_config_startserver.Location = new System.Drawing.Point(7, 61);
             this.server_config_startserver.Name = "server_config_startserver";
             this.server_config_startserver.Size = new System.Drawing.Size(83, 23);
             this.server_config_startserver.TabIndex = 0;
@@ -368,7 +375,7 @@
             this.PlayersAndChatTab.Location = new System.Drawing.Point(4, 22);
             this.PlayersAndChatTab.Name = "PlayersAndChatTab";
             this.PlayersAndChatTab.Padding = new System.Windows.Forms.Padding(3);
-            this.PlayersAndChatTab.Size = new System.Drawing.Size(772, 469);
+            this.PlayersAndChatTab.Size = new System.Drawing.Size(916, 494);
             this.PlayersAndChatTab.TabIndex = 1;
             this.PlayersAndChatTab.Text = "Players & Chat";
             this.PlayersAndChatTab.UseVisualStyleBackColor = true;
@@ -386,8 +393,8 @@
             // ChatPlayerContainer.Panel2
             // 
             this.ChatPlayerContainer.Panel2.Controls.Add(this.splitContainer3);
-            this.ChatPlayerContainer.Size = new System.Drawing.Size(766, 463);
-            this.ChatPlayerContainer.SplitterDistance = 196;
+            this.ChatPlayerContainer.Size = new System.Drawing.Size(910, 488);
+            this.ChatPlayerContainer.SplitterDistance = 232;
             this.ChatPlayerContainer.TabIndex = 0;
             // 
             // splitContainer2
@@ -406,8 +413,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer2.Size = new System.Drawing.Size(196, 463);
-            this.splitContainer2.SplitterDistance = 30;
+            this.splitContainer2.Size = new System.Drawing.Size(232, 488);
+            this.splitContainer2.SplitterDistance = 31;
             this.splitContainer2.TabIndex = 0;
             // 
             // sc_onlineplayers_label
@@ -434,7 +441,7 @@
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(196, 30);
+            this.listView1.Size = new System.Drawing.Size(232, 31);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
@@ -453,8 +460,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer4.Size = new System.Drawing.Size(196, 429);
-            this.splitContainer4.SplitterDistance = 341;
+            this.splitContainer4.Size = new System.Drawing.Size(232, 453);
+            this.splitContainer4.SplitterDistance = 360;
             this.splitContainer4.TabIndex = 0;
             // 
             // tabControl3
@@ -465,7 +472,7 @@
             this.tabControl3.Location = new System.Drawing.Point(0, 0);
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
-            this.tabControl3.Size = new System.Drawing.Size(196, 341);
+            this.tabControl3.Size = new System.Drawing.Size(232, 360);
             this.tabControl3.TabIndex = 0;
             // 
             // tabPage1
@@ -474,7 +481,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(188, 315);
+            this.tabPage1.Size = new System.Drawing.Size(224, 334);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Online";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -484,11 +491,12 @@
             this.sc_playerslist_listview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.PlayerColumn,
             this.IsAdminColumn});
+            this.sc_playerslist_listview.ContextMenuStrip = this.sc_playerslist_ctxmenu;
             this.sc_playerslist_listview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sc_playerslist_listview.HideSelection = false;
             this.sc_playerslist_listview.Location = new System.Drawing.Point(3, 3);
             this.sc_playerslist_listview.Name = "sc_playerslist_listview";
-            this.sc_playerslist_listview.Size = new System.Drawing.Size(182, 309);
+            this.sc_playerslist_listview.Size = new System.Drawing.Size(218, 328);
             this.sc_playerslist_listview.TabIndex = 1;
             this.sc_playerslist_listview.UseCompatibleStateImageBehavior = false;
             this.sc_playerslist_listview.View = System.Windows.Forms.View.Details;
@@ -503,13 +511,61 @@
             this.IsAdminColumn.Text = "Admin";
             this.IsAdminColumn.Width = 50;
             // 
+            // sc_playerslist_ctxmenu
+            // 
+            this.sc_playerslist_ctxmenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.kickToolStripMenuItem,
+            this.banToolStripMenuItem,
+            this.forgetToolStripMenuItem,
+            this.killToolStripMenuItem,
+            this.toggleAdminToolStripMenuItem});
+            this.sc_playerslist_ctxmenu.Name = "contextMenuStrip1";
+            this.sc_playerslist_ctxmenu.Size = new System.Drawing.Size(149, 114);
+            this.sc_playerslist_ctxmenu.Text = "Control";
+            // 
+            // kickToolStripMenuItem
+            // 
+            this.kickToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.kickToolStripMenuItem.Name = "kickToolStripMenuItem";
+            this.kickToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.kickToolStripMenuItem.Text = "Kick";
+            this.kickToolStripMenuItem.Click += new System.EventHandler(this.pc_kickplayer_Click);
+            // 
+            // banToolStripMenuItem
+            // 
+            this.banToolStripMenuItem.Name = "banToolStripMenuItem";
+            this.banToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.banToolStripMenuItem.Text = "Ban";
+            this.banToolStripMenuItem.Click += new System.EventHandler(this.pc_banplayer_Click);
+            // 
+            // forgetToolStripMenuItem
+            // 
+            this.forgetToolStripMenuItem.Name = "forgetToolStripMenuItem";
+            this.forgetToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.forgetToolStripMenuItem.Text = "Forget";
+            this.forgetToolStripMenuItem.Click += new System.EventHandler(this.pc_forgetplayer_Click);
+            // 
+            // killToolStripMenuItem
+            // 
+            this.killToolStripMenuItem.Name = "killToolStripMenuItem";
+            this.killToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.killToolStripMenuItem.Text = "Kill";
+            this.killToolStripMenuItem.Click += new System.EventHandler(this.pc_killplayer_Click);
+            // 
+            // toggleAdminToolStripMenuItem
+            // 
+            this.toggleAdminToolStripMenuItem.Name = "toggleAdminToolStripMenuItem";
+            this.toggleAdminToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.toggleAdminToolStripMenuItem.Text = "Toggle Admin";
+            this.toggleAdminToolStripMenuItem.Click += new System.EventHandler(this.pc_toggleadmin_Click);
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.sc_playerbans_listview);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(188, 315);
+            this.tabPage2.Size = new System.Drawing.Size(224, 334);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Bans";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -523,7 +579,7 @@
             this.sc_playerbans_listview.HideSelection = false;
             this.sc_playerbans_listview.Location = new System.Drawing.Point(3, 3);
             this.sc_playerbans_listview.Name = "sc_playerbans_listview";
-            this.sc_playerbans_listview.Size = new System.Drawing.Size(182, 309);
+            this.sc_playerbans_listview.Size = new System.Drawing.Size(218, 328);
             this.sc_playerbans_listview.TabIndex = 2;
             this.sc_playerbans_listview.UseCompatibleStateImageBehavior = false;
             this.sc_playerbans_listview.View = System.Windows.Forms.View.Details;
@@ -547,7 +603,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(196, 84);
+            this.groupBox2.Size = new System.Drawing.Size(232, 89);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Quick Player Control";
@@ -617,8 +673,8 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.cpc_chat_send);
             this.splitContainer3.Panel2.Controls.Add(this.cpc_messagebox);
-            this.splitContainer3.Size = new System.Drawing.Size(566, 463);
-            this.splitContainer3.SplitterDistance = 412;
+            this.splitContainer3.Size = new System.Drawing.Size(674, 488);
+            this.splitContainer3.SplitterDistance = 434;
             this.splitContainer3.TabIndex = 0;
             // 
             // cpc_chat_tabs
@@ -629,7 +685,7 @@
             this.cpc_chat_tabs.Location = new System.Drawing.Point(0, 0);
             this.cpc_chat_tabs.Name = "cpc_chat_tabs";
             this.cpc_chat_tabs.SelectedIndex = 0;
-            this.cpc_chat_tabs.Size = new System.Drawing.Size(566, 412);
+            this.cpc_chat_tabs.Size = new System.Drawing.Size(674, 434);
             this.cpc_chat_tabs.TabIndex = 0;
             // 
             // tabPage3
@@ -638,7 +694,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(558, 386);
+            this.tabPage3.Size = new System.Drawing.Size(666, 408);
             this.tabPage3.TabIndex = 0;
             this.tabPage3.Text = "Chat";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -650,13 +706,13 @@
             this.cpc_chat_list.Multiline = true;
             this.cpc_chat_list.Name = "cpc_chat_list";
             this.cpc_chat_list.ReadOnly = true;
-            this.cpc_chat_list.Size = new System.Drawing.Size(552, 380);
+            this.cpc_chat_list.Size = new System.Drawing.Size(660, 402);
             this.cpc_chat_list.TabIndex = 2;
             // 
             // cpc_chat_send
             // 
             this.cpc_chat_send.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cpc_chat_send.Location = new System.Drawing.Point(487, 3);
+            this.cpc_chat_send.Location = new System.Drawing.Point(595, 3);
             this.cpc_chat_send.Name = "cpc_chat_send";
             this.cpc_chat_send.Size = new System.Drawing.Size(50, 23);
             this.cpc_chat_send.TabIndex = 1;
@@ -671,7 +727,7 @@
             this.cpc_messagebox.Location = new System.Drawing.Point(3, 5);
             this.cpc_messagebox.Name = "cpc_messagebox";
             this.cpc_messagebox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.cpc_messagebox.Size = new System.Drawing.Size(478, 20);
+            this.cpc_messagebox.Size = new System.Drawing.Size(586, 20);
             this.cpc_messagebox.TabIndex = 0;
             this.cpc_messagebox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cpc_messagebox_KeyDown);
             // 
@@ -681,7 +737,7 @@
             this.CommandVisualizerTab.Location = new System.Drawing.Point(4, 22);
             this.CommandVisualizerTab.Name = "CommandVisualizerTab";
             this.CommandVisualizerTab.Padding = new System.Windows.Forms.Padding(3);
-            this.CommandVisualizerTab.Size = new System.Drawing.Size(772, 469);
+            this.CommandVisualizerTab.Size = new System.Drawing.Size(916, 494);
             this.CommandVisualizerTab.TabIndex = 6;
             this.CommandVisualizerTab.Text = "Command Visualizer";
             this.CommandVisualizerTab.UseVisualStyleBackColor = true;
@@ -699,14 +755,14 @@
             this.tabControl2.Location = new System.Drawing.Point(3, 3);
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(766, 463);
+            this.tabControl2.Size = new System.Drawing.Size(910, 488);
             this.tabControl2.TabIndex = 0;
             // 
             // CV_PLAYERS_TAB
             // 
             this.CV_PLAYERS_TAB.Location = new System.Drawing.Point(4, 22);
             this.CV_PLAYERS_TAB.Name = "CV_PLAYERS_TAB";
-            this.CV_PLAYERS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_PLAYERS_TAB.Size = new System.Drawing.Size(902, 462);
             this.CV_PLAYERS_TAB.TabIndex = 3;
             this.CV_PLAYERS_TAB.Text = "Players";
             this.CV_PLAYERS_TAB.UseVisualStyleBackColor = true;
@@ -715,7 +771,7 @@
             // 
             this.CV_SYSTEMS_TAB.Location = new System.Drawing.Point(4, 22);
             this.CV_SYSTEMS_TAB.Name = "CV_SYSTEMS_TAB";
-            this.CV_SYSTEMS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_SYSTEMS_TAB.Size = new System.Drawing.Size(902, 462);
             this.CV_SYSTEMS_TAB.TabIndex = 6;
             this.CV_SYSTEMS_TAB.Text = "Systems";
             this.CV_SYSTEMS_TAB.UseVisualStyleBackColor = true;
@@ -724,7 +780,7 @@
             // 
             this.CV_SHIPS_TAB.Location = new System.Drawing.Point(4, 22);
             this.CV_SHIPS_TAB.Name = "CV_SHIPS_TAB";
-            this.CV_SHIPS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_SHIPS_TAB.Size = new System.Drawing.Size(902, 462);
             this.CV_SHIPS_TAB.TabIndex = 0;
             this.CV_SHIPS_TAB.Text = "Ships";
             this.CV_SHIPS_TAB.UseVisualStyleBackColor = true;
@@ -733,7 +789,7 @@
             // 
             this.CV_CREW_TAB.Location = new System.Drawing.Point(4, 22);
             this.CV_CREW_TAB.Name = "CV_CREW_TAB";
-            this.CV_CREW_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_CREW_TAB.Size = new System.Drawing.Size(902, 462);
             this.CV_CREW_TAB.TabIndex = 4;
             this.CV_CREW_TAB.Text = "Crew";
             this.CV_CREW_TAB.UseVisualStyleBackColor = true;
@@ -742,7 +798,7 @@
             // 
             this.CV_FLEET_TAB.Location = new System.Drawing.Point(4, 22);
             this.CV_FLEET_TAB.Name = "CV_FLEET_TAB";
-            this.CV_FLEET_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_FLEET_TAB.Size = new System.Drawing.Size(902, 462);
             this.CV_FLEET_TAB.TabIndex = 5;
             this.CV_FLEET_TAB.Text = "Fleet";
             this.CV_FLEET_TAB.UseVisualStyleBackColor = true;
@@ -751,7 +807,7 @@
             // 
             this.CV_ASTEROIDS_TAB.Location = new System.Drawing.Point(4, 22);
             this.CV_ASTEROIDS_TAB.Name = "CV_ASTEROIDS_TAB";
-            this.CV_ASTEROIDS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_ASTEROIDS_TAB.Size = new System.Drawing.Size(902, 462);
             this.CV_ASTEROIDS_TAB.TabIndex = 1;
             this.CV_ASTEROIDS_TAB.Text = "Asteroids";
             this.CV_ASTEROIDS_TAB.UseVisualStyleBackColor = true;
@@ -760,7 +816,7 @@
             // 
             this.CV_RIFTS_TAB.Location = new System.Drawing.Point(4, 22);
             this.CV_RIFTS_TAB.Name = "CV_RIFTS_TAB";
-            this.CV_RIFTS_TAB.Size = new System.Drawing.Size(758, 437);
+            this.CV_RIFTS_TAB.Size = new System.Drawing.Size(902, 462);
             this.CV_RIFTS_TAB.TabIndex = 2;
             this.CV_RIFTS_TAB.Text = "Rifts";
             this.CV_RIFTS_TAB.UseVisualStyleBackColor = true;
@@ -770,7 +826,7 @@
             this.PluginsTab.Controls.Add(this.splitContainer5);
             this.PluginsTab.Location = new System.Drawing.Point(4, 22);
             this.PluginsTab.Name = "PluginsTab";
-            this.PluginsTab.Size = new System.Drawing.Size(772, 469);
+            this.PluginsTab.Size = new System.Drawing.Size(916, 494);
             this.PluginsTab.TabIndex = 5;
             this.PluginsTab.Text = "Plugins";
             this.PluginsTab.UseVisualStyleBackColor = true;
@@ -788,8 +844,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer5.Size = new System.Drawing.Size(772, 469);
-            this.splitContainer5.SplitterDistance = 213;
+            this.splitContainer5.Size = new System.Drawing.Size(916, 494);
+            this.splitContainer5.SplitterDistance = 252;
             this.splitContainer5.TabIndex = 1;
             // 
             // splitContainer6
@@ -808,8 +864,8 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.plugins_tab_pluginslist);
-            this.splitContainer6.Size = new System.Drawing.Size(213, 469);
-            this.splitContainer6.SplitterDistance = 68;
+            this.splitContainer6.Size = new System.Drawing.Size(252, 494);
+            this.splitContainer6.SplitterDistance = 71;
             this.splitContainer6.TabIndex = 0;
             // 
             // BTN_Plugins_Enable
@@ -855,7 +911,7 @@
             this.plugins_tab_pluginslist.Name = "plugins_tab_pluginslist";
             this.plugins_tab_pluginslist.ShowGroups = false;
             this.plugins_tab_pluginslist.ShowItemToolTips = true;
-            this.plugins_tab_pluginslist.Size = new System.Drawing.Size(213, 397);
+            this.plugins_tab_pluginslist.Size = new System.Drawing.Size(252, 419);
             this.plugins_tab_pluginslist.TabIndex = 0;
             this.plugins_tab_pluginslist.UseCompatibleStateImageBehavior = false;
             this.plugins_tab_pluginslist.View = System.Windows.Forms.View.Details;
@@ -879,7 +935,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(555, 469);
+            this.tabControl1.Size = new System.Drawing.Size(660, 494);
             this.tabControl1.TabIndex = 0;
             // 
             // plugins_tab_informationTab
@@ -888,7 +944,7 @@
             this.plugins_tab_informationTab.Location = new System.Drawing.Point(4, 22);
             this.plugins_tab_informationTab.Name = "plugins_tab_informationTab";
             this.plugins_tab_informationTab.Padding = new System.Windows.Forms.Padding(3);
-            this.plugins_tab_informationTab.Size = new System.Drawing.Size(547, 443);
+            this.plugins_tab_informationTab.Size = new System.Drawing.Size(652, 468);
             this.plugins_tab_informationTab.TabIndex = 0;
             this.plugins_tab_informationTab.Text = "Information";
             this.plugins_tab_informationTab.UseVisualStyleBackColor = true;
@@ -903,7 +959,7 @@
             this.plugins_tab_browser.MinimumSize = new System.Drawing.Size(20, 20);
             this.plugins_tab_browser.Name = "plugins_tab_browser";
             this.plugins_tab_browser.ScriptErrorsSuppressed = true;
-            this.plugins_tab_browser.Size = new System.Drawing.Size(541, 437);
+            this.plugins_tab_browser.Size = new System.Drawing.Size(646, 462);
             this.plugins_tab_browser.TabIndex = 0;
             // 
             // plugins_tab_settingsTab
@@ -912,7 +968,7 @@
             this.plugins_tab_settingsTab.Location = new System.Drawing.Point(4, 22);
             this.plugins_tab_settingsTab.Name = "plugins_tab_settingsTab";
             this.plugins_tab_settingsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.plugins_tab_settingsTab.Size = new System.Drawing.Size(547, 443);
+            this.plugins_tab_settingsTab.Size = new System.Drawing.Size(652, 468);
             this.plugins_tab_settingsTab.TabIndex = 1;
             this.plugins_tab_settingsTab.Text = "Settings";
             this.plugins_tab_settingsTab.UseVisualStyleBackColor = true;
@@ -923,7 +979,7 @@
             this.PluginSettingsFormPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PluginSettingsFormPanel.Location = new System.Drawing.Point(3, 3);
             this.PluginSettingsFormPanel.Name = "PluginSettingsFormPanel";
-            this.PluginSettingsFormPanel.Size = new System.Drawing.Size(541, 437);
+            this.PluginSettingsFormPanel.Size = new System.Drawing.Size(646, 462);
             this.PluginSettingsFormPanel.TabIndex = 0;
             // 
             // splitContainer1
@@ -969,9 +1025,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusBar});
-            this.statusStrip.Location = new System.Drawing.Point(0, 495);
+            this.statusStrip.Location = new System.Drawing.Point(0, 520);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(780, 22);
+            this.statusStrip.Size = new System.Drawing.Size(924, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -986,60 +1042,63 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.development_label.AutoSize = true;
             this.development_label.ForeColor = System.Drawing.Color.Red;
-            this.development_label.Location = new System.Drawing.Point(466, 500);
+            this.development_label.Location = new System.Drawing.Point(466, 525);
             this.development_label.Name = "development_label";
             this.development_label.Size = new System.Drawing.Size(0, 13);
             this.development_label.TabIndex = 3;
             // 
-            // contextMenuStrip1
+            // ts_sc_ctxmenu
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.kickToolStripMenuItem,
-            this.banToolStripMenuItem,
-            this.forgetToolStripMenuItem,
-            this.killToolStripMenuItem,
-            this.toggleAdminToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 114);
-            this.contextMenuStrip1.Text = "Control";
+            this.ts_sc_ctxmenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ts_pc_startserver,
+            this.ts_pc_stopserver,
+            this.toolStripSeparator1,
+            this.ts_pc_restartserver,
+            this.ts_pc_closeirse});
+            this.ts_sc_ctxmenu.Name = "contextMenuStrip1";
+            this.ts_sc_ctxmenu.Size = new System.Drawing.Size(136, 98);
+            this.ts_sc_ctxmenu.Text = "Server Control";
             // 
-            // kickToolStripMenuItem
+            // ts_pc_startserver
             // 
-            this.kickToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.kickToolStripMenuItem.Name = "kickToolStripMenuItem";
-            this.kickToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.kickToolStripMenuItem.Text = "Kick";
+            this.ts_pc_startserver.Name = "ts_pc_startserver";
+            this.ts_pc_startserver.Size = new System.Drawing.Size(135, 22);
+            this.ts_pc_startserver.Text = "Start Server";
+            this.ts_pc_startserver.Click += new System.EventHandler(this.server_config_startserver_Click);
             // 
-            // banToolStripMenuItem
+            // ts_pc_stopserver
             // 
-            this.banToolStripMenuItem.Name = "banToolStripMenuItem";
-            this.banToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.banToolStripMenuItem.Text = "Ban";
+            this.ts_pc_stopserver.Name = "ts_pc_stopserver";
+            this.ts_pc_stopserver.Size = new System.Drawing.Size(135, 22);
+            this.ts_pc_stopserver.Text = "Stop Server";
+            this.ts_pc_stopserver.Click += new System.EventHandler(this.server_config_stopserver_Click);
             // 
-            // forgetToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.forgetToolStripMenuItem.Name = "forgetToolStripMenuItem";
-            this.forgetToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.forgetToolStripMenuItem.Text = "Forget";
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(132, 6);
             // 
-            // killToolStripMenuItem
+            // ts_pc_restartserver
             // 
-            this.killToolStripMenuItem.Name = "killToolStripMenuItem";
-            this.killToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.killToolStripMenuItem.Text = "Kill";
+            this.ts_pc_restartserver.Name = "ts_pc_restartserver";
+            this.ts_pc_restartserver.Size = new System.Drawing.Size(135, 22);
+            this.ts_pc_restartserver.Text = "Restart IRSE";
+            this.ts_pc_restartserver.Click += new System.EventHandler(this.ts_pc_restartserver_Click);
             // 
-            // toggleAdminToolStripMenuItem
+            // ts_pc_closeirse
             // 
-            this.toggleAdminToolStripMenuItem.Name = "toggleAdminToolStripMenuItem";
-            this.toggleAdminToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.toggleAdminToolStripMenuItem.Text = "Toggle Admin";
+            this.ts_pc_closeirse.Name = "ts_pc_closeirse";
+            this.ts_pc_closeirse.Size = new System.Drawing.Size(135, 22);
+            this.ts_pc_closeirse.Text = "Close IRSE";
+            this.ts_pc_closeirse.Click += new System.EventHandler(this.ts_pc_closeirse_Click);
             // 
             // ExtenderGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(780, 517);
+            this.ClientSize = new System.Drawing.Size(924, 542);
+            this.ContextMenuStrip = this.ts_sc_ctxmenu;
             this.Controls.Add(this.development_label);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.statusStrip);
@@ -1047,6 +1106,7 @@
             this.Name = "ExtenderGui";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ExtenderGui_FormClosing);
+            this.Load += new System.EventHandler(this.ExtenderGui_Load);
             this.Tabs.ResumeLayout(false);
             this.ServerTab.ResumeLayout(false);
             this.ServerContainer.Panel1.ResumeLayout(false);
@@ -1073,6 +1133,7 @@
             this.splitContainer4.ResumeLayout(false);
             this.tabControl3.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.sc_playerslist_ctxmenu.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.splitContainer3.Panel1.ResumeLayout(false);
@@ -1103,7 +1164,7 @@
             this.ExtenderWebsite.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.ts_sc_ctxmenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1124,10 +1185,7 @@
         private System.Windows.Forms.SplitContainer ChatPlayerContainer;
         public System.Windows.Forms.Button server_config_startserver;
         private System.Windows.Forms.Button server_config_reload;
-        private System.Windows.Forms.TabPage ObjectManipulationTab;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.TreeView objectManipulation_treeview;
-        private System.Windows.Forms.PropertyGrid objectManipulation_grid;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label sc_onlineplayers_label;
         private System.Windows.Forms.Label label1;
@@ -1148,7 +1206,6 @@
         private System.Windows.Forms.Label development_label;
         private System.Windows.Forms.TabPage CommandVisualizerTab;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label objectmanipulator_grid_isEditing;
         private System.Windows.Forms.Button BTN_Plugins_Enable;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage plugins_tab_informationTab;
@@ -1190,12 +1247,18 @@
         private System.Windows.Forms.ListView sc_playerbans_listview;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ContextMenuStrip sc_playerslist_ctxmenu;
         private System.Windows.Forms.ToolStripMenuItem kickToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem banToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem forgetToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem killToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toggleAdminToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip ts_sc_ctxmenu;
+        private System.Windows.Forms.ToolStripMenuItem ts_pc_startserver;
+        private System.Windows.Forms.ToolStripMenuItem ts_pc_stopserver;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem ts_pc_restartserver;
+        private System.Windows.Forms.ToolStripMenuItem ts_pc_closeirse;
     }
 }
 

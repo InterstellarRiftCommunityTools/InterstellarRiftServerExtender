@@ -1,4 +1,5 @@
 ﻿using Game.Framework;
+using HarmonyLib;
 using IRSE.GUI.Forms;
 using IRSE.Managers;
 using IRSE.Modules;
@@ -13,11 +14,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
 using Localization = IRSE.Modules.Localization;
-using HarmonyLib;
 
 namespace IRSE
 {
@@ -94,7 +93,7 @@ namespace IRSE
 
             if (!Dev)
                 AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
-           
+
             CurrentGameVerson = SteamCMD.GetGameVersion();
             Console.Title = WindowTitle;
         }
@@ -287,7 +286,7 @@ namespace IRSE
             Game.Program.CommandLineArgs = new string[1];
 
             m_serverInstance.PluginManager.LoadAllPlugins();
-          
+
             SetupGUI();
 
             Console.ForegroundColor = ConsoleColor.Red;
@@ -407,14 +406,13 @@ namespace IRSE
             startInfo.WindowStyle = thisProcess.StartInfo.WindowStyle;
 
             var proc = Process.Start(startInfo);
-            
+
             thisProcess.Kill();
         }
 
         public void BuildConsoleCommands()
         {
-            
-            IRSEConsoleCommands["help"] = (args) => 
+            IRSEConsoleCommands["help"] = (args) =>
             {
                 Console.ForegroundColor = ConsoleColor.Red;
 
@@ -438,20 +436,17 @@ namespace IRSE
                     Console.WriteLine("The server is not running");
             };
 
-
             IRSEConsoleCommands["restart"] = (args) =>
                 Restart();
 
             IRSEConsoleCommands["opengui"] = (args) =>
                 SetupGUI();
 
-            IRSEConsoleCommands["checkupdate"] = (args) => 
+            IRSEConsoleCommands["checkupdate"] = (args) =>
                 updateManager.CheckForUpdates().GetAwaiter().GetResult();
 
-
-            IRSEConsoleCommands["forceupdate"] = (args) => 
+            IRSEConsoleCommands["forceupdate"] = (args) =>
                 updateManager.CheckForUpdates(true).GetAwaiter().GetResult();
-           
         }
 
         /// <summary>
@@ -460,34 +455,27 @@ namespace IRSE
         public void ReadConsoleCommands(string[] args)
         {
             BuildConsoleCommands();
-         
-            HWnd = Process.GetCurrentProcess().MainWindowHandle;
-            string line = null;
 
+            HWnd = Process.GetCurrentProcess().MainWindowHandle;
             while (true)
             {
-                line = Console.ReadLine();
-
+                string line = Console.ReadLine();
                 if (PendingServerStart)
                 {
                     PendingServerStart = false;
                     StartServer();
-                    
                 }
 
                 if (ServerInstance.Instance.IsRunning)
-                {                  
+                {
                     while (ServerInstance.Instance.IsRunning)
                     {
                         ConsoleCoroutine.MoveNext();
                         Thread.Sleep(50);
-                    }                   
+                    }
                 }
 
-                if (ServerInstance.Instance.IsRunning)
-                    continue;
-
-                if (!string.IsNullOrEmpty(line) && line.Length > 1)
+                if (!string.IsNullOrEmpty(line) && line.Length > 1 && !ServerInstance.Instance.IsRunning)
                 {
                     if (!line.StartsWith("/"))
                     {
@@ -501,15 +489,18 @@ namespace IRSE
                     {
                         IRSEConsoleCommands[cmd](lineArgs);
                     }
+                    catch (KeyNotFoundException)
+                    {
+                        mainLog.Error("IRSE: Command doesn't exist.");
+                    }
                     catch (Exception ex)
                     {
-                        mainLog.Error("IRSE Command run exception", ex);
+                        mainLog.Error(ex, "IRSE: Command exception.");
                     }
-
                 }
-
             }
         }
+
         private void Instance_OnServerStarted()
         {
             mainLog.Warn("IRSE: Game Console Commands Enabled.");

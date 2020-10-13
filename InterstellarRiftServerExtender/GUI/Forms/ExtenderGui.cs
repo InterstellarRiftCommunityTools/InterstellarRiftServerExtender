@@ -23,9 +23,35 @@ namespace IRSE.GUI.Forms
 
         public ExtenderGui()
         {
-
             InitializeComponent();
+        }
 
+        private bool AreYouSure(string sureOfWhat)
+            => MessageBox.Show(sureOfWhat, "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes;
+
+        private void DisableControls(bool disable = true)
+        {
+            cpc_chat_list.BackColor = disable ? SystemColors.Window : SystemColors.Control;
+
+            cpc_messagebox.Enabled = !disable;
+            cpc_chat_send.Enabled = !disable;
+
+            pc_banplayer.Enabled = !disable;
+            pc_kickplayer.Enabled = !disable;
+            pc_forgetplayer.Enabled = !disable;
+            pc_killplayer.Enabled = !disable;
+            pc_toggleadmin.Enabled = !disable;
+
+            sc_playerslist_listview.Enabled = !disable;
+
+            server_config_stopserver.Enabled = !disable;
+            server_config_startserver.Enabled = disable;
+        }
+
+        #region Events
+
+        private void ExtenderGui_Load(object sender, EventArgs e)
+        {
             AddChatLine("Waiting for server to start..");
 
             cpc_chat_list.ReadOnly = true;
@@ -53,44 +79,29 @@ namespace IRSE.GUI.Forms
                 "Welcome to IRSE!\nIt's Almost Ready!!\n" +
                 "Woot!";
 
+            PluginsRefreshTimer.Enabled = true;
+            PluginsRefreshTimer.Interval = (1000); // 1 secs
+            PluginsRefreshTimer.Tick += delegate (object sender, EventArgs e)
+            {
+                UpdatePluginTab();
+            };
+
         }
-
-        private bool AreYouSure(string sureOfWhat)
-            => MessageBox.Show(sureOfWhat, "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes;
-
-        private void DisableControls(bool disable = true)
-        {
-            cpc_chat_list.BackColor = disable ? SystemColors.Window : SystemColors.Control;
-
-            cpc_messagebox.Enabled = !disable;
-            cpc_chat_send.Enabled = !disable;
-
-            pc_banplayer.Enabled = !disable;
-            pc_kickplayer.Enabled = !disable;
-            pc_forgetplayer.Enabled = !disable;
-            pc_killplayer.Enabled = !disable;
-            pc_toggleadmin.Enabled = !disable;
-
-            sc_playerslist_listview.Enabled = !disable;
-
-            server_config_stopserver.Enabled = !disable;
-            server_config_startserver.Enabled = disable;
-        }
-
-        #region Events
 
         private void Instance_OnServerStarting()
         {
             Invoke(new MethodInvoker(delegate
             {
+                Console.WriteLine("Pie");
                 server_config_startserver.Enabled = false;
+
+                this.Refresh();
             }));
         }
 
         private void Instance_OnServerStarted()
         {
             
-
             Invoke(new MethodInvoker(delegate
             {
                 AddChatLine("Server Online, Ready For Chat.");
@@ -98,19 +109,12 @@ namespace IRSE.GUI.Forms
                 DisableControls(false);
 
                 PlayersRefreshTimer.Enabled = true;
-                PluginsRefreshTimer.Enabled = true;
-
+                
                 PlayersRefreshTimer.Interval = (1000); // 1 secs
                 PlayersRefreshTimer.Tick += delegate (object sender, EventArgs e)
                 {
                     UpdateChatPlayers();
                     UpdateBannedPlayers();
-                };
-
-                PluginsRefreshTimer.Interval = (1000); // 1 secs
-                PluginsRefreshTimer.Tick += delegate (object sender, EventArgs e)
-                {
-                    UpdatePluginTab();
                 };
 
                 this.Refresh();
@@ -126,9 +130,6 @@ namespace IRSE.GUI.Forms
                 PlayersRefreshTimer.Stop();
                 PlayersRefreshTimer.Enabled = false;
 
-                PluginsRefreshTimer.Stop();
-                PluginsRefreshTimer.Enabled = false;
-
                 this.Refresh();
             }));
         }
@@ -136,6 +137,9 @@ namespace IRSE.GUI.Forms
         private void Tabs_Selected(object sender, TabControlEventArgs e)
         {
             PlayersRefreshTimer.Enabled = e.TabPage.Name == "PlayersAndChatTab";
+            PluginsRefreshTimer.Enabled = e.TabPage.Name == "PluginsTab";
+
+            this.Refresh();
         }
 
         #endregion Events
@@ -186,7 +190,6 @@ namespace IRSE.GUI.Forms
                 }
             }
         }
-
 
         private void server_config_reload_Click(object sender, EventArgs e)
         {
@@ -696,14 +699,30 @@ namespace IRSE.GUI.Forms
 
         #endregion Updates
 
-        private void ExtenderGui_Load(object sender, EventArgs e)
-        {
-        }
-
         private void ExtenderGui_FormClosing(object sender, FormClosingEventArgs e)
         {
             Visible = false;
             e.Cancel = true;
+        }
+
+        private void ts_pc_startserver_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ts_pc_stopserver_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ts_pc_restartserver_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ts_pc_closeirse_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
