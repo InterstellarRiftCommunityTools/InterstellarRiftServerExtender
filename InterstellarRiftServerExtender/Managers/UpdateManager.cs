@@ -306,7 +306,7 @@ namespace IRSE.Managers
                 
 
             }
-            catch(NotFoundException nex)
+            catch(NotFoundException)
             {
                 Console.WriteLine("Repository or Releases Not found error, check the organization and repository settings and that releases exist.");
             }

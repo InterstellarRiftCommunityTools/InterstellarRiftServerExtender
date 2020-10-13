@@ -78,7 +78,7 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
 
             if (serverThread == null) {
 
-                mainLog.Info("IRSE: Launching Server...");
+                mainLog.Info(string.Format(Program.Localization.Sentences["LaunchingServer"]));
                 serverThread = new Thread(new ParameterizedThreadStart(this.ThreadStart));
 
                 serverThread.IsBackground = false;
@@ -98,7 +98,8 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
             }
             catch (Exception ex)
             {
-                mainLog.Fatal(ex, "IRSE: Could not initialize the wrapper. This is a fatal error, please report the exception to the github issues. Shutting Down...");
+                
+                mainLog.Fatal(ex, string.Format(Program.Localization.Sentences["NoInitWrapper"]));
             }
         }
 
@@ -109,7 +110,7 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
                 m_startupArgsField.SetValue(null, args as String[]);
                 m_startupMethod.Call(null, null);
 
-                mainLog.Info("IRSE: Waiting for server....");
+                mainLog.Info(string.Format(Program.Localization.Sentences["WaitingForServer"]));
 
                 ServerInstance.Instance.SetIsStarting();
 
@@ -131,8 +132,9 @@ namespace IRSE.ReflectionWrappers.ServerWrappers
             }
             catch (Exception ex)
             {
+                
+                mainLog.Fatal(ex, string.Format(Program.Localization.Sentences["GameBaseCode"]));
 
-                mainLog.Fatal(ex, "IR.exe code was probably changed, this is a fatal error, please report the error below to the github issues.");
             }
  
         }

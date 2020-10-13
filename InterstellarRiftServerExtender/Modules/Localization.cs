@@ -124,6 +124,12 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("InitializingPlugin", "Initializing Plugin : {0}");
                 resXresourceWriter.AddResource("LoadingPlugin", "Loading Plugin : {0}");
                 resXresourceWriter.AddResource("ShutdownPlugin", "Shutting down Plugin {0}");
+
+                // ServerWrappers/Program.cs
+                resXresourceWriter.AddResource("LaunchingServer", "IRSE: Launching Server...");
+                resXresourceWriter.AddResource("NoInitWrapper", "IRSE: Could not initialize the wrapper. This is a fatal error, please report the exception to the github issues. Shutting Down...");
+                resXresourceWriter.AddResource("WaitingForServer", "IRSE: Waiting for server");
+                resXresourceWriter.AddResource("GameBaseCode", "IR.exe base game code was probably changed, this is a fatal error, please report the error below to the github issues.");
             }
         }
     }

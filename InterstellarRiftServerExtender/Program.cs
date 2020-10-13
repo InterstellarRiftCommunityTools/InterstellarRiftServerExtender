@@ -489,7 +489,7 @@ namespace IRSE
                     }
                     catch (Exception ex)
                     {
-                        mainLog.Error(string.Format(Program.Localization.Sentences["CommandException"]));
+                        mainLog.Error(ex, string.Format(Program.Localization.Sentences["CommandException"]));
                     }
                 }
             }

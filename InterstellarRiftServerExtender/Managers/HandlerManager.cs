@@ -14,11 +14,9 @@ namespace IRSE.Managers
 
         private static Logger mainLog; //mainLog.Error
         private Game.Server.ControllerManager m_controllerManager;
-        private UniverseHandler m_universeHandler;
         private readonly Assembly m_serverAssembly;
         private Assembly m_frameworkAssembly;
         private Type m_gameStateType;
-        private Object server;
 
         #endregion Fields
 
