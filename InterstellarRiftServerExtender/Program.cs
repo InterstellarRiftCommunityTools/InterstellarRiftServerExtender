@@ -289,18 +289,17 @@ namespace IRSE
 
             SetupGUI();
 
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("IRSE: Ready for Input, try /help !");
+            Console.ResetColor();
 
             if (autoStart || Config.Settings.AutoStartEnable)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("IRSE: Arg: -autostart or Gui's Autostart Checkbox was Checked)");
                 Console.ResetColor();
-                PendingServerStart = true;
+                StartServer();
             }
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("IRSE: Ready for Input, try /help !");
-            Console.ResetColor();
 
             //console logic for commands
             ReadConsoleCommands(args);
@@ -370,7 +369,6 @@ namespace IRSE
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-         
 
             if (m_form == null || m_form.IsDisposed)
             {
@@ -479,7 +477,6 @@ namespace IRSE
 
                 if (!string.IsNullOrEmpty(line) && line.Length > 1 && !ServerInstance.Instance.IsRunning)
                 {
-
                     string cmd = line.Split(" ".ToCharArray())[0].Replace("/", "");
                     string[] lineArgs = line.Split(" ".ToCharArray()).Skip(1).ToArray();
 
