@@ -40,7 +40,7 @@ namespace IRSE
         private static Thread uiThread;
 
         private static NLog.Logger mainLog;
-        private static string[] CommandLineArgs;
+        private static string[] CommandLineArgs = new string[10];
         private static bool debugMode = true;
         private static ExtenderGui m_form;
 
@@ -104,6 +104,8 @@ namespace IRSE
         [MTAThread]
         private static void Main(string[] args)
         {
+            CommandLineArgs = args;
+
             SetTitle();
 
             new FolderStructure().Build();
@@ -187,6 +189,7 @@ namespace IRSE
         // this is where stuff goes!
         private void Run(string[] args)
         {
+            //Harmony
             Harmony.DEBUG = Dev;
             Harmony = new Harmony("com.tse.irse");
 
@@ -376,12 +379,11 @@ namespace IRSE
 
         #endregion GUI
 
-        internal static void Restart(bool stopServer = true)
+        internal static void Restart()
         {
             if (ServerInstance.Instance != null)
-
             {
-                if (ServerInstance.Instance.IsRunning && stopServer == true)
+                if (ServerInstance.Instance.IsRunning)
                 {
                     if (ServerInstance.Instance != null)
                     {
@@ -393,12 +395,13 @@ namespace IRSE
 
             var thisProcess = Process.GetCurrentProcess();
             var startInfo = new ProcessStartInfo();
-            startInfo.FileName = thisProcess.ProcessName;
+            startInfo.FileName = thisProcess.MainModule.FileName;
+            startInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             startInfo.Arguments = string.Join(" ", CommandLineArgs);
             startInfo.WindowStyle = thisProcess.StartInfo.WindowStyle;
 
             var proc = Process.Start(startInfo);
-
+            
             thisProcess.Kill();
         }
 
