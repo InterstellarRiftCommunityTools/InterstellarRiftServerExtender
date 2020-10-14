@@ -1,5 +1,6 @@
 ﻿using Game.Server;
 using Game.Universe;
+using IRSE.GUI.Forms.Browser;
 using IRSE.Managers;
 using IRSE.Managers.Plugins;
 using IRSE.Modules;
@@ -25,6 +26,9 @@ namespace IRSE.GUI.Forms
         public ExtenderGui()
         {
             InitializeComponent();
+
+
+            
         }
 
         private bool AreYouSure(string sureOfWhat)
@@ -93,7 +97,6 @@ namespace IRSE.GUI.Forms
         {
             Invoke(new MethodInvoker(delegate
             {
-                Console.WriteLine("Pie");
                 server_config_startserver.Enabled = false;
 
                 this.Refresh();
@@ -197,7 +200,7 @@ namespace IRSE.GUI.Forms
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
             {
                 DialogResult result = MessageBox.Show("Are you sure you want to reload the settings from the server.json?",
-                 "2. Server Settings Error",
+                 "Server Settings",
                  MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 if (result == DialogResult.Yes)
                 {
@@ -525,18 +528,7 @@ namespace IRSE.GUI.Forms
                     if (!plugins_tab_pluginslist.Items.ContainsKey(item.Name))
                         plugins_tab_pluginslist.Items.Add(item);
 
-                    if (plugin.Loaded)
-                    {
-                        BTN_Plugins_Enable.Text = "Disable";
-                        SelectedPluginStateLabel.ForeColor = Color.Green;
-                        SelectedPluginStateStatus.Text = "Enabled";
-                    }
-                    else
-                    {
-                        BTN_Plugins_Enable.Text = "Enable";
-                        SelectedPluginStateLabel.ForeColor = Color.Red;
-                        SelectedPluginStateStatus.Text = "Disabled";
-                    }
+
                 }
 
                 foreach (ListViewItem item in plugins_tab_pluginslist.Items)
@@ -729,6 +721,12 @@ namespace IRSE.GUI.Forms
         private void button1_Click(object sender, EventArgs e)
         {
             Process.Start("http://patreon.com/irse");
+        }
+
+        private BrowserForm BrowserForm = new BrowserForm();
+        private void pm_pluginbrowserbtn_Click(object sender, EventArgs e)
+        {
+            BrowserForm.Visible = true;
         }
     }
 }

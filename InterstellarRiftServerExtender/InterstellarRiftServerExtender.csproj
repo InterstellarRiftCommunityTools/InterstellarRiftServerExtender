@@ -89,10 +89,16 @@
     <None Include="Resources\MarkdownDeep.dll" />
     <None Include="Resources\System.Net.Http.Formatting.dll" />
     <None Include="Resources\System.Web.Http.dll" />
+    <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.es.resx">
+      <DependentUpon>BrowserForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\ExtenderGui.resx">
+      <DependentUpon>ExtenderGui.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Forms\ExtenderGui.ru-RU.resx">
       <DependentUpon>ExtenderGui.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\Updater\UpdateForm.resx">

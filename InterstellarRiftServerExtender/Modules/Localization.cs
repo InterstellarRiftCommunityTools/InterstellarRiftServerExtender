@@ -141,7 +141,23 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("Success", "Interstellar Rift has been successfully installed or updated!");
                 resXresourceWriter.AddResource("NoGameVersion", "Could not get game version from {0}");
 
-                //InstanceManager.cs
+                // GUI ExtenderConfig.cs
+                resXresourceWriter.AddResource("AreYouSure", "Are you sure?");
+                resXresourceWriter.AddResource("ServerOnlineChat", "Server Online, Ready For Chat.");
+                resXresourceWriter.AddResource("ServerConfigSaved", "Server Config Saved.");
+                resXresourceWriter.AddResource("IRSEConfigSaved", "IRSE Config Saved.");
+                resXresourceWriter.AddResource("LooseServerChanges", "You want to loose the Server Config changes?");
+                resXresourceWriter.AddResource("ReloadedServerConfig", "Reloaded the config from appdata server.json");
+                resXresourceWriter.AddResource("ReloadExtenderConfig", "You wish to reload the Extender Config?");
+                resXresourceWriter.AddResource("ReloadedExtenderConfig", "Reloaded extender config.");
+                resXresourceWriter.AddResource("ReloadServerConfig", "Are you sure you want to reload the settings from the server.json?");
+                resXresourceWriter.AddResource("ServerSettings", "Server Settings");
+                resXresourceWriter.AddResource("ServerStopping", "Server Stopping");
+                resXresourceWriter.AddResource("AreYouSure", "You wish to Kick the selected Player(s)?");
+                resXresourceWriter.AddResource("AreYouSure", "You wish to Ban the selected Player(s)?");
+                resXresourceWriter.AddResource("AreYouSure", "You wish to Forget the selected Player(s)?\n\n This will kick the selected players, then force them to pick a faction the next time they login.");
+                resXresourceWriter.AddResource("AreYouSure", "You wish to Kill the selected Player(s)?");
+                resXresourceWriter.AddResource("AreYouSure", "You wish to Toggle Admin on the selected Player(s)?");
 
 
             }
