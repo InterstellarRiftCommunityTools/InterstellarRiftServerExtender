@@ -114,6 +114,7 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.ts_pc_restartserver = new System.Windows.Forms.ToolStripMenuItem();
             this.ts_pc_closeirse = new System.Windows.Forms.ToolStripMenuItem();
+            this.button1 = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ServerContainer)).BeginInit();
@@ -976,7 +977,6 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 23);
             this.label4.TabIndex = 0;
-
             // 
             // statusStrip
             // 
@@ -999,10 +999,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.development_label.AutoSize = true;
             this.development_label.ForeColor = System.Drawing.Color.Red;
-            this.development_label.Location = new System.Drawing.Point(466, 525);
+            this.development_label.Location = new System.Drawing.Point(349, 523);
             this.development_label.Name = "development_label";
-            this.development_label.Size = new System.Drawing.Size(0, 13);
+            this.development_label.Size = new System.Drawing.Size(425, 13);
             this.development_label.TabIndex = 3;
+            this.development_label.Text = "\"WARNING: Development Versions have been enabled. Possibility of server corruptio" +
+    "n.\"";
+            this.development_label.Visible = false;
             // 
             // ts_sc_ctxmenu
             // 
@@ -1049,6 +1052,25 @@
             this.ts_pc_closeirse.Text = "Close IRSE";
             this.ts_pc_closeirse.Click += new System.EventHandler(this.ts_pc_closeirse_Click);
             // 
+            // button1
+            // 
+            this.button1.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.button1.BackColor = System.Drawing.SystemColors.Control;
+            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.Transparent;
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.Location = new System.Drawing.Point(804, 522);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(106, 19);
+            this.button1.TabIndex = 4;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ExtenderGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1056,6 +1078,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(924, 542);
             this.ContextMenuStrip = this.ts_sc_ctxmenu;
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.development_label);
             this.Controls.Add(this.Tabs);
             this.Controls.Add(this.statusStrip);
@@ -1211,6 +1234,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem ts_pc_restartserver;
         private System.Windows.Forms.ToolStripMenuItem ts_pc_closeirse;
+        private System.Windows.Forms.Button button1;
     }
 }
 

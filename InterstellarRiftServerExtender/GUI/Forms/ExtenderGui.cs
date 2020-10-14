@@ -7,6 +7,7 @@ using IRSE.Modules.GameConfig;
 using MarkdownDeep;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -72,7 +73,7 @@ namespace IRSE.GUI.Forms
 
             if (Config.Instance.Settings.EnableDevelopmentVersion)
             {
-                development_label.Text = "WARNING: Development Versions have been enabled. Possibility of server corruption.";
+                development_label.Visible = true;
             }
 
             server_hesNewsLabel.Text =
@@ -723,6 +724,11 @@ namespace IRSE.GUI.Forms
         private void ts_pc_closeirse_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://patreon.com/irse");
         }
     }
 }
