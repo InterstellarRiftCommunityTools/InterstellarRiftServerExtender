@@ -2,14 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Resources;
 
 namespace IRSE.Modules
 {
     public class Localization
     {
+
+
+        public static Dictionary<string, string> Languages = new Dictionary<string, string>()
+        {
+            ["English"] = "IRSE.resx",
+            ["Russian"] = "IRSE.ru_RU.resx",
+        };
+
+
         public static string PathFolder = Path.Combine(FolderStructure.IRSEFolderPath, "localization");
-        public static Version Version = new Version("0.0.0.6");
+        public static Version Version = new Version("0.0.0.7");
         private Dictionary<string, string> m_sentences = new Dictionary<string, string>();
         private static NLog.Logger mainLog;
 
@@ -35,9 +45,53 @@ namespace IRSE.Modules
             }
         }
 
+        
+        private static Dictionary<string, string> LocalizeStrings = new Dictionary<string, string>();
+        /*
+        public string Localize(string key, string defaultText)
+        {
+            Language currentLang = Config.Instance.Settings.CurrentLanguage;
+
+
+            if (currentLang == Language.English)
+            {
+                if (string.IsNullOrEmpty(defaultText))
+                {
+                    return $"DEFAULT TEXT BLANK";
+                }
+
+                if (string.IsNullOrEmpty(Sentences[key]))
+                {
+                    return $"KEY EXISTS ({key}) {defaultText}";
+                }
+
+                return Sentences[key] = defaultText;
+            }
+            else
+            {
+
+                if (Sentences.TryGetValue(key, out defaultText))
+                {
+                    return LocalizeStrings[key] = defaultText;
+                }
+                else
+                {
+                    Console.WriteLine($"LOCALIZER: Key {key} doesn't exist for Language {currentLang}. Using English.");
+                    return defaultText;
+                }
+
+
+            } 
+        }
+        */
+
         public void Load(string FileName)
         {
-            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", FileName + ".resx");
+            
+
+
+
+            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", FileName);
 
             if (File.Exists(path))
             {
@@ -49,30 +103,30 @@ namespace IRSE.Modules
                             this.m_sentences.Add((string)dictionaryEntry.Key, (string)dictionaryEntry.Value);
                     }
                 }
-                else if(FileName.StartsWith("En") && Version.Parse(new ResXResourceSet(path).GetString("version")) < Localization.Version)
+                else if(FileName.StartsWith("IRSE.Resx") && Version.Parse(new ResXResourceSet(path).GetString("version")) < Localization.Version)
                 {
                     mainLog.Info("English language localization file was updated. Loading new one.");
                     Localization.CreateDefault();
-                    this.Load("En");
+                    this.Load("IRSE.Resx");
                 }
                 else
                 {
                     mainLog.Info("Your localization file is not updated ! Please download the latest version on our github page. English language loading...");
                     Localization.CreateDefault();
-                    this.Load("En");
+                    this.Load("IRSE.Resx");
                 }
             }
             else
             {
                 mainLog.Info("No localization file detected ! English language loading...");
                 Localization.CreateDefault();
-                this.Load("En");
+                this.Load("IRSE.Resx");
             }
         }
 
         public static void CreateDefault()
         {
-            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", "En.resx");
+            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", "IRSE.Resx");
 
             if (File.Exists(path))
                 File.Delete(path);
@@ -80,6 +134,7 @@ namespace IRSE.Modules
             File.Create(path).Close();
             using (ResXResourceWriter resXresourceWriter = new ResXResourceWriter(path))
             {
+
 
                 // Program.cs
                 resXresourceWriter.AddResource("version", Localization.Version.ToString());
@@ -148,18 +203,32 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("IRSEConfigSaved", "IRSE Config Saved.");
                 resXresourceWriter.AddResource("LooseServerChanges", "You want to loose the Server Config changes?");
                 resXresourceWriter.AddResource("ReloadedServerConfig", "Reloaded the config from appdata server.json");
+                resXresourceWriter.AddResource("LooseExtenderConfig", "You want to loose all changes to the Extender Config?");
                 resXresourceWriter.AddResource("ReloadExtenderConfig", "You wish to reload the Extender Config?");
                 resXresourceWriter.AddResource("ReloadedExtenderConfig", "Reloaded extender config.");
                 resXresourceWriter.AddResource("ReloadServerConfig", "Are you sure you want to reload the settings from the server.json?");
                 resXresourceWriter.AddResource("ServerSettings", "Server Settings");
-                resXresourceWriter.AddResource("ServerStopping", "Server Stopping");
-                resXresourceWriter.AddResource("AreYouSure", "You wish to Kick the selected Player(s)?");
-                resXresourceWriter.AddResource("AreYouSure", "You wish to Ban the selected Player(s)?");
-                resXresourceWriter.AddResource("AreYouSure", "You wish to Forget the selected Player(s)?\n\n This will kick the selected players, then force them to pick a faction the next time they login.");
-                resXresourceWriter.AddResource("AreYouSure", "You wish to Kill the selected Player(s)?");
-                resXresourceWriter.AddResource("AreYouSure", "You wish to Toggle Admin on the selected Player(s)?");
+                resXresourceWriter.AddResource("ServerStopped", "The Server Is Already Stopped");
 
+                resXresourceWriter.AddResource("KickPlayers", "You wish to Kick the selected Player(s)?");
+                resXresourceWriter.AddResource("BanPlayers", "You wish to Ban the selected Player(s)?");
+                resXresourceWriter.AddResource("ForgetPlayers", "You wish to Forget the selected Player(s)?\n\n This will kick the selected players, then force them to pick a faction the next time they login.");
+                resXresourceWriter.AddResource("KillPlayers", "You wish to Kill the selected Player(s)?");
+                resXresourceWriter.AddResource("ToggleAdmin", "You wish to Toggle Admin on the selected Player(s)?");
+                resXresourceWriter.AddResource("GuiCheckingUpdates", "Checking for updates...");
+                resXresourceWriter.AddResource("GuiRunningLatest", "You are running the latest version!");
+                resXresourceWriter.AddResource("GuiNewVersion", "A new version has been detected: {0}\r\n\r\n Release Information:\r\nRelease Name: {1}\r\nDownload Count: {2}\r\nRelease Published {3}\r\nRelease Description:\r\n\r\n{4}\r\n\r\nWould you like to update now?");
+                resXresourceWriter.AddResource("GuiIRSEUpdater", "IRSE Updater");
+                resXresourceWriter.AddResource("GuiCanceledUpdate", "The Update has been canceled.");
+                resXresourceWriter.AddResource("GuiUpdateApply", "The Update is being applied..");
+                resXresourceWriter.AddResource("GuiDialogMustRestart", "You must restart before the update can be completed!\r\n\r\nWould you like to restart now?\r\nNote: The server was saved after downloading this release.");
+                resXresourceWriter.AddResource("GuiExtenderUpdater", "Extender Updater");
+                resXresourceWriter.AddResource("GuiNeedsRestart", "IRSE needs to be restarted before you can use the new features!");
+                resXresourceWriter.AddResource("RestartIRSE", "Restart IRSE?");
+                resXresourceWriter.AddResource("Close IRSE", "Close IRSE?");
 
+                foreach(var locale in LocalizeStrings)
+                    resXresourceWriter.AddResource(locale.Key, locale.Value);
             }
         }
     }

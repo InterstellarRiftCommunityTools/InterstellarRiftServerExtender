@@ -49,53 +49,45 @@
             // 
             // BrowserSplitter.Panel1
             // 
-            resources.ApplyResources(this.BrowserSplitter.Panel1, "BrowserSplitter.Panel1");
             this.BrowserSplitter.Panel1.Controls.Add(this.BrowserForm_PluginTree);
-            // 
-            // BrowserSplitter.Panel2
-            // 
-            resources.ApplyResources(this.BrowserSplitter.Panel2, "BrowserSplitter.Panel2");
             // 
             // BrowserForm_PluginTree
             // 
-            resources.ApplyResources(this.BrowserForm_PluginTree, "BrowserForm_PluginTree");
             this.BrowserForm_PluginTree.CheckBoxes = true;
+            resources.ApplyResources(this.BrowserForm_PluginTree, "BrowserForm_PluginTree");
             this.BrowserForm_PluginTree.Name = "BrowserForm_PluginTree";
-            this.BrowserForm_PluginTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            ((System.Windows.Forms.TreeNode)(resources.GetObject("BrowserForm_PluginTree.Nodes"))),
-            ((System.Windows.Forms.TreeNode)(resources.GetObject("BrowserForm_PluginTree.Nodes1")))});
             // 
             // toolStrip1
             // 
-            resources.ApplyResources(this.toolStrip1, "toolStrip1");
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
             this.toolStripSeparator1,
             this.pluginBrowser_Import,
             this.toolStripSeparator2});
+            resources.ApplyResources(this.toolStrip1, "toolStrip1");
             this.toolStrip1.Name = "toolStrip1";
             // 
             // toolStripButton1
             // 
-            resources.ApplyResources(this.toolStripButton1, "toolStripButton1");
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripButton1.Name = "toolStripButton1";
+            resources.ApplyResources(this.toolStripButton1, "toolStripButton1");
             // 
             // toolStripSeparator1
             // 
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // pluginBrowser_Import
             // 
-            resources.ApplyResources(this.pluginBrowser_Import, "pluginBrowser_Import");
             this.pluginBrowser_Import.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.pluginBrowser_Import.Name = "pluginBrowser_Import";
+            resources.ApplyResources(this.pluginBrowser_Import, "pluginBrowser_Import");
             // 
             // toolStripSeparator2
             // 
-            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             this.toolStripSeparator2.Name = "toolStripSeparator2";
+            resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
             // 
             // BrowserForm
             // 

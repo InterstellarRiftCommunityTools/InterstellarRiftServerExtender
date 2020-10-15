@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -8,12 +10,14 @@ using System.Xml.Serialization;
 
 namespace IRSE.Modules
 {
-    [Serializable]
+
+
+    [System.Runtime.Serialization.DataContract]
     public class Settings
     {
         private static NLog.Logger mainLog; //mainLog.Error
 
-        public bool RestartNeeded = false;
+        internal bool RestartNeeded = false;
 
         public Settings()
         {
@@ -29,46 +33,54 @@ namespace IRSE.Modules
             EnableDevelopmentVersion = false;
             EnableAutomaticUpdates = true;
             CheckUpdatesTime = 60;
-            CurrentLanguage = Config.Language.English;
 
             manageSteamCmd = true;
+            m_currentLanguage = "English";
 
             usePreReleaseVersions = EnableDevelopmentVersion;
         }
 
+
+        private string m_currentLanguage;
+        
+        [System.Runtime.Serialization.DataMember]
+        [Browsable(false)]
+        [Description("The selected language for IRSE to use.")]
+
+        [DisplayName("Selected Language - (Default: English )")]
+        public string CurrentLanguage
+        {
+            get => m_currentLanguage;
+            set
+            {
+                if (m_currentLanguage != value)
+                    RestartNeeded = true;
+
+                m_currentLanguage = value;
+            }
+        }
+
+        [System.Runtime.Serialization.DataMember]
         [Category("Development")]
         [DisplayName("Debug Mode - (Default: False )")]
         [Description("Enable Verbose printing to the console.")]
         public bool DebugMode { get; set; }
 
+        [System.Runtime.Serialization.DataMember]
         [Category("Main")]
         [DisplayName("Start Server On Load - (Default: False )")]
         [Description("Starts the Hellion server on IRSE load.\r\n" +
             "If enabled, Hellion Dedicated will automatically start after IRSE initializes")]
         public bool AutoStartEnable { get; set; }
 
-        private Config.Language m_currentLanguage;
-
-        [Category("Main")]
-        [DisplayName("Language - (Default: English) -(Restart Required)")]
-        [Description("Language of IRSE.\r\n" +
-            "You can find more Languages in our GitHub. Thats if someone has made a new language file for us!")]
-        public Config.Language CurrentLanguage
-        {
-            get => m_currentLanguage;
-            set
-            {
-                m_currentLanguage = value;
-                RestartNeeded = true;
-            }
-        }
-
+        [System.Runtime.Serialization.DataMember]
         [Category("Updates")]
         [DisplayName("Enable Automatic Restarts - (Default: False )")]
         [Description("Allow IRSE to Restart itself after a set time elapses.\r\n" +
                     "Used for automatic restarts and releasing IRSE's resources after a set time.")]
         public bool AutoRestartsEnable { get; set; }
 
+        [System.Runtime.Serialization.DataMember]
         [ReadOnly(true)]
         [Category("Updates")]
         [DisplayName("Automatic Restart Time - (Default: 0 )")]
@@ -76,6 +88,7 @@ namespace IRSE.Modules
             "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public float AutoRestartTime { get; set; }
 
+        [System.Runtime.Serialization.DataMember]
         [ReadOnly(true)]
         [Category("Updates")]
         [DisplayName("Announce Restart Time - (Default: True )")]
@@ -83,6 +96,7 @@ namespace IRSE.Modules
             "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public bool AnnounceRestartTime { get; set; }
 
+        [System.Runtime.Serialization.DataMember]
         [Category("Updates")]
         [DisplayName("Enable Automatic Updates - (Default: True )")]
         [Description("Allow IRSE to update itself.\r\n" +
@@ -91,6 +105,7 @@ namespace IRSE.Modules
 
         private bool usePreReleaseVersions = false;
 
+        [System.Runtime.Serialization.DataMember]
         [Category("Development")]
         [DisplayName("Enable Development Version (Restart Required)- (Default: false )")]
         [Description("Change to true if you would like to use Development versions (I.E. PreReleases).\r\n" +
@@ -100,17 +115,21 @@ namespace IRSE.Modules
             get => usePreReleaseVersions;
             set
             {
+                if (usePreReleaseVersions != value)
+                    RestartNeeded = true;
+
                 usePreReleaseVersions = value;
-                RestartNeeded = true;
             }
         }
 
+        [System.Runtime.Serialization.DataMember]
         [Category("Updates")]
         [DisplayName("Enable IR Automatic Updates - (Default: True )")]
         [Description("Allows IRSE to update ISR Dedicated Server.\r\n" +
             "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public bool EnableAutomaticUpdates { get; set; }
 
+        [System.Runtime.Serialization.DataMember]
         [ReadOnly(true)]
         [Category("Updates")]
         [DisplayName("Check Updates Time - (Default: 60 )")]
@@ -120,6 +139,7 @@ namespace IRSE.Modules
 
         private bool manageSteamCmd;
 
+        [System.Runtime.Serialization.DataMember]
         [Category("Steam CMD")]
         [DisplayName("Manage Steam CMD - (Restart Required)")]
         [Description("Let IRSE manage Interstellar Rift installations.")]
@@ -131,8 +151,10 @@ namespace IRSE.Modules
             }
             set
             {
+                //if (manageSteamCmd != value)
+                    //RestartNeeded = true;
+
                 manageSteamCmd = value;
-                RestartNeeded = true;
             }
         }
     }
@@ -181,6 +203,7 @@ namespace IRSE.Modules
 
                 WriteComments();
 
+                /*
                 if (_settings.RestartNeeded)
                 {
                     DialogResult result = MessageBox.Show("The setting you have changed requires a restart of IRSE. Press 'Yes' to restart now. Or 'No' if you plan to restart later.",
@@ -189,8 +212,10 @@ namespace IRSE.Modules
                     if (result == DialogResult.Yes)
                     {
                         Program.Restart();
+                        return true;
                     }
                 }
+                */
 
                 return true;
             }
@@ -271,12 +296,6 @@ namespace IRSE.Modules
             {
                 Console.WriteLine("IRSE:  Configuration Save Failed! (WriteComments)" + ex.ToString());
             }
-        }
-
-        public enum Language
-        {
-            English,
-            Russian
         }
     }
 }

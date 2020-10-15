@@ -119,7 +119,7 @@ namespace IRSE
             LogManager.Configuration = new XmlLoggingConfiguration(configPath);
 
             m_localization = new Localization();
-            m_localization.Load(m_config.Settings.CurrentLanguage.ToString().Substring(0, 2));
+            m_localization.Load(m_config.Settings.CurrentLanguage);
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, rArgs) =>
             {

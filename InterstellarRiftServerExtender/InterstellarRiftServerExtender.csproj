@@ -86,12 +86,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Resources\LANGUAGELIST.txt" />
     <None Include="Resources\MarkdownDeep.dll" />
     <None Include="Resources\System.Net.Http.Formatting.dll" />
     <None Include="Resources\System.Web.Http.dll" />
-    <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.es.resx">
-      <DependentUpon>BrowserForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -101,9 +99,6 @@
     <EmbeddedResource Include="GUI\Forms\ExtenderGui.ru-RU.resx">
       <DependentUpon>ExtenderGui.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\Updater\UpdateForm.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Resources\Log4Net.Async.dll" />
     <None Include="Resources\log4net.dll" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -111,6 +106,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="Resources\IRSE.resx" />
+    <None Include="Resources\IRSE.ru-RU.resx" />
     <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
     <None Include="Resources\NLog.dll" />
     <None Include="Resources\Octokit.dll" />
@@ -159,12 +156,6 @@
       <DependentUpon>ExtenderGui.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Forms\MarkdownSharp.cs" />
-    <Compile Include="GUI\Forms\Updater\UpdateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Forms\Updater\UpdateForm.Designer.cs">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\Pages\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -264,6 +255,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO.Compression" />
