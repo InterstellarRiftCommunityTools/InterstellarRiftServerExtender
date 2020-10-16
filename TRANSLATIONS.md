@@ -9,7 +9,7 @@ If you would like to contribute a translation, its very easy!
   1. Download the [Translation Tool](https://github.com/HakanL/resxtranslator/releases/latest).
   2. Unzip it into a folder as it has quiet a few files.
 
-  3. In the translation tool File -> Open Directory and browse to the directory of your repository clone. (Where the .sln file is)
+  3. In the translation tool File -> Open Directory and browse to the directory of InterstellarRiftServerExtender folder (Where the .csproj file is) inside of the repository folder.
   
   ![wee](https://ul.rootronics.org/DHoD)  
   4. You will be presented with the translatable resx files on the left in their respective folders. Select the resource file to add the new language to.
