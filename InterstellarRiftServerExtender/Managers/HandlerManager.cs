@@ -14,7 +14,6 @@ namespace IRSE.Managers
         #region Fields
 
         private static Logger mainLog; //mainLog.Error
-        private Game.Server.ControllerManager m_controllerManager;
         private readonly Assembly m_serverAssembly;
         private Assembly m_frameworkAssembly;
         private Type m_gameStateType;
@@ -28,7 +27,7 @@ namespace IRSE.Managers
         public PlayerHandler PlayerHandler { get; private set; }
         public UniverseHandler UniverseHandler { get; private set; }
 
-        public Game.Server.ControllerManager ControllerManager => m_controllerManager;
+        public Game.Server.ControllerManager ControllerManager { get; private set; }
 
         #endregion Properties
 
@@ -40,24 +39,20 @@ namespace IRSE.Managers
             m_frameworkAssembly = frameworkAssembly;
         }
 
-        public Object GetHandlers()
+        public GameServer GetHandlers()
         {
             try
             {
-                m_gameStateType = m_frameworkAssembly.GetType("Game.GameStates.GameState");
-                PropertyInfo m_activeState = m_gameStateType.GetProperty("ActiveState");
-                GameServer server = (GameServer)m_activeState.GetValue(null);
+                GameServer server = (GameServer)GameState.ActiveState; 
                
                 if (server == null)
                     return null;
 
                 mainLog.Info("IRSE: Loaded GameServer Instance!");
 
-                //FieldInfo m_controllerManagerField = server.GetType().GetField("m_controllers", BindingFlags.NonPublic | BindingFlags.Instance);
+                ControllerManager = server.Controllers;
 
-                m_controllerManager = server.Controllers;//m_controllerManagerField.GetValue(server) as Game.Server.ControllerManager;
-
-                var universe = m_controllerManager.Universe as Game.Server.UniverseController;
+                var universe = ControllerManager.Universe as Game.Server.UniverseController;
 
                 mainLog.Info("IRSE: Waiting for Universe To Populate..");
              
@@ -71,21 +66,21 @@ namespace IRSE.Managers
                 }
 
                 mainLog.Info("IRSE: Loading Handlers..");
-                NetworkHandler = new NetworkHandler(m_controllerManager);
+                NetworkHandler = new NetworkHandler(ControllerManager);
                 NetworkHandler.SetupNetworkHandler(server);
 
-                PlayerHandler = new PlayerHandler(m_controllerManager);
+                PlayerHandler = new PlayerHandler(ControllerManager);
                 PlayerHandler.SetupPlayerHandler(server);
 
-                ChatHandler = new ChatHandler(m_controllerManager);
+                ChatHandler = new ChatHandler(ControllerManager);
                 ChatHandler.SetupChatMessageHandler(NetworkHandler);
 
-                UniverseHandler = new UniverseHandler(m_controllerManager);
+                UniverseHandler = new UniverseHandler(ControllerManager);
                 UniverseHandler.SetupHandler(server);
 
                 mainLog.Info("IRSE: Loaded Universe!");
 
-                return true;
+                return server;
             }
             catch (ArgumentException ex)
             {

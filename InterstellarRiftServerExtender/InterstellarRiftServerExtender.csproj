@@ -120,7 +120,6 @@
     <None Include="App.config" />
     <Content Include="Assets\irse_icon.ico" />
     <EmbeddedResource Include="Assets\patreon.png" />
-    <EmbeddedResource Include="Languages\LanguageList.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -143,8 +142,6 @@
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Controllers\ServerController.cs" />
     <Compile Include="Controllers\UniverseController.cs" />
-    <Compile Include="GUI\ObjectManipulator\ManipulatorWrapper.cs" />
-    <Compile Include="GUI\ObjectManipulator\Wrappers\PlayerWrapper.cs" />
     <Compile Include="Globals.cs" />
     <Compile Include="GUI\Forms\Browser\BBCodeHTML.cs" />
     <Compile Include="GUI\Forms\Browser\BrowserForm.cs">
@@ -163,9 +160,6 @@
       <DependentUpon>ExtenderGui.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Forms\MarkdownSharp.cs" />
-    <Compile Include="GUI\Pages\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Managers\ConsoleCommandManager.cs" />
     <Compile Include="Managers\Commands\IRSECommands.cs" />
     <Compile Include="Managers\Commands\ExtendedCommands.cs" />
@@ -283,12 +277,6 @@
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="GUI\Pages\MainWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="API\Objects\" />

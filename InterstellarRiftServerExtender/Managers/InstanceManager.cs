@@ -1,6 +1,7 @@
 ﻿using Game.Configuration;
 using Game.Framework;
 using Game.Framework.Threading;
+using Game.GameStates;
 using Game.Universe;
 using IRSE.Managers.Events;
 using IRSE.Modules;
@@ -44,6 +45,8 @@ namespace IRSE.Managers
 
         public HandlerManager Handlers { get { return m_handlerManager; } }
         public PluginManager PluginManager { get { return m_pluginManager; } internal set { } }
+
+        public GameServer Server { get; private set; }
 
         public Assembly Assembly { get { return m_assembly; } }
 
@@ -117,6 +120,7 @@ namespace IRSE.Managers
                     Thread.Sleep(1000);
                     if (m_handlerManager.GetHandlers() != null)
                     {
+                        Server = m_handlerManager.GetHandlers();
                         break;
                     }
                 }
