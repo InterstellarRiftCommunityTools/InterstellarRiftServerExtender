@@ -1,5 +1,8 @@
-﻿using Game.Server;
+﻿using CefSharp;
+using CefSharp.WinForms;
+using Game.Server;
 using Game.Universe;
+using IRSE.GUI.Forms.Browser;
 using IRSE.Managers;
 using IRSE.Managers.Plugins;
 using IRSE.Modules;
@@ -7,12 +10,17 @@ using IRSE.Modules.GameConfig;
 using MarkdownDeep;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace IRSE.GUI.Forms
 {
@@ -21,13 +29,35 @@ namespace IRSE.GUI.Forms
         private Timer PlayersRefreshTimer = new Timer();
         private Timer PluginsRefreshTimer = new Timer();
 
+        private BrowserForm BrowserForm = new BrowserForm();
+        private ChromiumWebBrowser chrome;
+
         public ExtenderGui()
         {
             InitializeComponent();
+
+            SetCulture(Config.Instance.Settings.CurrentLanguage);
+        }
+
+        public void SetCulture(string cultureName)
+        {
+
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+                .Where(r => r.EnglishName == cultureName).FirstOrDefault();
+
+            var resources = new ComponentResourceManager(this.GetType());
+            GetChildren(this).ToList().ForEach(c => {
+                resources.ApplyResources(c, c.Name);
+            });
+        }
+        public IEnumerable<Control> GetChildren(Control control)
+        {
+            var controls = control.Controls.Cast<Control>();
+            return controls.SelectMany(ctrl => GetChildren(ctrl)).Concat(controls);
         }
 
         private bool AreYouSure(string sureOfWhat)
-            => MessageBox.Show(sureOfWhat, "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes;
+            => MessageBox.Show(sureOfWhat, Program.Localization.Sentences["AreYouSure"], MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes;
 
         private void DisableControls(bool disable = true)
         {
@@ -52,11 +82,28 @@ namespace IRSE.GUI.Forms
 
         private void ExtenderGui_Load(object sender, EventArgs e)
         {
-            AddChatLine("Waiting for server to start..");
+
+
+            AddChatLine(Program.Localization.Sentences["WaitingForServer"]);
+
+            CefSettings settings = new CefSettings();
+            Cef.Initialize(settings);
+            var Text = "<a class=\"vglnk\" href=\"https://foxlearn.com\" rel=\"nofollow\"><span>https</span><span>://</span><span>foxlearn</span><span>.</span><span>com</span></a>";
+
+            chrome = new ChromiumWebBrowser("");
+            chrome.Dock = DockStyle.Fill;
+
+            plugins_tab_informationTab.Controls.Add(chrome);
+
 
             cpc_chat_list.ReadOnly = true;
 
             DisableControls();
+
+            BindingSource bindingSource = new BindingSource(Localization.Languages, null);
+
+            sc_languageSelector.Items.AddRange(Localization.Languages.Keys.ToArray());
+            sc_languageSelector.SelectedItem = Config.Instance.Settings.CurrentLanguage;
 
             ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
             ServerInstance.Instance.OnServerStopped += Instance_OnServerStopped;
@@ -72,7 +119,7 @@ namespace IRSE.GUI.Forms
 
             if (Config.Instance.Settings.EnableDevelopmentVersion)
             {
-                development_label.Text = "WARNING: Development Versions have been enabled. Possibility of server corruption.";
+                development_label.Visible = true;
             }
 
             server_hesNewsLabel.Text =
@@ -92,7 +139,6 @@ namespace IRSE.GUI.Forms
         {
             Invoke(new MethodInvoker(delegate
             {
-                Console.WriteLine("Pie");
                 server_config_startserver.Enabled = false;
 
                 this.Refresh();
@@ -104,7 +150,7 @@ namespace IRSE.GUI.Forms
             
             Invoke(new MethodInvoker(delegate
             {
-                AddChatLine("Server Online, Ready For Chat.");
+                AddChatLine(Program.Localization.Sentences["ServerOnlineChat"]);
 
                 DisableControls(false);
 
@@ -152,13 +198,13 @@ namespace IRSE.GUI.Forms
             {
 
                 Game.Configuration.ServerConfig.Singleton.Save();
-                StatusBar.Text = "Server Config Saved.";
+                StatusBar.Text = Program.Localization.Sentences["ServerConfigSaved"];
             }
             else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
             {
                 if (Config.Instance.SaveConfiguration())
                 {
-                    StatusBar.Text = "IRSE Config Saved.";
+                    StatusBar.Text = Program.Localization.Sentences["IRSEConfigSaved"];
                 }
             }
         }
@@ -167,18 +213,18 @@ namespace IRSE.GUI.Forms
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
             {
-                if (!AreYouSure("You wish to reload the Server Config?"))
+                if (!AreYouSure(Program.Localization.Sentences["LooseServerChanges"]))
                     return;
 
                 Game.Configuration.ServerConfig.Load();
                 serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
 
-                serverconfig_properties.Refresh();
-                StatusBar.Text = "Reloaded the config from appdata server.json";
+                serverconfig_properties.Refresh();              
+                StatusBar.Text = Program.Localization.Sentences["ReloadedServerConfig"];
             }
             else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
             {
-                if (!AreYouSure("You wish to reload the Extender Config?"))
+                if (!AreYouSure(Program.Localization.Sentences["LooseExtenderConfig"]))
                     return;
 
                 if (Config.Instance.LoadConfiguration())
@@ -186,7 +232,7 @@ namespace IRSE.GUI.Forms
                     extenderconfig_properties.SelectedObject = Config.Instance.Settings;
                     extenderconfig_properties.Refresh();
 
-                    StatusBar.Text = "Reloaded extender config.";
+                    StatusBar.Text = Program.Localization.Sentences["ReloadedExtenderConfig"];
                 }
             }
         }
@@ -195,15 +241,15 @@ namespace IRSE.GUI.Forms
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
             {
-                DialogResult result = MessageBox.Show("Are you sure you want to reload the settings from the server.json?",
-                 "2. Server Settings Error",
+                DialogResult result = MessageBox.Show(Program.Localization.Sentences["ReloadServerConfig"],
+                 Program.Localization.Sentences["ServerSettings"],
                  MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 if (result == DialogResult.Yes)
                 {
                     Game.Configuration.ServerConfig.Load();
                     serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
                     serverconfig_properties.Refresh();
-                    StatusBar.Text = "Config reloaded from server.json";
+                    StatusBar.Text = Program.Localization.Sentences["ReloadedServerConfig"];
                 }
             }
             else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
@@ -213,7 +259,7 @@ namespace IRSE.GUI.Forms
                     extenderconfig_properties.SelectedObject = Config.Instance.Settings;
                     extenderconfig_properties.Refresh();
 
-                    StatusBar.Text = "Reloaded IRSE Config from Config.xml.";
+                    StatusBar.Text = Program.Localization.Sentences["ReloadedExtenderConfig"];
                 }
             }
         }
@@ -224,10 +270,6 @@ namespace IRSE.GUI.Forms
 
             server_config_startserver.Enabled = false;
 
-            // REMOVE ME WHEN GHOST CLIENTS ARE FIXED ON SP SIDE
-            // OVerride IR starting ghost clients until they repair the name replacer.
-            Game.Configuration.ServerConfig.Singleton.CreateGhostClients = false;
-
             //Sends an "Enter" into the Console to get the MainThread out of Console.ReadLine()
             Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
         }
@@ -237,10 +279,10 @@ namespace IRSE.GUI.Forms
             if (ServerInstance.Instance.IsRunning)
             {
                 Task.Run(() => ServerInstance.Instance.Stop());
-                StatusBar.Text = "Server Stopping";
+                StatusBar.Text = Program.Localization.Sentences["StopRunningServers"];
             }
             else
-                StatusBar.Text = "The server is already stopped!";
+                StatusBar.Text = Program.Localization.Sentences["ServerStopped"];
         }
 
         #endregion Server Control
@@ -384,7 +426,7 @@ namespace IRSE.GUI.Forms
                 if (players.Count == 0)
                     return;
 
-                if (!AreYouSure("You wish to Kick the selected Player(s)?"))
+                if (!AreYouSure(Program.Localization.Sentences["KickPlayers"]))
                     return;
 
                 foreach (ListViewItem player in players)
@@ -409,7 +451,7 @@ namespace IRSE.GUI.Forms
                 if (players.Count == 0)
                     return;
 
-                if (!AreYouSure("You wish to Ban the selected Player(s)?"))
+                if (!AreYouSure(Program.Localization.Sentences["BanPlayers"]))
                     return;
 
                 foreach (ListViewItem player in players)
@@ -434,7 +476,7 @@ namespace IRSE.GUI.Forms
                 if (players.Count == 0)
                     return;
 
-                if (!AreYouSure($"You wish to Forget the selected Player(s)?\n\n This will kick the selected players, then force them to pick a faction the next time they login."))
+                if (!AreYouSure(Program.Localization.Sentences["ForgetPlayers"]))
                     return;
 
                 foreach (ListViewItem player in players)
@@ -459,7 +501,7 @@ namespace IRSE.GUI.Forms
                 if (players.Count == 0)
                     return;
 
-                if (!AreYouSure("You wish to Kill the selected Player(s)?"))
+                if (!AreYouSure(Program.Localization.Sentences["KillPlayers"]))
                     return;
 
                 foreach (ListViewItem player in players)
@@ -484,7 +526,7 @@ namespace IRSE.GUI.Forms
                 if (players.Count == 0)
                     return;
 
-                if (!AreYouSure("You wish to Toggle Admin on the selected Player(s)?"))
+                if (!AreYouSure(Program.Localization.Sentences["ToggleAdmin"]))
                     return;
 
                 foreach (ListViewItem player in players)
@@ -524,18 +566,7 @@ namespace IRSE.GUI.Forms
                     if (!plugins_tab_pluginslist.Items.ContainsKey(item.Name))
                         plugins_tab_pluginslist.Items.Add(item);
 
-                    if (plugin.Loaded)
-                    {
-                        BTN_Plugins_Enable.Text = "Disable";
-                        SelectedPluginStateLabel.ForeColor = Color.Green;
-                        SelectedPluginStateStatus.Text = "Enabled";
-                    }
-                    else
-                    {
-                        BTN_Plugins_Enable.Text = "Enable";
-                        SelectedPluginStateLabel.ForeColor = Color.Red;
-                        SelectedPluginStateStatus.Text = "Disabled";
-                    }
+
                 }
 
                 foreach (ListViewItem item in plugins_tab_pluginslist.Items)
@@ -569,9 +600,9 @@ namespace IRSE.GUI.Forms
 
                 ServerInstance.Instance.PluginManager.LoadedPlugins.Find(p => p == pluginInfo).MainClass.Enabled = BTN_Plugins_Enable.Text == "Disable";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw;
+                
             }
         }
 
@@ -594,9 +625,9 @@ namespace IRSE.GUI.Forms
 
                 string path = Path.Combine(pluginInfo.Directory, "information.md");
                 if (File.Exists(path))
-                    plugins_tab_browser.DocumentText = new Markdown().Transform(File.ReadAllText(path));
+                    chrome.LoadHtml(new Markdown().Transform(File.ReadAllText(path)));
                 else
-                    plugins_tab_browser.DocumentText = new Markdown().Transform("#" + pluginInfo.Name.ToUpper());
+                    chrome.LoadHtml(new Markdown().Transform("#" + pluginInfo.Name.ToUpper()));
 
                 PropertyInfo info = pluginType.GetProperty("PluginControlForm");
                 if (info != null)// Form view
@@ -631,7 +662,7 @@ namespace IRSE.GUI.Forms
 
         private async void serverconfig_checkForUpdates_Click(object sender, EventArgs e)
         {
-            StatusBar.Text = "Checking for updates...";
+            StatusBar.Text = Program.Localization.Sentences["GuiCheckingUpdates"];
 
             UpdateManager.GUIMode = true;
 
@@ -644,20 +675,19 @@ namespace IRSE.GUI.Forms
         {
             if (!UpdateManager.HasUpdate)
             {
-                StatusBar.Text = $"You are running the latest version!";
+
+                StatusBar.Text = Program.Localization.Sentences["GuiRunningLatest"];
                 return;
             }
 
-            var result = MessageBox.Show(
-                $"A new version has been detected: { UpdateManager.NewVersionNumber }\r\n" +
-                $"\r\n Release Information:\r\n" +
-                $"Release Name: {release.Name}\r\n" +
-                $"Download Count: {release.Assets.FirstOrDefault().DownloadCount}\r\n" +
-                $"Release Published {release.Assets.First().CreatedAt.ToLocalTime()}\r\n" +
-                $"Release Description:\r\n\r\n" +
-                $"{release.Body}\r\n\r\n" +
-                $"Would you like to update now?",
-                "IRSE Updater",
+            var result = MessageBox.Show(string.Format(
+               Program.Localization.Sentences["GuiNewVersion"], 
+                UpdateManager.NewVersionNumber, 
+                release.Name, 
+                release.Assets.FirstOrDefault().DownloadCount, 
+                release.Assets.First().CreatedAt.ToLocalTime(),
+                release.Body),
+                Program.Localization.Sentences["GuiIRSEUpdater"],
                 MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (result == DialogResult.Yes)
             {
@@ -666,7 +696,7 @@ namespace IRSE.GUI.Forms
             }
             else
             {
-                StatusBar.Text = "The Update has been canceled.";
+                StatusBar.Text = Program.Localization.Sentences["GuiCanceledUpdate"];
             }
         }
 
@@ -674,7 +704,7 @@ namespace IRSE.GUI.Forms
         {
             if (UpdateManager.GUIMode)
             {
-                StatusBar.Text = "The Update is being applied..";
+                StatusBar.Text = Program.Localization.Sentences["GuiUpdateApply"];
                 UpdateManager.Instance.ApplyUpdate();
             }
         }
@@ -682,10 +712,8 @@ namespace IRSE.GUI.Forms
         private void Instance_OnUpdateApplied(Octokit.Release release)
         {
             var result = MessageBox.Show(
-                $"You must restart before the update can be completed!\r\n\r\n" +
-                $"Would you like to restart now?\r\n" +
-                $"Note: The server was saved after downloading this release.",
-                "Extender Updater",
+               Program.Localization.Sentences["GuiDialogMustRestart"],
+                Program.Localization.Sentences["GuiExtenderUpdater"],
                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
             if (result == DialogResult.Yes)
             {
@@ -693,7 +721,7 @@ namespace IRSE.GUI.Forms
             }
             else
             {
-                StatusBar.Text = "IRSE needs to be restarted before you can use the new features!";
+                StatusBar.Text = Program.Localization.Sentences["GuiNeedsRestart"];
             }
         }
 
@@ -705,24 +733,39 @@ namespace IRSE.GUI.Forms
             e.Cancel = true;
         }
 
-        private void ts_pc_startserver_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ts_pc_stopserver_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void ts_pc_restartserver_Click(object sender, EventArgs e)
         {
 
+            if (!AreYouSure(Program.Localization.Sentences["RestartIRSE"]))
+                return;
+
+            Program.Restart();
         }
 
         private void ts_pc_closeirse_Click(object sender, EventArgs e)
         {
+            if (!AreYouSure(Program.Localization.Sentences["CloseIRSE"]))
+                return;
 
+            Process.GetCurrentProcess().Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://patreon.com/irse");
+        }
+      
+        private void pm_pluginbrowserbtn_Click(object sender, EventArgs e)
+        {
+            BrowserForm.Visible = true;
+        }
+
+        private void sc_languageSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string language = (string)sc_languageSelector.SelectedItem;
+
+            if (Config.Instance.Settings.CurrentLanguage != language)
+                Config.Instance.Settings.CurrentLanguage = language;       
         }
     }
 }

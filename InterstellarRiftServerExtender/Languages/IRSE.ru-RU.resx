@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="version" xml:space="preserve">
+    <value>0.0.0.7</value>
+  </data>
+  <data name="Initialization" xml:space="preserve">
+    <value>Инициализация Interstellar Rift Server Extender v{0} ...</value>
+  </data>
+  <data name="IRNotFound" xml:space="preserve">
+    <value>IRSE: Приложение IR.EXE не найдено.
+Убедитесь, что IRSE.exe находится в одной папке с файлом IR.exe.
+Нажмите ENTER, для того чтобы закрыть окно.</value>
+  </data>
+  <data name="GameConsoleEnabled" xml:space="preserve">
+    <value>IRSE: Консольные команды активированы</value>
+  </data>
+  <data name="ServerIsAlreadyRunning" xml:space="preserve">
+    <value>Сервер уже запущен!</value>
+  </data>
+  <data name="StopRunningServers" xml:space="preserve">
+    <value>Останавливаю сервер...</value>
+  </data>
+  <data name="UseDevVersion" xml:space="preserve">
+    <value>IRSE будет использовать тестовые сборки и версии. (Аргумент: -usedevversion установлен)</value>
+  </data>
+  <data name="NoUpdate" xml:space="preserve">
+    <value>IRSE: Авто-обновление программы отключено. (Аргумент: -noupdate установлен либо включен в настройках IRSE ) </value>
+  </data>
+  <data name="NoUpdateIR" xml:space="preserve">
+    <value>IRSE: Авто-обновление серверных файлы игры отключено. (Аргумент: -noupdateir установлен) </value>
+  </data>
+  <data name="AutoStart" xml:space="preserve">
+    <value>IRSE: Активирована функция автостарта сервера. (Аргумент: -autostart установлен либо включено в  настройках IRSE)</value>
+  </data>
+  <data name="NonInteractive" xml:space="preserve">
+    <value>Поддержка вывода графики не обнаружена - Графический пользовательский интерфейс будет отключен</value>
+  </data>
+  <data name="GUIDisabled" xml:space="preserve">
+    <value>Графический интерфейс отключен</value>
+  </data>
+  <data name="CommandNoExist" xml:space="preserve">
+    <value>IRSE: такой команды не существует...</value>
+  </data>
+  <data name="CommandException" xml:space="preserve">
+    <value>IRSE: Ошибка при выполнении команды...</value>
+  </data>
+  <data name="ForGameVersion" xml:space="preserve">
+    <value>Поддерживаемая версия игры: </value>
+  </data>
+  <data name="ThisGameVersion" xml:space="preserve">
+    <value>Установленная версия игры: </value>
+  </data>
+  <data name="OnlineGameVersion" xml:space="preserve">
+    <value>Версия игры в Стиме: </value>
+  </data>
+  <data name="NewIRVersion" xml:space="preserve">
+    <value>Обнаружено обновление Interstellar Rift! Требуется обновление сервера!</value>
+  </data>
+  <data name="IRNewer" xml:space="preserve">
+    <value>Установленная версия сервера Interstellar Rifts новее, чем так которую поддерживает IRSE! Обновите IRSE!</value>
+  </data>
+  <data name="LoadingGUI" xml:space="preserve">
+    <value>Загружаю Графический Интерфейс...</value>
+  </data>
+  <data name="HelpCommand" xml:space="preserve">
+    <value>Доступные сервисные команды:</value>
+  </data>
+  <data name="OpenGUICommand" xml:space="preserve">
+    <value>opengui - Открыть графический интерфейс</value>
+  </data>
+  <data name="StartCommand" xml:space="preserve">
+    <value>start - Запустить сервер</value>
+  </data>
+  <data name="StopCommand" xml:space="preserve">
+    <value>stop - Остановить сервер</value>
+  </data>
+  <data name="RestartCommand" xml:space="preserve">
+    <value>restart - Перезапустить IRSE, если в настройках установлен автозапуск, то сервер игры так же будет запущен автоматически.</value>
+  </data>
+  <data name="CheckUpdateCommand" xml:space="preserve">
+    <value>checkupdate - Проверить наличие обновлений IRSE.</value>
+  </data>
+  <data name="ForceUpdateCommand" xml:space="preserve">
+    <value>forceupdate - Обновить IRSE принудительно</value>
+  </data>
+  <data name="FailedInitPlugin" xml:space="preserve">
+    <value>Ошибка инициализации плагина {0}. Exception: {1}</value>
+  </data>
+  <data name="FailedLoadPlugin" xml:space="preserve">
+    <value>Ошибка загрузки плагина {0}. Exception: {1}</value>
+  </data>
+  <data name="FailedLoadAssembly" xml:space="preserve">
+    <value>Ошибка загрузки сборки : {0} : {1}</value>
+  </data>
+  <data name="FailedShutdownPlugin" xml:space="preserve">
+    <value>Ошибка остановки плагина: {0}. Exception: {1}</value>
+  </data>
+  <data name="InitializationPlugin" xml:space="preserve">
+    <value>Ошибка загрузки плагина {0}. Не найден класс public: parameterless constructor for {0}</value>
+  </data>
+  <data name="InitializingPlugin" xml:space="preserve">
+    <value>Инициализация плагина : {0}</value>
+  </data>
+  <data name="LoadingPlugin" xml:space="preserve">
+    <value>Загрузка плагина : {0}</value>
+  </data>
+  <data name="ShutdownPlugin" xml:space="preserve">
+    <value>Остановка плагина {0}</value>
+  </data>
+  <data name="LaunchingServer" xml:space="preserve">
+    <value>IRSE: Запускаю сервер...</value>
+  </data>
+  <data name="NoInitWrapper" xml:space="preserve">
+    <value>Фатальная ошибка IRSE: Не могу инициализировать обработчик. Сообщите пожалуйста на github в раздел ошибки... Отключение программы...</value>
+  </data>
+  <data name="WaitingForServer" xml:space="preserve">
+    <value>IRSE: Ожидание запуска сервера...</value>
+  </data>
+  <data name="GameBaseCode" xml:space="preserve">
+    <value>Фатальная ошибка IR.exe: возможно серверные файлы были изменены, сообщите об ощибке на github.</value>
+  </data>
+  <data name="SteamCMDNoExist" xml:space="preserve">
+    <value>SteamCMD отсутствует, загружаю! </value>
+  </data>
+  <data name="Unpacking" xml:space="preserve">
+    <value>Выполнено! Производится запуск SteamCMD для установки серверных файлов игры Interstellar Rift</value>
+  </data>
+  <data name="ManualModeUnpack" xml:space="preserve">
+    <value>Невозможно загрузить или распаковать SteamCMD. Переключаюсь в ручной режим. Установите сервер игры самостоятельно и скопируйте туда IRSE.</value>
+  </data>
+  <data name="CheckingIR" xml:space="preserve">
+    <value>Проверяю/Обновляю серверные файлы...</value>
+  </data>
+  <data name="ManualModeStart" xml:space="preserve">
+    <value>Неудалось запустить SteamCMD. Переключаюсь в ручной режим. Установите сервер игры самостоятельно и скопируйте туда IRSE.</value>
+  </data>
+  <data name="NotInstalled" xml:space="preserve">
+    <value>Сервер Interstellar Rift не установлен!</value>
+  </data>
+  <data name="Success" xml:space="preserve">
+    <value>Сервер Interstellar Rift успешно установлен или обновлен!</value>
+  </data>
+  <data name="NoGameVersion" xml:space="preserve">
+    <value>Не удалось получить версии игры из {0}</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Вы уверены?</value>
+  </data>
+  <data name="ServerOnlineChat" xml:space="preserve">
+    <value>Сервер онлайн, Чат активирован.</value>
+  </data>
+  <data name="ServerConfigSaved" xml:space="preserve">
+    <value>Конфигурация сервера сохранена.</value>
+  </data>
+  <data name="IRSEConfigSaved" xml:space="preserve">
+    <value>Конфигурация IRSE сохранена.</value>
+  </data>
+  <data name="LooseServerChanges" xml:space="preserve">
+    <value>Вы уверены что хотите выйти? Конфигурация еще не сохранена.</value>
+  </data>
+  <data name="ReloadedServerConfig" xml:space="preserve">
+    <value>Загрузка параметров сервера из файла server.json успешно выполнена.</value>
+  </data>
+  <data name="LooseExtenderConfig" xml:space="preserve">
+    <value>Вы уверены, что хотите отменить все изменений в конфигурации IRSE?</value>
+  </data>
+  <data name="ReloadExtenderConfig" xml:space="preserve">
+    <value>Вы уверены что хотите перезагрузить конфигурацию IRSE?</value>
+  </data>
+  <data name="ReloadedExtenderConfig" xml:space="preserve">
+    <value>Конфигурация IRSE перезагружена.</value>
+  </data>
+  <data name="ReloadServerConfig" xml:space="preserve">
+    <value>Вы уверены что хотите перезагрузить параметры из файла конфигурации сервера jserver.json?</value>
+  </data>
+  <data name="ServerSettings" xml:space="preserve">
+    <value>Настройки сервера</value>
+  </data>
+  <data name="ServerStopped" xml:space="preserve">
+    <value>Сервер уже остановлен.</value>
+  </data>
+  <data name="KickPlayers" xml:space="preserve">
+    <value>Вы уверены, что хотите выгнать текущего игрока(ов)?</value>
+  </data>
+  <data name="BanPlayers" xml:space="preserve">
+    <value>Вы уверены, что хотите забаннить текущего игрока(ов)?</value>
+  </data>
+  <data name="ForgetPlayers" xml:space="preserve">
+    <value>Вы уверены, что хотите "обнулить" текущего игрока(ов)?
+
+Данное действие выгонит игроков в сервера и полностью обнулит их игрового персонажа - нужно будет начинать с выбора фракции...</value>
+  </data>
+  <data name="KillPlayers" xml:space="preserve">
+    <value>Вы уверены, что хотите убить текущего игрока(ов)?</value>
+  </data>
+  <data name="ToggleAdmin" xml:space="preserve">
+    <value>Вы уверены, что хотите сделать админом выбранного игрока(ов)?</value>
+  </data>
+  <data name="GuiCheckingUpdates" xml:space="preserve">
+    <value>Проверяю обновления...</value>
+  </data>
+  <data name="GuiRunningLatest" xml:space="preserve">
+    <value>Поздравляем, у Вас самая последняя версия! </value>
+  </data>
+  <data name="GuiNewVersion" xml:space="preserve">
+    <value>Обнаружена новая версия: {0}
+
+Информация о релизе:
+
+Название: {1}
+Количество загрузок: {2}
+Дата выпуска: {3}
+Описание:
+
+{4}
+
+Хотите обновиться сейчас??</value>
+  </data>
+  <data name="GuiIRSEUpdater" xml:space="preserve">
+    <value>Обновление IRSE</value>
+  </data>
+  <data name="GuiCanceledUpdate" xml:space="preserve">
+    <value>Обновление отменено.</value>
+  </data>
+  <data name="GuiUpdateApply" xml:space="preserve">
+    <value>Обновление выполняется...</value>
+  </data>
+  <data name="GuiDialogMustRestart" xml:space="preserve">
+    <value>Вам необходимо перезапустить сервер перед тем, как обновление будет завершено!
+
+Хотите перезапуститься сейчас?
+прим: Состояние сервера будет сохранено
+</value>
+  </data>
+  <data name="GuiExtenderUpdater" xml:space="preserve">
+    <value>Обновление IRSE</value>
+  </data>
+  <data name="GuiNeedsRestart" xml:space="preserve">
+    <value>IRSE должен быть перегазружен для применения обновления!</value>
+  </data>
+  <data name="RestartIRSE" xml:space="preserve">
+    <value>Перезапустить IRSE?</value>
+  </data>
+  <data name="Close IRSE" xml:space="preserve">
+    <value>Закрыть IRSE?</value>
+  </data>
+  <data name="BadSyntax" xml:space="preserve">
+    <value>Неверный синтаксис! Используйте / help для вывода списка всех доступных команд...</value>
+  </data>
+</root>

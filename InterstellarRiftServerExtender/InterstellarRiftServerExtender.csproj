@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\CefSharp.WinForms.84.4.10\build\CefSharp.WinForms.props" Condition="Exists('..\packages\CefSharp.WinForms.84.4.10\build\CefSharp.WinForms.props')" />
+  <Import Project="..\packages\CefSharp.Common.84.4.10\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.84.4.10\build\CefSharp.Common.props')" />
+  <Import Project="..\packages\cef.redist.x86.84.4.1\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.84.4.1\build\cef.redist.x86.props')" />
+  <Import Project="..\packages\cef.redist.x64.84.4.1\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.84.4.1\build\cef.redist.x64.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -82,30 +86,41 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Resources\CefSharp.BrowserSubprocess.Core.dll" />
+    <None Include="Resources\CefSharp.Core.dll" />
+    <None Include="Resources\CefSharp.dll" />
+    <None Include="Resources\CefSharp.WinForms.dll" />
     <None Include="Resources\MarkdownDeep.dll" />
-    <None Include="Resources\System.Net.Http.Formatting.dll" />
-    <None Include="Resources\System.Web.Http.dll" />
+    <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.ru-RU.resx">
+      <DependentUpon>BrowserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Languages\IRSE.resx" />
+    <None Include="Languages\IRSE.ru-RU.resx" />
+    <EmbeddedResource Include="Resources\System.Net.Http.Formatting.dll" />
+    <EmbeddedResource Include="Resources\System.Web.Http.dll" />
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Forms\ExtenderGui.resx">
       <DependentUpon>ExtenderGui.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Forms\Updater\UpdateForm.resx">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Forms\ExtenderGui.ru-RU.resx">
+      <DependentUpon>ExtenderGui.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Resources\Log4Net.Async.dll" />
     <None Include="Resources\log4net.dll" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
+    <None Include="Resources\Newtonsoft.Json.dll" />
     <None Include="Resources\NLog.dll" />
     <None Include="Resources\Octokit.dll" />
     <None Include="App.config" />
     <Content Include="Assets\irse_icon.ico" />
+    <EmbeddedResource Include="Assets\patreon.png" />
+    <EmbeddedResource Include="Languages\LanguageList.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -148,12 +163,6 @@
       <DependentUpon>ExtenderGui.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Forms\MarkdownSharp.cs" />
-    <Compile Include="GUI\Forms\Updater\UpdateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Forms\Updater\UpdateForm.Designer.cs">
-      <DependentUpon>UpdateForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\Pages\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -175,7 +184,6 @@
     <Compile Include="Modules\Config.cs" />
     <Compile Include="Modules\CrashDump.cs" />
     <Compile Include="Modules\FolderStructure.cs" />
-    <Compile Include="Modules\GhostClientState.cs" />
     <Compile Include="Modules\Localization.cs" />
     <Compile Include="Modules\PasswordEncoder.cs" />
     <Compile Include="Modules\GameConfig\ServerConfig.cs" />
@@ -253,6 +261,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Design" />
     <Reference Include="System.IO.Compression" />
@@ -313,6 +322,7 @@ echo THESE ARE REQUIRED
 IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE" md "$(ProjectDir)bin\IRSERelease\IRSE"
 IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\bin" md "$(ProjectDir)bin\IRSERelease\IRSE\bin"
 IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\config" md "$(ProjectDir)bin\IRSERelease\IRSE\config"
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\localization" md "$(ProjectDir)bin\IRSERelease\IRSE\localization"
 
 xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)0Harmony.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
@@ -320,6 +330,21 @@ xcopy "$(TargetDir)MarkdownDeep.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\IRSE\config" /y
 xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)CefSharp.WinForms.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)CefSharp.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)CefSharp.Core.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)CefSharp.BrowserSubprocess.Core.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+
+REM Languages
+
+REM Console
+xcopy "$(ProjectDir)Languages\IRSE.resx" "$(ProjectDir)bin\IRSERelease\IRSE\localization" /y
+xcopy "$(ProjectDir)Languages\IRSE.*.resx" "$(ProjectDir)bin\IRSERelease\IRSE\localization" /y
+
+REM Forms
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\bin\ru-RU" md "$(ProjectDir)bin\IRSERelease\IRSE\bin\ru-RU"
+xcopy "$(TargetDir)ru-RU\IRSE.resources.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin\ru-RU" /y
+
 
 echo $(ProjectName) files have been copied to "$(ProjectDir)bin\IRSERelease\".
 
@@ -338,5 +363,13 @@ EXIT 0</PostBuildEvent>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\GitInfo.2.1.2\build\GitInfo.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\GitInfo.2.1.2\build\GitInfo.targets'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x64.84.4.1\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.84.4.1\build\cef.redist.x64.props'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x86.84.4.1\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.84.4.1\build\cef.redist.x86.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.84.4.10\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.84.4.10\build\CefSharp.Common.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.84.4.10\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.84.4.10\build\CefSharp.Common.targets'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.WinForms.84.4.10\build\CefSharp.WinForms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.WinForms.84.4.10\build\CefSharp.WinForms.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.WinForms.84.4.10\build\CefSharp.WinForms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.WinForms.84.4.10\build\CefSharp.WinForms.targets'))" />
   </Target>
+  <Import Project="..\packages\CefSharp.Common.84.4.10\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.84.4.10\build\CefSharp.Common.targets')" />
+  <Import Project="..\packages\CefSharp.WinForms.84.4.10\build\CefSharp.WinForms.targets" Condition="Exists('..\packages\CefSharp.WinForms.84.4.10\build\CefSharp.WinForms.targets')" />
 </Project>
