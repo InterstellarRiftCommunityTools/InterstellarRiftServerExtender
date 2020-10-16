@@ -129,8 +129,6 @@ namespace IRSE.Modules.GameConfig
         public System.Int32 ActiveDronesInTileRemovalThreshold
         { get { return ServerConfig.Singleton.ActiveDronesInTileRemovalThreshold; } set { ServerConfig.Singleton.ActiveDronesInTileRemovalThreshold = value; } }
 
-        // MODIFIED WHILE GHOST CLIENTS ON SP SIDE ARE BAD
-        [ReadOnly(true)]
         [DisplayName("Create Ghost Clients")]
         [Category("Ghost Clients")]
         [Description("(DISABLED. IRSE STARTS THEM) Whether or not the server will run separate processes so it can save without stalling.")]

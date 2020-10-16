@@ -121,11 +121,11 @@
   <data name="cpc_chat_tabs.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="&gt;&gt;ExtenderConfig.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="statusStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>924, 22</value>
   </data>
-  <data name="CommandVisualizerTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>916, 494</value>
+  <data name="&gt;&gt;sc_playerbans_listview.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;splitContainer6.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -150,20 +150,17 @@
     <value>development_label</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="splitContainer3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="plugins_tab_settingsTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 3</value>
   </data>
   <data name="cpc_chat_list.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="CV_RIFTS_TAB.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="&gt;&gt;splitContainer6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;server_config_reload.Parent" xml:space="preserve">
     <value>ServerContainer.Panel2</value>
-  </data>
-  <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
   </data>
   <data name="splitContainer2.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -174,12 +171,6 @@
   <data name="&gt;&gt;cpc_chat_list.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="server_hesNewsLabel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="&gt;&gt;ts_pc_restartserver.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;pc_killplayer.Name" xml:space="preserve">
     <value>pc_killplayer</value>
   </data>
@@ -189,8 +180,8 @@
   <data name="pc_banplayer.Text" xml:space="preserve">
     <value>Ban</value>
   </data>
-  <data name="&gt;&gt;CV_PLAYERS_TAB.Name" xml:space="preserve">
-    <value>CV_PLAYERS_TAB</value>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
   </data>
   <data name="&gt;&gt;statusStrip.Type" xml:space="preserve">
     <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -203,9 +194,6 @@
   </data>
   <data name="PluginSettingsFormPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;splitContainer2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;sc_playerslist_ctxmenu.Name" xml:space="preserve">
     <value>sc_playerslist_ctxmenu</value>
@@ -222,14 +210,14 @@
   <data name="groupBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;ServerContainer.Name" xml:space="preserve">
-    <value>ServerContainer</value>
-  </data>
   <data name="button1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>None</value>
   </data>
   <data name="CommandVisualizerTab.Text" xml:space="preserve">
     <value>Command Visualizer</value>
+  </data>
+  <data name="&gt;&gt;splitContainer2.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer2</value>
   </data>
   <data name="PlayersAndChatTab.Size" type="System.Drawing.Size, System.Drawing">
     <value>916, 494</value>
@@ -240,14 +228,11 @@
   <data name="ServerConfig.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="&gt;&gt;plugins_tab_settingsTab.Parent" xml:space="preserve">
-    <value>tabControl1</value>
+  <data name="CommandVisualizerTab.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="server_hesNewsLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;ServerContainer.Panel2.Parent" xml:space="preserve">
-    <value>ServerContainer</value>
   </data>
   <data name="&gt;&gt;server_config_cancel.Name" xml:space="preserve">
     <value>server_config_cancel</value>
@@ -261,8 +246,8 @@
   <data name="sc_languageSelector.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;development_label.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;pm_pluginbrowserbtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="server_config_cancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -282,8 +267,8 @@
   <data name="&gt;&gt;pc_killplayer.Parent" xml:space="preserve">
     <value>groupBox2</value>
   </data>
-  <data name="&gt;&gt;server_config_setdefaults.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
+    <value>tabControl3</value>
   </data>
   <data name="splitContainer3.SplitterDistance" type="System.Int32, mscorlib">
     <value>434</value>
@@ -303,56 +288,14 @@
   <data name="pm_pluginbrowserbtn.Size" type="System.Drawing.Size, System.Drawing">
     <value>130, 23</value>
   </data>
-  <data name="plugins_tab_settingsTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 3, 3</value>
+  <data name="&gt;&gt;listView1.Name" xml:space="preserve">
+    <value>listView1</value>
   </data>
-  <data name="&gt;&gt;cpc_chat_tabs.Parent" xml:space="preserve">
-    <value>splitContainer3.Panel1</value>
-  </data>
-  <data name="button1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        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
-</value>
+  <data name="&gt;&gt;ServerContainer.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
     <value>columnHeader1</value>
-  </data>
-  <data name="&gt;&gt;plugins_tab_pluginslist.Name" xml:space="preserve">
-    <value>plugins_tab_pluginslist</value>
   </data>
   <data name="splitContainer4.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 453</value>
@@ -414,6 +357,9 @@
   <data name="&gt;&gt;CV_SHIPS_TAB.Name" xml:space="preserve">
     <value>CV_SHIPS_TAB</value>
   </data>
+  <data name="&gt;&gt;Tabs.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
   <data name="banToolStripMenuItem.Text" xml:space="preserve">
     <value>Ban</value>
   </data>
@@ -423,14 +369,14 @@
   <data name="&gt;&gt;splitContainer4.Panel2.Parent" xml:space="preserve">
     <value>splitContainer4</value>
   </data>
-  <data name="&gt;&gt;killToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;splitContainer5.Panel2.Name" xml:space="preserve">
     <value>splitContainer5.Panel2</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Name" xml:space="preserve">
     <value>splitContainer1</value>
+  </data>
+  <data name="pc_forgetplayer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 55</value>
   </data>
   <data name="&gt;&gt;plugins_tab_informationTab.Parent" xml:space="preserve">
     <value>tabControl1</value>
@@ -453,8 +399,8 @@
   <data name="&gt;&gt;sc_playerslist_listview.Type" xml:space="preserve">
     <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;server_config_reload.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="pc_kickplayer.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="pc_killplayer.Size" type="System.Drawing.Size, System.Drawing">
     <value>41, 23</value>
@@ -471,6 +417,9 @@
   <data name="&gt;&gt;cpc_chat_list.Name" xml:space="preserve">
     <value>cpc_chat_list</value>
   </data>
+  <data name="&gt;&gt;CV_PLAYERS_TAB.Name" xml:space="preserve">
+    <value>CV_PLAYERS_TAB</value>
+  </data>
   <data name="server_config_reload.Location" type="System.Drawing.Point, System.Drawing">
     <value>706, 63</value>
   </data>
@@ -486,8 +435,11 @@
   <data name="splitContainer4.SplitterDistance" type="System.Int32, mscorlib">
     <value>360</value>
   </data>
-  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;plugins_tab_settingsTab.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="server_server_Tabs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="ChatPlayerContainer.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -507,8 +459,8 @@
   <data name="PluginSettingsFormPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
   </data>
-  <data name="cpc_chat_tabs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="tabControl2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Panel2.Parent" xml:space="preserve">
     <value>splitContainer3</value>
@@ -530,6 +482,9 @@
   </data>
   <data name="&gt;&gt;tabPage2.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ChatPlayerContainer.Panel1.Parent" xml:space="preserve">
+    <value>ChatPlayerContainer</value>
   </data>
   <data name="&gt;&gt;CommandVisualizerTab.ZOrder" xml:space="preserve">
     <value>2</value>
@@ -555,9 +510,6 @@
   <data name="CV_PLAYERS_TAB.Size" type="System.Drawing.Size, System.Drawing">
     <value>902, 462</value>
   </data>
-  <data name="&gt;&gt;PluginSettingsFormPanel.Name" xml:space="preserve">
-    <value>PluginSettingsFormPanel</value>
-  </data>
   <data name="ServerTab.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
@@ -582,6 +534,9 @@
   <data name="listView1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
+  <data name="plugins_tab_pluginslist.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
   <data name="killToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 22</value>
   </data>
@@ -596,6 +551,9 @@
   </data>
   <data name="&gt;&gt;pc_banplayer.Name" xml:space="preserve">
     <value>pc_banplayer</value>
+  </data>
+  <data name="&gt;&gt;splitContainer4.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer4</value>
   </data>
   <data name="&gt;&gt;server_config_setdefaults.Name" xml:space="preserve">
     <value>server_config_setdefaults</value>
@@ -621,20 +579,17 @@
   <data name="server_config_startserver.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="pm_pluginbrowserbtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>114, 9</value>
+  <data name="PluginsTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>916, 494</value>
   </data>
   <data name="CV_SHIPS_TAB.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;PluginsTab.Parent" xml:space="preserve">
+    <value>Tabs</value>
   </data>
   <data name="pc_toggleadmin.Location" type="System.Drawing.Point, System.Drawing">
     <value>141, 19</value>
-  </data>
-  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>666, 408</value>
   </data>
   <data name="splitContainer3.Size" type="System.Drawing.Size, System.Drawing">
     <value>674, 488</value>
@@ -662,6 +617,9 @@
   </data>
   <data name="&gt;&gt;CV_FLEET_TAB.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="server_config_reload.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 23</value>
   </data>
   <data name="ServerConfig.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
@@ -735,9 +693,6 @@
   <data name="sc_languageSelector.Location" type="System.Drawing.Point, System.Drawing">
     <value>770, 3</value>
   </data>
-  <data name="ServerConfig.Size" type="System.Drawing.Size, System.Drawing">
-    <value>902, 362</value>
-  </data>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>6, 13</value>
   </data>
@@ -765,14 +720,11 @@
   <data name="server_config_setdefaults.Text" xml:space="preserve">
     <value>Set Config Defaults</value>
   </data>
-  <data name="BTN_Plugins_Enable.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;pm_pluginbrowserbtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="ServerConfig.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
+  </data>
+  <data name="&gt;&gt;server_config_save.Name" xml:space="preserve">
+    <value>server_config_save</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -789,6 +741,9 @@
   <data name="sc_playerslist_listview.Size" type="System.Drawing.Size, System.Drawing">
     <value>218, 328</value>
   </data>
+  <data name="statusStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 520</value>
+  </data>
   <data name="ExtenderConfig.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 3, 3, 3</value>
   </data>
@@ -804,9 +759,6 @@
   <data name="&gt;&gt;splitContainer4.Panel2.Name" xml:space="preserve">
     <value>splitContainer4.Panel2</value>
   </data>
-  <data name="&gt;&gt;ChatPlayerContainer.Panel2.Name" xml:space="preserve">
-    <value>ChatPlayerContainer.Panel2</value>
-  </data>
   <data name="ServerTab.Text" xml:space="preserve">
     <value>Server Control</value>
   </data>
@@ -818,6 +770,9 @@
   </data>
   <data name="sc_playerbans_listview.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
+  </data>
+  <data name="CV_SHIPS_TAB.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="sc_playerslist_listview.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
@@ -834,11 +789,53 @@
   <data name="kickToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 22</value>
   </data>
+  <data name="pm_pluginbrowserbtn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>114, 9</value>
+  </data>
   <data name="&gt;&gt;splitContainer2.Panel2.Name" xml:space="preserve">
     <value>splitContainer2.Panel2</value>
   </data>
   <data name="&gt;&gt;serverconfig_properties.Name" xml:space="preserve">
     <value>serverconfig_properties</value>
+  </data>
+  <data name="button1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        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
+</value>
   </data>
   <data name="&gt;&gt;ExtenderConfig.Parent" xml:space="preserve">
     <value>server_server_Tabs</value>
@@ -867,11 +864,20 @@
   <data name="splitContainer4.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="splitContainer3.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="server_config_setdefaults.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="sc_playerbans_listview.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 3</value>
+  </data>
+  <data name="pc_toggleadmin.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
   <data name="tabPage1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -885,11 +891,11 @@
   <data name="plugins_tab_informationTab.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="CV_SHIPS_TAB.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;splitContainer3.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="ServerContainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>910, 488</value>
   </data>
   <data name="server_hesNewsLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 16</value>
@@ -909,20 +915,17 @@
   <data name="&gt;&gt;cpc_chat_list.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;ts_pc_startserver.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;ts_pc_startserver.Name" xml:space="preserve">
     <value>ts_pc_startserver</value>
   </data>
   <data name="plugins_tab_settingsTab.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="pc_forgetplayer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 55</value>
+  <data name="ts_pc_stopserver.Text" xml:space="preserve">
+    <value>Stop Server</value>
   </data>
-  <data name="BTN_Plugins_Enable.Text" xml:space="preserve">
-    <value>Toggle State</value>
+  <data name="&gt;&gt;tabPage1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pc_banplayer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -933,17 +936,11 @@
   <data name="&gt;&gt;serverconfig_properties.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="ts_sc_ctxmenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>136, 98</value>
-  </data>
   <data name="plugins_tab_informationTab.Text" xml:space="preserve">
     <value>Information</value>
   </data>
-  <data name="&gt;&gt;pc_toggleadmin.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="extenderconfig_properties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>896, 356</value>
+  <data name="CV_SHIPS_TAB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>902, 462</value>
   </data>
   <data name="&gt;&gt;ChatPlayerContainer.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -953,9 +950,6 @@
   </data>
   <data name="&gt;&gt;plugins_tab_settingsTab.Name" xml:space="preserve">
     <value>plugins_tab_settingsTab</value>
-  </data>
-  <data name="&gt;&gt;sc_playerbans_listview.ZOrder" xml:space="preserve">
-    <value>0</value>
   </data>
   <data name="&gt;&gt;ServerContainer.Panel1.Parent" xml:space="preserve">
     <value>ServerContainer</value>
@@ -981,11 +975,11 @@
   <data name="&gt;&gt;splitContainer1.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>910, 488</value>
+  <data name="ts_sc_ctxmenu.Size" type="System.Drawing.Size, System.Drawing">
+    <value>136, 98</value>
   </data>
-  <data name="server_config_cancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>818, 63</value>
+  <data name="&gt;&gt;ts_pc_restartserver.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ChatPlayerContainer.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -999,8 +993,8 @@
   <data name="ts_pc_startserver.Text" xml:space="preserve">
     <value>Start Server</value>
   </data>
-  <data name="server_server_Tabs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="&gt;&gt;ChatPlayerContainer.Panel2.Name" xml:space="preserve">
+    <value>ChatPlayerContainer.Panel2</value>
   </data>
   <data name="&gt;&gt;extenderconfig_properties.Parent" xml:space="preserve">
     <value>ExtenderConfig</value>
@@ -1056,11 +1050,11 @@
   <data name="&gt;&gt;serverconfig_checkForUpdates.Name" xml:space="preserve">
     <value>serverconfig_checkForUpdates</value>
   </data>
-  <data name="server_config_save.Location" type="System.Drawing.Point, System.Drawing">
-    <value>818, 15</value>
-  </data>
   <data name="&gt;&gt;toggleAdminToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;server_hesNewsLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;splitContainer5.Panel2.Parent" xml:space="preserve">
     <value>splitContainer5</value>
@@ -1086,8 +1080,8 @@
   <data name="&gt;&gt;server_config_cancel.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="&gt;&gt;pc_kickplayer.Name" xml:space="preserve">
-    <value>pc_kickplayer</value>
+  <data name="BTN_Plugins_Enable.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
   <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
     <value>183, 9</value>
@@ -1128,8 +1122,8 @@
   <data name="CV_FLEET_TAB.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;pc_toggleadmin.Parent" xml:space="preserve">
-    <value>groupBox2</value>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>924, 542</value>
   </data>
   <data name="ts_pc_restartserver.Text" xml:space="preserve">
     <value>Restart IRSE</value>
@@ -1179,11 +1173,14 @@
   <data name="&gt;&gt;splitContainer5.Panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="splitContainer6.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
-    <value>Horizontal</value>
+  <data name="tabControl2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>910, 488</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Panel2.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;server_config_reload.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="pc_toggleadmin.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 59</value>
@@ -1205,9 +1202,6 @@
   </data>
   <data name="&gt;&gt;server_server_Tabs.Name" xml:space="preserve">
     <value>server_server_Tabs</value>
-  </data>
-  <data name="&gt;&gt;splitContainer4.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="CV_CREW_TAB.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
@@ -1233,8 +1227,8 @@
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
     <value>117, 13</value>
   </data>
-  <data name="tabPage3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="&gt;&gt;plugins_tab_pluginslist.Name" xml:space="preserve">
+    <value>plugins_tab_pluginslist</value>
   </data>
   <data name="&gt;&gt;server_config_stopserver.Name" xml:space="preserve">
     <value>server_config_stopserver</value>
@@ -1245,8 +1239,8 @@
   <data name="banToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>148, 22</value>
   </data>
-  <data name="server_config_startserver.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
+  <data name="tabPage3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>666, 408</value>
   </data>
   <data name="&gt;&gt;ServerContainer.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
@@ -1259,9 +1253,6 @@
   </data>
   <data name="splitContainer2.Size" type="System.Drawing.Size, System.Drawing">
     <value>232, 488</value>
-  </data>
-  <data name="CommandVisualizerTab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
   </data>
   <data name="CV_PLAYERS_TAB.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1277,6 +1268,9 @@
   </data>
   <data name="PlayersAndChatTab.Text" xml:space="preserve">
     <value>Players &amp; Chat</value>
+  </data>
+  <data name="cpc_chat_send.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="server_hesNewsLabel.Text" xml:space="preserve">
     <value>Configuration options for IRSE have been moved to the Server tab
@@ -1294,9 +1288,6 @@ under the IRSE Config subtab.
   </data>
   <data name="&gt;&gt;server_server_Tabs.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="&gt;&gt;listView1.Name" xml:space="preserve">
-    <value>listView1</value>
   </data>
   <data name="&gt;&gt;PluginSettingsFormPanel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1334,20 +1325,17 @@ under the IRSE Config subtab.
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;ChatPlayerContainer.Panel1.Name" xml:space="preserve">
-    <value>ChatPlayerContainer.Panel1</value>
+  <data name="CommandVisualizerTab.Size" type="System.Drawing.Size, System.Drawing">
+    <value>916, 494</value>
   </data>
   <data name="CV_CREW_TAB.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="PluginsTab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>916, 494</value>
+  <data name="splitContainer6.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+    <value>Horizontal</value>
   </data>
   <data name="&gt;&gt;PluginsTab.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="statusStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>924, 22</value>
   </data>
   <data name="&gt;&gt;tabControl3.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabControl, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1406,8 +1394,11 @@ under the IRSE Config subtab.
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;tabPage1.Parent" xml:space="preserve">
-    <value>tabControl3</value>
+  <data name="&gt;&gt;server_config_setdefaults.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;ts_sc_ctxmenu.Name" xml:space="preserve">
+    <value>ts_sc_ctxmenu</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Parent" xml:space="preserve">
     <value>ChatPlayerContainer.Panel2</value>
@@ -1478,6 +1469,9 @@ under the IRSE Config subtab.
   <data name="CV_FLEET_TAB.Size" type="System.Drawing.Size, System.Drawing">
     <value>902, 462</value>
   </data>
+  <data name="pc_banplayer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 23</value>
+  </data>
   <data name="&gt;&gt;sc_playerbans_listview.Type" xml:space="preserve">
     <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -1487,14 +1481,17 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;splitContainer5.Parent" xml:space="preserve">
     <value>PluginsTab</value>
   </data>
+  <data name="cpc_chat_tabs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="cpc_chat_send.Size" type="System.Drawing.Size, System.Drawing">
     <value>50, 23</value>
   </data>
   <data name="&gt;&gt;splitContainer1.Panel1.Name" xml:space="preserve">
     <value>splitContainer1.Panel1</value>
   </data>
-  <data name="&gt;&gt;server_config_save.Name" xml:space="preserve">
-    <value>server_config_save</value>
+  <data name="&gt;&gt;splitContainer4.Panel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1505,8 +1502,8 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;tabPage3.Name" xml:space="preserve">
     <value>tabPage3</value>
   </data>
-  <data name="&gt;&gt;sc_onlineplayers_label.Parent" xml:space="preserve">
-    <value>splitContainer2.Panel1</value>
+  <data name="server_config_cancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>818, 63</value>
   </data>
   <data name="&gt;&gt;cpc_messagebox.Parent" xml:space="preserve">
     <value>splitContainer3.Panel2</value>
@@ -1523,14 +1520,14 @@ under the IRSE Config subtab.
   <data name="listView1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="&gt;&gt;sc_languageSelector.Name" xml:space="preserve">
+    <value>sc_languageSelector</value>
+  </data>
   <data name="&gt;&gt;splitContainer2.Panel1.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;banToolStripMenuItem.Name" xml:space="preserve">
     <value>banToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;splitContainer2.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="&gt;&gt;sc_playerbans_listview.Name" xml:space="preserve">
     <value>sc_playerbans_listview</value>
@@ -1577,20 +1574,20 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;ts_pc_restartserver.Name" xml:space="preserve">
     <value>ts_pc_restartserver</value>
   </data>
-  <data name="server_config_reload.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 23</value>
+  <data name="&gt;&gt;cpc_chat_tabs.Parent" xml:space="preserve">
+    <value>splitContainer3.Panel1</value>
   </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
   </data>
-  <data name="&gt;&gt;button1.Name" xml:space="preserve">
-    <value>button1</value>
+  <data name="&gt;&gt;ExtenderConfig.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;splitContainer6.Parent" xml:space="preserve">
     <value>splitContainer5.Panel1</value>
   </data>
-  <data name="&gt;&gt;splitContainer6.Panel1.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;sc_onlineplayers_label.Parent" xml:space="preserve">
+    <value>splitContainer2.Panel1</value>
   </data>
   <data name="&gt;&gt;ServerContainer.Panel1.Name" xml:space="preserve">
     <value>ServerContainer.Panel1</value>
@@ -1601,8 +1598,8 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;PlayerColumn.Name" xml:space="preserve">
     <value>PlayerColumn</value>
   </data>
-  <data name="&gt;&gt;PluginsTab.Parent" xml:space="preserve">
-    <value>Tabs</value>
+  <data name="server_config_startserver.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="pc_killplayer.Location" type="System.Drawing.Point, System.Drawing">
     <value>57, 55</value>
@@ -1628,20 +1625,20 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;cpc_chat_tabs.Name" xml:space="preserve">
     <value>cpc_chat_tabs</value>
   </data>
-  <data name="CV_SHIPS_TAB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>902, 462</value>
-  </data>
   <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
   <data name="listView1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
+  <data name="&gt;&gt;pc_toggleadmin.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
   <data name="splitContainer5.Size" type="System.Drawing.Size, System.Drawing">
     <value>916, 494</value>
   </data>
-  <data name="CV_PLAYERS_TAB.Text" xml:space="preserve">
-    <value>Players</value>
+  <data name="extenderconfig_properties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>896, 356</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -1667,14 +1664,14 @@ under the IRSE Config subtab.
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 13</value>
   </data>
-  <data name="&gt;&gt;ts_sc_ctxmenu.Name" xml:space="preserve">
-    <value>ts_sc_ctxmenu</value>
+  <data name="CV_RIFTS_TAB.Size" type="System.Drawing.Size, System.Drawing">
+    <value>902, 462</value>
   </data>
   <data name="tabPage2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;server_hesNewsLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;splitContainer2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;CommandVisualizerTab.Name" xml:space="preserve">
     <value>CommandVisualizerTab</value>
@@ -1715,9 +1712,6 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;server_config_startserver.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="development_label.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="ChatPlayerContainer.SplitterDistance" type="System.Int32, mscorlib">
     <value>232</value>
   </data>
@@ -1730,11 +1724,11 @@ under the IRSE Config subtab.
   <data name="plugins_tab_informationTab.Size" type="System.Drawing.Size, System.Drawing">
     <value>652, 468</value>
   </data>
-  <data name="pc_toggleadmin.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+  <data name="&gt;&gt;development_label.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;ChatPlayerContainer.Panel1.Parent" xml:space="preserve">
-    <value>ChatPlayerContainer</value>
+  <data name="tabPage3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
   </data>
   <data name="ServerContainer.SplitterDistance" type="System.Int32, mscorlib">
     <value>388</value>
@@ -1742,11 +1736,14 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;PlayersAndChatTab.Parent" xml:space="preserve">
     <value>Tabs</value>
   </data>
-  <data name="&gt;&gt;splitContainer4.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer4</value>
+  <data name="development_label.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="splitContainer2.SplitterDistance" type="System.Int32, mscorlib">
     <value>31</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;server_hesNewsLabel.Parent" xml:space="preserve">
     <value>groupBox1</value>
@@ -1763,13 +1760,7 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;server_config_setdefaults.Parent" xml:space="preserve">
     <value>ServerContainer.Panel2</value>
   </data>
-  <data name="&gt;&gt;ts_pc_closeirse.Name" xml:space="preserve">
-    <value>ts_pc_closeirse</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>924, 542</value>
-  </data>
-  <data name="&gt;&gt;splitContainer6.Type" xml:space="preserve">
+  <data name="&gt;&gt;splitContainer4.Type" xml:space="preserve">
     <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="tabControl1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
@@ -1805,9 +1796,6 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;server_config_stopserver.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="splitContainer2.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
-    <value>Horizontal</value>
-  </data>
   <data name="&gt;&gt;extenderconfig_properties.Name" xml:space="preserve">
     <value>extenderconfig_properties</value>
   </data>
@@ -1817,11 +1805,14 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;BTN_Plugins_Enable.Name" xml:space="preserve">
     <value>BTN_Plugins_Enable</value>
   </data>
+  <data name="&gt;&gt;pc_kickplayer.Name" xml:space="preserve">
+    <value>pc_kickplayer</value>
+  </data>
   <data name="&gt;&gt;StatusBar.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="CV_RIFTS_TAB.Size" type="System.Drawing.Size, System.Drawing">
-    <value>902, 462</value>
+  <data name="BTN_Plugins_Enable.Text" xml:space="preserve">
+    <value>Toggle State</value>
   </data>
   <data name="server_server_Tabs.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -2227,9 +2218,6 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;statusStrip.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;splitContainer4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -2239,8 +2227,8 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
-  <data name="statusStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 520</value>
+  <data name="&gt;&gt;ServerContainer.Name" xml:space="preserve">
+    <value>ServerContainer</value>
   </data>
   <data name="&gt;&gt;BTN_Plugins_Enable.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2266,23 +2254,23 @@ under the IRSE Config subtab.
   <data name="cpc_messagebox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;splitContainer2.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer2</value>
+  <data name="server_config_save.Location" type="System.Drawing.Point, System.Drawing">
+    <value>818, 15</value>
   </data>
   <data name="&gt;&gt;columnHeader2.Name" xml:space="preserve">
     <value>columnHeader2</value>
   </data>
-  <data name="cpc_chat_send.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="CV_ASTEROIDS_TAB.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="serverconfig_properties.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Panel2.Name" xml:space="preserve">
     <value>splitContainer3.Panel2</value>
   </data>
   <data name="CV_SHIPS_TAB.Text" xml:space="preserve">
     <value>Ships</value>
+  </data>
+  <data name="sc_languageSelector.Size" type="System.Drawing.Size, System.Drawing">
+    <value>128, 21</value>
   </data>
   <data name="&gt;&gt;cpc_chat_send.Name" xml:space="preserve">
     <value>cpc_chat_send</value>
@@ -2302,11 +2290,14 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;CV_RIFTS_TAB.Name" xml:space="preserve">
     <value>CV_RIFTS_TAB</value>
   </data>
-  <data name="serverconfig_properties.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;splitContainer2.Panel2.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;plugins_tab_settingsTab.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;tabControl2.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
     <value>517, 78</value>
@@ -2331,6 +2322,9 @@ under the IRSE Config subtab.
   </data>
   <data name="&gt;&gt;PlayersAndChatTab.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;ChatPlayerContainer.Panel1.Name" xml:space="preserve">
+    <value>ChatPlayerContainer.Panel1</value>
   </data>
   <data name="&gt;&gt;tabControl2.Name" xml:space="preserve">
     <value>tabControl2</value>
@@ -2383,9 +2377,6 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;CV_RIFTS_TAB.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="ts_pc_stopserver.Text" xml:space="preserve">
-    <value>Stop Server</value>
-  </data>
   <data name="tabControl3.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -2397,6 +2388,9 @@ under the IRSE Config subtab.
   </data>
   <data name="Tabs.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
+  </data>
+  <data name="development_label.Size" type="System.Drawing.Size, System.Drawing">
+    <value>425, 13</value>
   </data>
   <data name="tabPage3.Text" xml:space="preserve">
     <value>Chat</value>
@@ -2410,8 +2404,8 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;toolStripSeparator1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripSeparator, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="sc_languageSelector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 21</value>
+  <data name="&gt;&gt;ts_pc_startserver.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;server_config_stopserver.Parent" xml:space="preserve">
     <value>ServerContainer.Panel2</value>
@@ -2419,8 +2413,8 @@ under the IRSE Config subtab.
   <data name="CV_ASTEROIDS_TAB.Text" xml:space="preserve">
     <value>Asteroids</value>
   </data>
-  <data name="&gt;&gt;splitContainer5.Panel1.Parent" xml:space="preserve">
-    <value>splitContainer5</value>
+  <data name="&gt;&gt;button1.Name" xml:space="preserve">
+    <value>button1</value>
   </data>
   <data name="&gt;&gt;label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -2440,11 +2434,8 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;PlayersAndChatTab.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="ServerContainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>910, 488</value>
-  </data>
-  <data name="&gt;&gt;splitContainer3.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;splitContainer1.Panel2.Parent" xml:space="preserve">
+    <value>splitContainer1</value>
   </data>
   <data name="&gt;&gt;cpc_chat_send.Parent" xml:space="preserve">
     <value>splitContainer3.Panel2</value>
@@ -2452,8 +2443,8 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;server_config_cancel.Parent" xml:space="preserve">
     <value>ServerContainer.Panel2</value>
   </data>
-  <data name="pc_kickplayer.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="&gt;&gt;killToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pc_toggleadmin.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -2470,8 +2461,8 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;CV_CREW_TAB.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="development_label.Size" type="System.Drawing.Size, System.Drawing">
-    <value>425, 13</value>
+  <data name="&gt;&gt;pc_toggleadmin.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;CV_RIFTS_TAB.Parent" xml:space="preserve">
     <value>tabControl2</value>
@@ -2515,9 +2506,6 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;serverconfig_checkForUpdates.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;ServerContainer.Panel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="&gt;&gt;columnHeader2.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
@@ -2539,11 +2527,11 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;server_config_startserver.Name" xml:space="preserve">
     <value>server_config_startserver</value>
   </data>
-  <data name="plugins_tab_pluginslist.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="ServerConfig.Size" type="System.Drawing.Size, System.Drawing">
+    <value>902, 362</value>
   </data>
-  <data name="&gt;&gt;tabPage2.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;PluginSettingsFormPanel.Name" xml:space="preserve">
+    <value>PluginSettingsFormPanel</value>
   </data>
   <data name="&gt;&gt;statusStrip.ZOrder" xml:space="preserve">
     <value>5</value>
@@ -2572,14 +2560,14 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;CommandVisualizerTab.Parent" xml:space="preserve">
     <value>Tabs</value>
   </data>
-  <data name="&gt;&gt;splitContainer1.Panel2.Parent" xml:space="preserve">
-    <value>splitContainer1</value>
+  <data name="server_hesNewsLabel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
   <data name="splitContainer6.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;sc_languageSelector.Name" xml:space="preserve">
-    <value>sc_languageSelector</value>
+  <data name="CV_ASTEROIDS_TAB.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;splitContainer3.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
@@ -2599,14 +2587,17 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;plugins_tab_pluginslist.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="&gt;&gt;PluginSettingsFormPanel.Parent" xml:space="preserve">
+    <value>plugins_tab_settingsTab</value>
+  </data>
   <data name="&gt;&gt;ServerConfig.Name" xml:space="preserve">
     <value>ServerConfig</value>
   </data>
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="&gt;&gt;Tabs.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;ServerContainer.Panel2.Parent" xml:space="preserve">
+    <value>ServerContainer</value>
   </data>
   <data name="button1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -2632,8 +2623,8 @@ under the IRSE Config subtab.
   <data name="extenderconfig_properties.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="&gt;&gt;PluginSettingsFormPanel.Parent" xml:space="preserve">
-    <value>plugins_tab_settingsTab</value>
+  <data name="&gt;&gt;splitContainer5.Panel1.Parent" xml:space="preserve">
+    <value>splitContainer5</value>
   </data>
   <data name="PluginSettingsFormPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>646, 462</value>
@@ -2641,8 +2632,14 @@ under the IRSE Config subtab.
   <data name="&gt;&gt;tabPage3.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tabControl2.ZOrder" xml:space="preserve">
+  <data name="CV_PLAYERS_TAB.Text" xml:space="preserve">
+    <value>Players</value>
+  </data>
+  <data name="&gt;&gt;splitContainer6.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="splitContainer2.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
+    <value>Horizontal</value>
   </data>
   <data name="splitContainer5.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -2650,8 +2647,8 @@ under the IRSE Config subtab.
   <data name="ExtenderConfig.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="pc_banplayer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 23</value>
+  <data name="&gt;&gt;ts_pc_closeirse.Name" xml:space="preserve">
+    <value>ts_pc_closeirse</value>
   </data>
   <data name="pc_kickplayer.Size" type="System.Drawing.Size, System.Drawing">
     <value>47, 23</value>
@@ -2662,15 +2659,15 @@ under the IRSE Config subtab.
   <data name="killToolStripMenuItem.Text" xml:space="preserve">
     <value>Kill</value>
   </data>
+  <data name="CV_RIFTS_TAB.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
   <data name="&gt;&gt;pc_kickplayer.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ChatPlayerContainer.Panel2.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>es</value>
-  </metadata>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>

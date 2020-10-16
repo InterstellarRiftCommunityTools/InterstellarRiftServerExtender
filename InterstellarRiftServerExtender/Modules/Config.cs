@@ -35,7 +35,7 @@ namespace IRSE.Modules
             CheckUpdatesTime = 60;
 
             manageSteamCmd = true;
-            m_currentLanguage = "English";
+            m_currentLanguage = "English (United States)";
 
             usePreReleaseVersions = EnableDevelopmentVersion;
         }

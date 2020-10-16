@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using IRSE;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
+[assembly: NeutralResourcesLanguage("en-US")]
 [assembly: AssemblyTitle("IsR Server Extender")]
 [assembly: AssemblyDescription("Interstellar Rift Server Extender")]
 [assembly: AssemblyConfiguration("DEV")]
@@ -30,6 +32,6 @@ using IRSE;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("0.1.3.2")]
-[assembly: AssemblyFileVersion("0.1.3.2")]
-[assembly: SupportedGameAssemblyVersion("1.0.0.50")]
+[assembly: AssemblyVersion("0.1.3.8")]
+[assembly: AssemblyFileVersion("0.1.3.8")]
+[assembly: SupportedGameAssemblyVersion("1.0.0.61")]

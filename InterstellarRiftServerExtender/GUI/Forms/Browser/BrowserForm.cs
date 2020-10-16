@@ -16,16 +16,17 @@ namespace IRSE.GUI.Forms.Browser
 
         private void BrowserForm_Load(object sender, System.EventArgs e)
         {
-            CefSettings settings = new CefSettings();
-            Cef.Initialize(settings);
-            var Text = "<a class=\"vglnk\" href=\"https://foxlearn.com\" rel=\"nofollow\"><span>https</span><span>://</span><span>foxlearn</span><span>.</span><span>com</span></a>";
+            //CefSettings settings = new CefSettings();
+            //Cef.Initialize(settings);
+            //var Text = "<a class=\"vglnk\" href=\"https://foxlearn.com\" rel=\"nofollow\"><span>https</span><span>://</span><span>foxlearn</span><span>.</span><span>com</span></a>";
             
-            chrome = new ChromiumWebBrowser("");
-            chrome.Dock = DockStyle.Fill;
+            //chrome = new ChromiumWebBrowser("");
+            //chrome.Dock = DockStyle.Fill;
 
-            chrome.LoadHtml(Text);
+            //chrome.LoadHtml(Text);
 
-            BrowserSplitter.Panel2.Controls.Add(chrome);
+
+            //splitContainer1.Panel2.Controls.Add(chrome);
             
         }
 

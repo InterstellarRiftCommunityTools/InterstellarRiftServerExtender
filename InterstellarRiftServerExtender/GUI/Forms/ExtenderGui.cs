@@ -1,4 +1,6 @@
-﻿using Game.Server;
+﻿using CefSharp;
+using CefSharp.WinForms;
+using Game.Server;
 using Game.Universe;
 using IRSE.GUI.Forms.Browser;
 using IRSE.Managers;
@@ -28,15 +30,21 @@ namespace IRSE.GUI.Forms
         private Timer PluginsRefreshTimer = new Timer();
 
         private BrowserForm BrowserForm = new BrowserForm();
+        private ChromiumWebBrowser chrome;
 
         public ExtenderGui()
         {
-            InitializeComponent(); 
+            InitializeComponent();
+
+            SetCulture(Config.Instance.Settings.CurrentLanguage);
         }
 
         public void SetCulture(string cultureName)
         {
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(cultureName);
+
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
+                .Where(r => r.EnglishName == cultureName).FirstOrDefault();
+
             var resources = new ComponentResourceManager(this.GetType());
             GetChildren(this).ToList().ForEach(c => {
                 resources.ApplyResources(c, c.Name);
@@ -74,16 +82,28 @@ namespace IRSE.GUI.Forms
 
         private void ExtenderGui_Load(object sender, EventArgs e)
         {
+
+
             AddChatLine(Program.Localization.Sentences["WaitingForServer"]);
+
+            CefSettings settings = new CefSettings();
+            Cef.Initialize(settings);
+            var Text = "<a class=\"vglnk\" href=\"https://foxlearn.com\" rel=\"nofollow\"><span>https</span><span>://</span><span>foxlearn</span><span>.</span><span>com</span></a>";
+
+            chrome = new ChromiumWebBrowser("");
+            chrome.Dock = DockStyle.Fill;
+
+            plugins_tab_informationTab.Controls.Add(chrome);
+
 
             cpc_chat_list.ReadOnly = true;
 
             DisableControls();
 
-            sc_languageSelector.DataSource = new BindingSource(Localization.Languages, null);
-            sc_languageSelector.SelectedIndex = 0;
-            sc_languageSelector.DisplayMember = "Key";
-            sc_languageSelector.ValueMember = "Value";
+            BindingSource bindingSource = new BindingSource(Localization.Languages, null);
+
+            sc_languageSelector.Items.AddRange(Localization.Languages.Keys.ToArray());
+            sc_languageSelector.SelectedItem = Config.Instance.Settings.CurrentLanguage;
 
             ServerInstance.Instance.OnServerStarted += Instance_OnServerStarted;
             ServerInstance.Instance.OnServerStopped += Instance_OnServerStopped;
@@ -249,10 +269,6 @@ namespace IRSE.GUI.Forms
             Program.PendingServerStart = true;
 
             server_config_startserver.Enabled = false;
-
-            // REMOVE ME WHEN GHOST CLIENTS ARE FIXED ON SP SIDE
-            // OVerride IR starting ghost clients until they repair the name replacer.
-            Game.Configuration.ServerConfig.Singleton.CreateGhostClients = false;
 
             //Sends an "Enter" into the Console to get the MainThread out of Console.ReadLine()
             Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
@@ -608,10 +624,10 @@ namespace IRSE.GUI.Forms
                     return;
 
                 string path = Path.Combine(pluginInfo.Directory, "information.md");
-                //if (File.Exists(path))
-                    //plugins_tab_browser.DocumentText = new Markdown().Transform(File.ReadAllText(path));
-                //else
-                    //plugins_tab_browser.DocumentText = new Markdown().Transform("#" + pluginInfo.Name.ToUpper());
+                if (File.Exists(path))
+                    chrome.LoadHtml(new Markdown().Transform(File.ReadAllText(path)));
+                else
+                    chrome.LoadHtml(new Markdown().Transform("#" + pluginInfo.Name.ToUpper()));
 
                 PropertyInfo info = pluginType.GetProperty("PluginControlForm");
                 if (info != null)// Form view
@@ -746,7 +762,7 @@ namespace IRSE.GUI.Forms
 
         private void sc_languageSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var language = ((KeyValuePair<string, string>)sc_languageSelector.SelectedItem).Key;
+            string language = (string)sc_languageSelector.SelectedItem;
 
             if (Config.Instance.Settings.CurrentLanguage != language)
                 Config.Instance.Settings.CurrentLanguage = language;       

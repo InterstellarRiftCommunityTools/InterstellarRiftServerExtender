@@ -68,7 +68,7 @@ namespace IRSE
             }
         }
 
-        public static Localization Localization{ get{ return m_localization; } internal set { m_localization = value; } }
+        public static Localization Localization { get { return m_localization; } internal set { m_localization = value; } }
         public static Program Instance { get; private set; }
         public static ExtenderGui GUI { get; private set; }
 
@@ -119,6 +119,9 @@ namespace IRSE
             LogManager.Configuration = new XmlLoggingConfiguration(configPath);
 
             m_localization = new Localization();
+
+            Console.WriteLine(m_config.Settings.CurrentLanguage);
+
             m_localization.Load(m_config.Settings.CurrentLanguage);
 
             AppDomain.CurrentDomain.AssemblyResolve += (sender, rArgs) =>
@@ -127,6 +130,7 @@ namespace IRSE
                 AssemblyName assemblyName = new AssemblyName(rArgs.Name);
 
                 var pathh = assemblyName.Name + ".dll";
+
                 if (assemblyName.CultureInfo != null && assemblyName.CultureInfo.Equals(CultureInfo.InvariantCulture) == false)
                     pathh = String.Format(@"{0}\{1}", assemblyName.CultureInfo, pathh);
 
@@ -148,6 +152,7 @@ namespace IRSE
                     }
                 }
 
+                pathh = "IRSE.Resources." + pathh;
                 using (Stream stream = executingAssembly.GetManifestResourceStream(pathh))
                 {
                     if (stream == null) return null;
@@ -161,7 +166,14 @@ namespace IRSE
 
             mainLog = LogManager.GetCurrentClassLogger();
 
-            
+            if (Program.Localization.Sentences.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Missing Language Resources! Please make sure all files are installed!");
+                Console.WriteLine("Press any key to Quit.");
+                Console.ReadKey(true);
+                Environment.Exit(0);
+            }
 
             Console.WriteLine(string.Format(Program.Localization.Sentences["Initialization"], Version));
 
@@ -484,7 +496,6 @@ namespace IRSE
                     }
                     catch (KeyNotFoundException)
                     {
-
                         mainLog.Error(string.Format(Program.Localization.Sentences["CommandNoExist"]));
                     }
                     catch (Exception ex)
@@ -542,7 +553,6 @@ namespace IRSE
                 mainLog.Warn(string.Format(Program.Localization.Sentences["StopRunningServers"]));
                 if (ServerInstance.Instance != null)
                     ServerInstance.Instance.Stop();
-
             }
             return false;
         }

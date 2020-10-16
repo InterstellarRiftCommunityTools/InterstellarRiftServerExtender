@@ -1,4 +1,5 @@
-﻿using Game.Universe;
+﻿using Game.GameStates;
+using Game.Universe;
 using IRSE.Managers.Handlers;
 using System;
 using System.Linq;
@@ -45,28 +46,25 @@ namespace IRSE.Managers
             {
                 m_gameStateType = m_frameworkAssembly.GetType("Game.GameStates.GameState");
                 PropertyInfo m_activeState = m_gameStateType.GetProperty("ActiveState");
-                object server = m_activeState.GetValue(null);
-
+                GameServer server = (GameServer)m_activeState.GetValue(null);
+               
                 if (server == null)
                     return null;
 
                 mainLog.Info("IRSE: Loaded GameServer Instance!");
 
-                FieldInfo m_controllerManagerField = server.GetType().GetField("m_controllers", BindingFlags.NonPublic | BindingFlags.Instance);
+                //FieldInfo m_controllerManagerField = server.GetType().GetField("m_controllers", BindingFlags.NonPublic | BindingFlags.Instance);
 
-                m_controllerManager = m_controllerManagerField.GetValue(server) as Game.Server.ControllerManager;
+                m_controllerManager = server.Controllers;//m_controllerManagerField.GetValue(server) as Game.Server.ControllerManager;
 
                 var universe = m_controllerManager.Universe as Game.Server.UniverseController;
 
                 mainLog.Info("IRSE: Waiting for Universe To Populate..");
-
-                // will be removed when they fix the ghost client spawner
-                ServerInstance.Instance.SpawnGhostClients(m_controllerManager);
-
-                while (m_controllerManager.Players.AllPlayers().Count() < 1)
+             
+                while (!universe.IsInitialized)
                 {
                     Thread.Sleep(1000);
-                    if (m_controllerManager.Players.AllPlayers().Count() <= 1)
+                    if (universe.IsInitialized)
                     {
                         break;
                     }

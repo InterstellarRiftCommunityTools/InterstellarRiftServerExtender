@@ -86,10 +86,18 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Resources\LANGUAGELIST.txt" />
+    <None Include="Resources\CefSharp.BrowserSubprocess.Core.dll" />
+    <None Include="Resources\CefSharp.Core.dll" />
+    <None Include="Resources\CefSharp.dll" />
+    <None Include="Resources\CefSharp.WinForms.dll" />
     <None Include="Resources\MarkdownDeep.dll" />
-    <None Include="Resources\System.Net.Http.Formatting.dll" />
-    <None Include="Resources\System.Web.Http.dll" />
+    <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.ru-RU.resx">
+      <DependentUpon>BrowserForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="Languages\IRSE.resx" />
+    <None Include="Languages\IRSE.ru-RU.resx" />
+    <EmbeddedResource Include="Resources\System.Net.Http.Formatting.dll" />
+    <EmbeddedResource Include="Resources\System.Web.Http.dll" />
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,17 +111,16 @@
     <None Include="Resources\log4net.dll" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Resources\IRSE.resx" />
-    <None Include="Resources\IRSE.ru-RU.resx" />
-    <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
+    <None Include="Resources\Newtonsoft.Json.dll" />
     <None Include="Resources\NLog.dll" />
     <None Include="Resources\Octokit.dll" />
     <None Include="App.config" />
     <Content Include="Assets\irse_icon.ico" />
     <EmbeddedResource Include="Assets\patreon.png" />
+    <EmbeddedResource Include="Languages\LanguageList.txt" />
     <Content Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -177,7 +184,6 @@
     <Compile Include="Modules\Config.cs" />
     <Compile Include="Modules\CrashDump.cs" />
     <Compile Include="Modules\FolderStructure.cs" />
-    <Compile Include="Modules\GhostClientState.cs" />
     <Compile Include="Modules\Localization.cs" />
     <Compile Include="Modules\PasswordEncoder.cs" />
     <Compile Include="Modules\GameConfig\ServerConfig.cs" />
@@ -316,6 +322,7 @@ echo THESE ARE REQUIRED
 IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE" md "$(ProjectDir)bin\IRSERelease\IRSE"
 IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\bin" md "$(ProjectDir)bin\IRSERelease\IRSE\bin"
 IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\config" md "$(ProjectDir)bin\IRSERelease\IRSE\config"
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\localization" md "$(ProjectDir)bin\IRSERelease\IRSE\localization"
 
 xcopy "$(TargetDir)Octokit.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)0Harmony.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
@@ -323,6 +330,21 @@ xcopy "$(TargetDir)MarkdownDeep.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)NLog.config" "$(ProjectDir)bin\IRSERelease\IRSE\config" /y
 xcopy "$(TargetDir)NLog.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
 xcopy "$(TargetDir)Newtonsoft.Json.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)CefSharp.WinForms.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)CefSharp.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)CefSharp.Core.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+xcopy "$(TargetDir)CefSharp.BrowserSubprocess.Core.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin" /y
+
+REM Languages
+
+REM Console
+xcopy "$(ProjectDir)Languages\IRSE.resx" "$(ProjectDir)bin\IRSERelease\IRSE\localization" /y
+xcopy "$(ProjectDir)Languages\IRSE.*.resx" "$(ProjectDir)bin\IRSERelease\IRSE\localization" /y
+
+REM Forms
+IF NOT EXIST "$(ProjectDir)bin\IRSERelease\IRSE\bin\ru-RU" md "$(ProjectDir)bin\IRSERelease\IRSE\bin\ru-RU"
+xcopy "$(TargetDir)ru-RU\IRSE.resources.dll" "$(ProjectDir)bin\IRSERelease\IRSE\bin\ru-RU" /y
+
 
 echo $(ProjectName) files have been copied to "$(ProjectDir)bin\IRSERelease\".
 

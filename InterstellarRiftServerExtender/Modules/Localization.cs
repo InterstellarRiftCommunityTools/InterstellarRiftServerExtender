@@ -2,21 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
+using System.Linq;
 using System.Resources;
 
 namespace IRSE.Modules
 {
     public class Localization
     {
-
-
         public static Dictionary<string, string> Languages = new Dictionary<string, string>()
         {
-            ["English"] = "IRSE.resx",
-            ["Russian"] = "IRSE.ru_RU.resx",
+            ["English (United States)"] = "IRSE.resx",
+            ["Russian (Russia)"] = "IRSE.ru-RU.resx",
         };
-
 
         public static string PathFolder = Path.Combine(FolderStructure.IRSEFolderPath, "localization");
         public static Version Version = new Version("0.0.0.7");
@@ -39,88 +36,39 @@ namespace IRSE.Modules
                 catch (Exception)
                 {
                     Console.WriteLine("Missing Localization Key");
-                    
                 }
                 return null;
             }
         }
 
-        
-        private static Dictionary<string, string> LocalizeStrings = new Dictionary<string, string>();
-        /*
-        public string Localize(string key, string defaultText)
+        public void Load(string languageName)
         {
-            Language currentLang = Config.Instance.Settings.CurrentLanguage;
+            string fileName;
 
-
-            if (currentLang == Language.English)
+            try
             {
-                if (string.IsNullOrEmpty(defaultText))
-                {
-                    return $"DEFAULT TEXT BLANK";
-                }
-
-                if (string.IsNullOrEmpty(Sentences[key]))
-                {
-                    return $"KEY EXISTS ({key}) {defaultText}";
-                }
-
-                return Sentences[key] = defaultText;
+                fileName = Languages[languageName];
             }
-            else
+            catch (Exception)
             {
+                fileName = Languages.First().Value;
+            }
 
-                if (Sentences.TryGetValue(key, out defaultText))
-                {
-                    return LocalizeStrings[key] = defaultText;
-                }
-                else
-                {
-                    Console.WriteLine($"LOCALIZER: Key {key} doesn't exist for Language {currentLang}. Using English.");
-                    return defaultText;
-                }
-
-
-            } 
-        }
-        */
-
-        public void Load(string FileName)
-        {
-            
-
-
-
-            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", FileName);
+            string path = Path.Combine(FolderStructure.IRSEFolderPath, "localization", fileName);
 
             if (File.Exists(path))
             {
-                if (Version.Parse(new ResXResourceSet(path).GetString("version")) == Localization.Version)
+                using (ResXResourceReader resXresourceReader = new ResXResourceReader(path))
                 {
-                    using (ResXResourceReader resXresourceReader = new ResXResourceReader(path))
-                    {
-                        foreach (DictionaryEntry dictionaryEntry in resXresourceReader)
-                            this.m_sentences.Add((string)dictionaryEntry.Key, (string)dictionaryEntry.Value);
-                    }
-                }
-                else if(FileName.StartsWith("IRSE.Resx") && Version.Parse(new ResXResourceSet(path).GetString("version")) < Localization.Version)
-                {
-                    mainLog.Info("English language localization file was updated. Loading new one.");
-                    Localization.CreateDefault();
-                    this.Load("IRSE.Resx");
-                }
-                else
-                {
-                    mainLog.Info("Your localization file is not updated ! Please download the latest version on our github page. English language loading...");
-                    Localization.CreateDefault();
-                    this.Load("IRSE.Resx");
+                    foreach (DictionaryEntry dictionaryEntry in resXresourceReader)
+                        this.m_sentences.Add((string)dictionaryEntry.Key, (string)dictionaryEntry.Value);
                 }
             }
             else
             {
                 mainLog.Info("No localization file detected ! English language loading...");
                 Localization.CreateDefault();
-                this.Load("IRSE.Resx");
+                Load("English (United States)");
             }
         }
 
@@ -134,8 +82,6 @@ namespace IRSE.Modules
             File.Create(path).Close();
             using (ResXResourceWriter resXresourceWriter = new ResXResourceWriter(path))
             {
-
-
                 // Program.cs
                 resXresourceWriter.AddResource("version", Localization.Version.ToString());
 
@@ -168,7 +114,6 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("RestartCommand", "restart - Restarts IRSE, if autostart is set the server will start automatically.");
                 resXresourceWriter.AddResource("CheckUpdateCommand", "checkupdate - Checks for IRSE updates. Prompts user with new update details.");
                 resXresourceWriter.AddResource("ForceUpdateCommand", "forceupdate - Forces an Update of IRSE with no prompts.");
-
 
                 // PluginManager.cs
                 resXresourceWriter.AddResource("FailedInitPlugin", "Failed initialization of Plugin {0}. Exception: {1}");
@@ -226,9 +171,6 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("GuiNeedsRestart", "IRSE needs to be restarted before you can use the new features!");
                 resXresourceWriter.AddResource("RestartIRSE", "Restart IRSE?");
                 resXresourceWriter.AddResource("Close IRSE", "Close IRSE?");
-
-                foreach(var locale in LocalizeStrings)
-                    resXresourceWriter.AddResource(locale.Key, locale.Value);
             }
         }
     }
