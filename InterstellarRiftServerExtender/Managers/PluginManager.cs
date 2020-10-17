@@ -69,7 +69,9 @@ namespace IRSE.Managers
             try
             {
                 Plugin.MainClass = (PluginBase)Activator.CreateInstance(Plugin.MainClassType);
+                
                 Plugin.MainClass.OnLoad(Plugin.Directory);
+                
             }
             catch (Exception ex)
             {
@@ -94,7 +96,8 @@ namespace IRSE.Managers
                     try
                     {
                         SetupTypes(Plugin);
-                        InitPluginCommands(Plugin);
+
+                        ConsoleCommandManager.InitPluginCommands(ConsoleCommandManager.IRCommandSystem, Plugin);
 
                         Plugin.MainClass.Init();
 
@@ -354,23 +357,7 @@ namespace IRSE.Managers
             }
         }
 
-        public static void InitPluginCommands(PluginInfo Plugin)
-        {
-            ///Permission.Admin
 
-            foreach (MethodInfo method in Plugin.MainClassType.GetMethods(BindingFlags.Static | BindingFlags.Public))
-            {
-                object[] customAttributes1 = method.GetCustomAttributes(typeof(SvCommandMethod), false);
-                if (((IEnumerable<object>)customAttributes1).Count<object>() != 0)
-                {
-                    object[] customAttributes2 = null;
-                    SvCommandMethod svCommandMethod = customAttributes1[0] as SvCommandMethod;
-                    EventHandler<List<string>> handler = (EventHandler<List<string>>)Delegate.CreateDelegate(typeof(EventHandler<List<string>>), method);
-                    CommandSystem.Singleton.AddCommand(new Command(svCommandMethod.Names, svCommandMethod.Description, svCommandMethod.Arguments, handler, svCommandMethod.RequiredRight, customAttributes2 != null && ((IEnumerable<object>)customAttributes2).Any<object>(), method.GetCustomAttribute<TalkCommandAttribute>() != null), true);
-                }
-            }
-            //CommandSystem.Singleton.SortCommands();
-        }
 
         #endregion Methods
     }

@@ -8,11 +8,6 @@ namespace IRSE.Managers.ConsoleCommands
     internal class IRSECommands
     {
         
-        [SvCommandMethod("---------------------------IRSE COMMANDS------------------------------", "", 3, new SvCommandMethod.ArgumentID[] { })]
-        public static void splitter(object caller, List<string> parameters)
-        {
-
-        }
 
         [SvCommandMethod("opengui", "If closed, will open and/or focus the GUI to the front.", 3, new SvCommandMethod.ArgumentID[] { })]
         public static void c_openGui(object caller, List<string> parameters)
@@ -37,7 +32,7 @@ namespace IRSE.Managers.ConsoleCommands
         [SvCommandMethod("irserestart", "Restarts IRSE, if autostart is set the server will start automatically.", 3, new SvCommandMethod.ArgumentID[] { })]
         public static void c_restart(object caller, List<string> parameters)
         {
-            UpdateManager.Instance.CheckForUpdates().GetAwaiter().GetResult();
+            Program.Restart();
 
         }
 
@@ -51,12 +46,24 @@ namespace IRSE.Managers.ConsoleCommands
        
         }
 
-
-        [SvCommandMethod("---------------------------PLUGIN COMMANDS------------------------------", "", 3, new SvCommandMethod.ArgumentID[] { })]
-        public static void splitter2(object caller, List<string> parameters)
+        [SvCommandMethod("start", "Starts the server if its not running!", 3, new SvCommandMethod.ArgumentID[] { })]
+        public static void c_start(object caller, List<string> parameters)
         {
+            if (!ServerInstance.Instance.IsRunning)
+                ServerInstance.Instance.Start();
+            else
+                Console.WriteLine("The server is already running");
 
         }
+
+        [SvCommandMethod("closeirse", "Attempts to shutdown and servers, then gracefully closes irse.", 3, new SvCommandMethod.ArgumentID[] { })]
+        public static void c_closeIrse(object caller, List<string> parameters)
+        {
+            Program.CloseIRSE();
+
+        }
+
         
+
     }
 }

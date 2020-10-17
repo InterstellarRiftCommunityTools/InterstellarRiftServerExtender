@@ -39,7 +39,7 @@ namespace IRSE
         private static Thread uiThread;
 
         private static NLog.Logger mainLog;
-        private static string[] CommandLineArgs = new string[10];
+        public static string[] CommandLineArgs = new string[50];
 
         public static Dictionary<string, Action<string[]>> IRSEConsoleCommands = new Dictionary<string, Action<string[]>>();
 
@@ -68,7 +68,7 @@ namespace IRSE
             }
         }
 
-        public static Localization Localization { get { return m_localization; } internal set { m_localization = value; } }
+        public static Localization Localization{ get{ return m_localization; } internal set { m_localization = value; } }
         public static Program Instance { get; private set; }
         public static ExtenderGui GUI { get; private set; }
 
@@ -124,6 +124,7 @@ namespace IRSE
 
             m_localization.Load(m_config.Settings.CurrentLanguage);
 
+
             AppDomain.CurrentDomain.AssemblyResolve += (sender, rArgs) =>
             {
                 Assembly executingAssembly = Assembly.GetExecutingAssembly();
@@ -134,6 +135,7 @@ namespace IRSE
                 if (assemblyName.CultureInfo != null && assemblyName.CultureInfo.Equals(CultureInfo.InvariantCulture) == false)
                     pathh = String.Format(@"{0}\{1}", assemblyName.CultureInfo, pathh);
 
+               
                 // get binaries in plugins
                 String modPath = Path.Combine(FolderStructure.IRSEFolderPath, "plugins");
                 String[] subDirectories = Directory.GetDirectories(modPath);
@@ -152,9 +154,11 @@ namespace IRSE
                     }
                 }
 
+
                 pathh = "IRSE.Resources." + pathh;
                 using (Stream stream = executingAssembly.GetManifestResourceStream(pathh))
                 {
+
                     if (stream == null) return null;
 
                     var assemblyRawBytes = new byte[stream.Length];
@@ -166,7 +170,7 @@ namespace IRSE
 
             mainLog = LogManager.GetCurrentClassLogger();
 
-            if (Program.Localization.Sentences.Count == 0)
+            if(Program.Localization.Sentences.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Missing Language Resources! Please make sure all files are installed!");
@@ -206,6 +210,7 @@ namespace IRSE
             //Harmony
             Harmony.DEBUG = Dev;
             Harmony = new Harmony("com.tse.irse");
+            Harmony.PatchAll();
 
             // This is for args that should be used before IRSE loads
             bool noUpdateIRSE = false;
@@ -302,8 +307,10 @@ namespace IRSE
 
             SetupGUI();
 
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write("IRSE: Ready for Input, try using ");
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("IRSE: Ready for Input, try /help !");
+            Console.Write("help\n\n");
             Console.ResetColor();
 
             if (autoStart || Config.Settings.AutoStartEnable)
@@ -438,88 +445,55 @@ namespace IRSE
                 Console.ResetColor();
             };
 
-            IRSEConsoleCommands["start"] = (args) => StartServer();
-
-            IRSEConsoleCommands["stop"] = (args) =>
-            {
-                if (ServerInstance.Instance.IsRunning)
-                    ServerInstance.Instance.Stop();
-            };
-
-            IRSEConsoleCommands["restart"] = (args) =>
-                Restart();
-
-            IRSEConsoleCommands["opengui"] = (args) =>
-                SetupGUI();
-
-            IRSEConsoleCommands["checkupdate"] = (args) =>
-                updateManager.CheckForUpdates().GetAwaiter().GetResult();
-
-            IRSEConsoleCommands["forceupdate"] = (args) =>
-                updateManager.CheckForUpdates(true).GetAwaiter().GetResult();
         }
 
+        public static bool Wait { get; set; }
         /// <summary>
         /// This contains the console commands
         /// </summary>
         public void ReadConsoleCommands(string[] args)
         {
-            BuildConsoleCommands();
+            Wait = false;
+
+            CommandSystem.Singleton = new CommandSystem();
+
+            Game.Server.SvCommands.InitCommandHooks();
+            ConsoleCommandManager.InitIRSECommands(CommandSystem.Singleton);
+
+            CommandSystem.Singleton.OutputHandler += new EventHandler<string>((object caller, string msg) => Console.WriteLine(msg));
+
+            Program.ConsoleCoroutine =
+                CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete || args.Contains("-noConsoleAutoComplete"));
 
             HWnd = Process.GetCurrentProcess().MainWindowHandle;
             while (true)
             {
-                string line = Console.ReadLine();
                 if (PendingServerStart)
                 {
                     PendingServerStart = false;
                     StartServer();
                 }
+             
+                if (!Wait)
+                    ConsoleCoroutine.MoveNext();
 
-                if (ServerInstance.Instance.IsRunning)
-                {
-                    while (ServerInstance.Instance.IsRunning)
-                    {
-                        ConsoleCoroutine.MoveNext();
-                        Thread.Sleep(50);
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(line) && line.Length > 1 && !ServerInstance.Instance.IsRunning)
-                {
-                    string cmd = line.Split(" ".ToCharArray())[0].Replace("/", "");
-                    string[] lineArgs = line.Split(" ".ToCharArray()).Skip(1).ToArray();
-
-                    try
-                    {
-                        IRSEConsoleCommands[cmd](lineArgs);
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                        mainLog.Error(string.Format(Program.Localization.Sentences["CommandNoExist"]));
-                    }
-                    catch (Exception ex)
-                    {
-                        mainLog.Error(ex, string.Format(Program.Localization.Sentences["CommandException"]));
-                    }
-                }
+                Thread.Sleep(50);                     
             }
         }
 
         private void Instance_OnServerStarted()
         {
-            mainLog.Warn(string.Format(Program.Localization.Sentences["GameConsoleEnabled"]));
-            Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
+            mainLog.Warn(string.Format(Program.Localization.Sentences["GameConsoleEnabled"]));            
         }
 
         private static void StartServer()
         {
             if (!ServerInstance.Instance.IsRunning)
             {
+                Wait = true;
+               
+                CommandSystem.Singleton.OutputHandler -= new EventHandler<string>((object caller, string msg) => Console.WriteLine(msg));
                 CommandSystem.Singleton = new CommandSystem();
-                Program.ConsoleCoroutine =
-                    CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete);
-
                 ServerInstance.Instance.Start();
             }
             else
@@ -546,13 +520,20 @@ namespace IRSE
             CTRL_SHUTDOWN_EVENT = 6,
         }
 
+        public static void CloseIRSE()
+        {
+            mainLog.Warn(string.Format(Program.Localization.Sentences["StopRunningServers"]));
+            if (ServerInstance.Instance != null)
+                ServerInstance.Instance.Stop();
+
+            Process.GetCurrentProcess().Kill();
+        }
+
         private static bool Handler(CtrlType sig)
         {
             if (sig == CtrlType.CTRL_C_EVENT || sig == CtrlType.CTRL_BREAK_EVENT || (sig == CtrlType.CTRL_LOGOFF_EVENT || sig == CtrlType.CTRL_SHUTDOWN_EVENT) || sig == CtrlType.CTRL_CLOSE_EVENT)
             {
-                mainLog.Warn(string.Format(Program.Localization.Sentences["StopRunningServers"]));
-                if (ServerInstance.Instance != null)
-                    ServerInstance.Instance.Stop();
+                CloseIRSE();
             }
             return false;
         }

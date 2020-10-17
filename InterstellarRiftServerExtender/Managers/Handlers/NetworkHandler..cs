@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Game.GameStates;
+using NLog;
 using System;
 using System.Reflection;
 
@@ -34,14 +35,12 @@ namespace IRSE.Managers.Handlers
             }
         }
 
-        public void SetupNetworkHandler(Object server)
+        public void SetupNetworkHandler(GameServer server)
         {
             try
             {
-                FieldInfo m_packetHandlerField = server.GetType().GetField("m_serverPacketHandlers", BindingFlags.NonPublic | BindingFlags.Instance);
-                Object m_packetHandler = m_packetHandlerField.GetValue(server);
-                var m_networkControllerField = m_packetHandler.GetType().GetField("m_network", BindingFlags.NonPublic | BindingFlags.Instance);
-                m_networkController = m_networkControllerField.GetValue(m_packetHandler) as Game.Server.NetworkController;
+                m_networkController = server.Controllers.Network;
+
             }
             catch (Exception ex)
             {

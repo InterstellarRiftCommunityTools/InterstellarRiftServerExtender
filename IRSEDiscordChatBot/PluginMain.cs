@@ -85,12 +85,12 @@ namespace IRSEDiscordChatBot
         }
 
         // These commands are implemented into IR's command system, using their system as well!
+        // names: The names and aliases of your command, please prefix them with something unique to your plugin.
         // requiredRight:  1 is anyone, 3 is Admin/Console
         // argumentIDs - if there isn't an argument that suits you in intellisense , leave it like new SvCommandMethod.ArgumentID[] { }
 
         //[TalkCommand] if this is enabled, it will only work from within the game. remove the requiredRight section with this to make it ingame only
-        [SvCommandMethod(names:"discordsay|saydiscord", description: "IRSEDiscordChatBot - Send message to discord bypassing game.", requiredRight: 1 , argumentIDs: new SvCommandMethod.ArgumentID[] { SvCommandMethod.ArgumentID.message })]
-        
+        [SvCommandMethod(names:"discordsay", description: "Send message to discord bypassing game.", requiredRight: 1 , argumentIDs: new SvCommandMethod.ArgumentID[] { SvCommandMethod.ArgumentID.message })]     
         public static void c_discordSay(object sender, List<string> parameters) // make sure this name is unique
         {
             // its best to do error catching if you can, if it doesn't need checking, wrap it anyways! dont break irse!

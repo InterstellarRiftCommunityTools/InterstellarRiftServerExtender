@@ -1,6 +1,4 @@
-﻿using CefSharp;
-using CefSharp.WinForms;
-using Game.Server;
+﻿using Game.Server;
 using Game.Universe;
 using IRSE.GUI.Forms.Browser;
 using IRSE.Managers;
@@ -30,7 +28,6 @@ namespace IRSE.GUI.Forms
         private Timer PluginsRefreshTimer = new Timer();
 
         private BrowserForm BrowserForm = new BrowserForm();
-        private ChromiumWebBrowser chrome;
 
         public ExtenderGui()
         {
@@ -82,19 +79,7 @@ namespace IRSE.GUI.Forms
 
         private void ExtenderGui_Load(object sender, EventArgs e)
         {
-
-
             AddChatLine(Program.Localization.Sentences["WaitingForServer"]);
-
-            CefSettings settings = new CefSettings();
-            Cef.Initialize(settings);
-            var Text = "<a class=\"vglnk\" href=\"https://foxlearn.com\" rel=\"nofollow\"><span>https</span><span>://</span><span>foxlearn</span><span>.</span><span>com</span></a>";
-
-            chrome = new ChromiumWebBrowser("");
-            chrome.Dock = DockStyle.Fill;
-
-            plugins_tab_informationTab.Controls.Add(chrome);
-
 
             cpc_chat_list.ReadOnly = true;
 
@@ -271,7 +256,7 @@ namespace IRSE.GUI.Forms
             server_config_startserver.Enabled = false;
 
             //Sends an "Enter" into the Console to get the MainThread out of Console.ReadLine()
-            Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
+            //Program.PostMessage(Program.HWnd, Program.WM_KEYDOWN, Program.VK_RETURN, 0);
         }
 
         private void server_config_stopserver_Click(object sender, EventArgs e)
@@ -623,11 +608,6 @@ namespace IRSE.GUI.Forms
                 if (pluginType == null)
                     return;
 
-                string path = Path.Combine(pluginInfo.Directory, "information.md");
-                if (File.Exists(path))
-                    chrome.LoadHtml(new Markdown().Transform(File.ReadAllText(path)));
-                else
-                    chrome.LoadHtml(new Markdown().Transform("#" + pluginInfo.Name.ToUpper()));
 
                 PropertyInfo info = pluginType.GetProperty("PluginControlForm");
                 if (info != null)// Form view

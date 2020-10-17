@@ -87,9 +87,6 @@
             this.plugins_tab_pluginslist = new System.Windows.Forms.ListView();
             this.nameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.stateColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.plugins_tab_informationTab = new System.Windows.Forms.TabPage();
-            this.plugins_tab_settingsTab = new System.Windows.Forms.TabPage();
             this.PluginSettingsFormPanel = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.Tabs = new System.Windows.Forms.TabControl();
@@ -155,8 +152,6 @@
             this.splitContainer6.Panel1.SuspendLayout();
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.plugins_tab_settingsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.SuspendLayout();
             this.Tabs.SuspendLayout();
@@ -176,12 +171,10 @@
             // 
             // ServerContainer.Panel1
             // 
-            resources.ApplyResources(this.ServerContainer.Panel1, "ServerContainer.Panel1");
             this.ServerContainer.Panel1.Controls.Add(this.server_server_Tabs);
             // 
             // ServerContainer.Panel2
             // 
-            resources.ApplyResources(this.ServerContainer.Panel2, "ServerContainer.Panel2");
             this.ServerContainer.Panel2.Controls.Add(this.serverconfig_checkForUpdates);
             this.ServerContainer.Panel2.Controls.Add(this.groupBox1);
             this.ServerContainer.Panel2.Controls.Add(this.server_config_reload);
@@ -193,16 +186,16 @@
             // 
             // server_server_Tabs
             // 
-            resources.ApplyResources(this.server_server_Tabs, "server_server_Tabs");
             this.server_server_Tabs.Controls.Add(this.ServerConfig);
             this.server_server_Tabs.Controls.Add(this.ExtenderConfig);
+            resources.ApplyResources(this.server_server_Tabs, "server_server_Tabs");
             this.server_server_Tabs.Name = "server_server_Tabs";
             this.server_server_Tabs.SelectedIndex = 0;
             // 
             // ServerConfig
             // 
-            resources.ApplyResources(this.ServerConfig, "ServerConfig");
             this.ServerConfig.Controls.Add(this.serverconfig_properties);
+            resources.ApplyResources(this.ServerConfig, "ServerConfig");
             this.ServerConfig.Name = "ServerConfig";
             this.ServerConfig.UseVisualStyleBackColor = true;
             // 
@@ -213,10 +206,10 @@
             // 
             // ExtenderConfig
             // 
-            resources.ApplyResources(this.ExtenderConfig, "ExtenderConfig");
             this.ExtenderConfig.Controls.Add(this.label2);
             this.ExtenderConfig.Controls.Add(this.sc_languageSelector);
             this.ExtenderConfig.Controls.Add(this.extenderconfig_properties);
+            resources.ApplyResources(this.ExtenderConfig, "ExtenderConfig");
             this.ExtenderConfig.Name = "ExtenderConfig";
             this.ExtenderConfig.UseVisualStyleBackColor = true;
             // 
@@ -227,8 +220,8 @@
             // 
             // sc_languageSelector
             // 
-            resources.ApplyResources(this.sc_languageSelector, "sc_languageSelector");
             this.sc_languageSelector.FormattingEnabled = true;
+            resources.ApplyResources(this.sc_languageSelector, "sc_languageSelector");
             this.sc_languageSelector.Name = "sc_languageSelector";
             this.sc_languageSelector.SelectedIndexChanged += new System.EventHandler(this.sc_languageSelector_SelectedIndexChanged);
             // 
@@ -304,12 +297,10 @@
             // 
             // ChatPlayerContainer.Panel1
             // 
-            resources.ApplyResources(this.ChatPlayerContainer.Panel1, "ChatPlayerContainer.Panel1");
             this.ChatPlayerContainer.Panel1.Controls.Add(this.splitContainer2);
             // 
             // ChatPlayerContainer.Panel2
             // 
-            resources.ApplyResources(this.ChatPlayerContainer.Panel2, "ChatPlayerContainer.Panel2");
             this.ChatPlayerContainer.Panel2.Controls.Add(this.splitContainer3);
             // 
             // splitContainer2
@@ -319,14 +310,12 @@
             // 
             // splitContainer2.Panel1
             // 
-            resources.ApplyResources(this.splitContainer2.Panel1, "splitContainer2.Panel1");
             this.splitContainer2.Panel1.Controls.Add(this.sc_onlineplayers_label);
             this.splitContainer2.Panel1.Controls.Add(this.label1);
             this.splitContainer2.Panel1.Controls.Add(this.listView1);
             // 
             // splitContainer2.Panel2
             // 
-            resources.ApplyResources(this.splitContainer2.Panel2, "splitContainer2.Panel2");
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
             // 
             // sc_onlineplayers_label
@@ -354,52 +343,41 @@
             // 
             // splitContainer4.Panel1
             // 
-            resources.ApplyResources(this.splitContainer4.Panel1, "splitContainer4.Panel1");
             this.splitContainer4.Panel1.Controls.Add(this.tabControl3);
             // 
             // splitContainer4.Panel2
             // 
-            resources.ApplyResources(this.splitContainer4.Panel2, "splitContainer4.Panel2");
             this.splitContainer4.Panel2.Controls.Add(this.groupBox2);
             // 
             // tabControl3
             // 
-            resources.ApplyResources(this.tabControl3, "tabControl3");
             this.tabControl3.Controls.Add(this.tabPage1);
             this.tabControl3.Controls.Add(this.tabPage2);
+            resources.ApplyResources(this.tabControl3, "tabControl3");
             this.tabControl3.Name = "tabControl3";
             this.tabControl3.SelectedIndex = 0;
             // 
             // tabPage1
             // 
-            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.sc_playerslist_listview);
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // sc_playerslist_listview
             // 
-            resources.ApplyResources(this.sc_playerslist_listview, "sc_playerslist_listview");
             this.sc_playerslist_listview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.PlayerColumn,
             this.IsAdminColumn});
             this.sc_playerslist_listview.ContextMenuStrip = this.sc_playerslist_ctxmenu;
+            resources.ApplyResources(this.sc_playerslist_listview, "sc_playerslist_listview");
             this.sc_playerslist_listview.HideSelection = false;
             this.sc_playerslist_listview.Name = "sc_playerslist_listview";
             this.sc_playerslist_listview.UseCompatibleStateImageBehavior = false;
             this.sc_playerslist_listview.View = System.Windows.Forms.View.Details;
             // 
-            // PlayerColumn
-            // 
-            resources.ApplyResources(this.PlayerColumn, "PlayerColumn");
-            // 
-            // IsAdminColumn
-            // 
-            resources.ApplyResources(this.IsAdminColumn, "IsAdminColumn");
-            // 
             // sc_playerslist_ctxmenu
             // 
-            resources.ApplyResources(this.sc_playerslist_ctxmenu, "sc_playerslist_ctxmenu");
             this.sc_playerslist_ctxmenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.kickToolStripMenuItem,
             this.banToolStripMenuItem,
@@ -407,72 +385,65 @@
             this.killToolStripMenuItem,
             this.toggleAdminToolStripMenuItem});
             this.sc_playerslist_ctxmenu.Name = "contextMenuStrip1";
+            resources.ApplyResources(this.sc_playerslist_ctxmenu, "sc_playerslist_ctxmenu");
             // 
             // kickToolStripMenuItem
             // 
-            resources.ApplyResources(this.kickToolStripMenuItem, "kickToolStripMenuItem");
             this.kickToolStripMenuItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.kickToolStripMenuItem.Name = "kickToolStripMenuItem";
+            resources.ApplyResources(this.kickToolStripMenuItem, "kickToolStripMenuItem");
             this.kickToolStripMenuItem.Click += new System.EventHandler(this.pc_kickplayer_Click);
             // 
             // banToolStripMenuItem
             // 
-            resources.ApplyResources(this.banToolStripMenuItem, "banToolStripMenuItem");
             this.banToolStripMenuItem.Name = "banToolStripMenuItem";
+            resources.ApplyResources(this.banToolStripMenuItem, "banToolStripMenuItem");
             this.banToolStripMenuItem.Click += new System.EventHandler(this.pc_banplayer_Click);
             // 
             // forgetToolStripMenuItem
             // 
-            resources.ApplyResources(this.forgetToolStripMenuItem, "forgetToolStripMenuItem");
             this.forgetToolStripMenuItem.Name = "forgetToolStripMenuItem";
+            resources.ApplyResources(this.forgetToolStripMenuItem, "forgetToolStripMenuItem");
             this.forgetToolStripMenuItem.Click += new System.EventHandler(this.pc_forgetplayer_Click);
             // 
             // killToolStripMenuItem
             // 
-            resources.ApplyResources(this.killToolStripMenuItem, "killToolStripMenuItem");
             this.killToolStripMenuItem.Name = "killToolStripMenuItem";
+            resources.ApplyResources(this.killToolStripMenuItem, "killToolStripMenuItem");
             this.killToolStripMenuItem.Click += new System.EventHandler(this.pc_killplayer_Click);
             // 
             // toggleAdminToolStripMenuItem
             // 
-            resources.ApplyResources(this.toggleAdminToolStripMenuItem, "toggleAdminToolStripMenuItem");
             this.toggleAdminToolStripMenuItem.Name = "toggleAdminToolStripMenuItem";
+            resources.ApplyResources(this.toggleAdminToolStripMenuItem, "toggleAdminToolStripMenuItem");
             this.toggleAdminToolStripMenuItem.Click += new System.EventHandler(this.pc_toggleadmin_Click);
             // 
             // tabPage2
             // 
-            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Controls.Add(this.sc_playerbans_listview);
+            resources.ApplyResources(this.tabPage2, "tabPage2");
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // sc_playerbans_listview
             // 
-            resources.ApplyResources(this.sc_playerbans_listview, "sc_playerbans_listview");
             this.sc_playerbans_listview.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
+            resources.ApplyResources(this.sc_playerbans_listview, "sc_playerbans_listview");
             this.sc_playerbans_listview.HideSelection = false;
             this.sc_playerbans_listview.Name = "sc_playerbans_listview";
             this.sc_playerbans_listview.UseCompatibleStateImageBehavior = false;
             this.sc_playerbans_listview.View = System.Windows.Forms.View.Details;
             // 
-            // columnHeader1
-            // 
-            resources.ApplyResources(this.columnHeader1, "columnHeader1");
-            // 
-            // columnHeader2
-            // 
-            resources.ApplyResources(this.columnHeader2, "columnHeader2");
-            // 
             // groupBox2
             // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Controls.Add(this.pc_killplayer);
             this.groupBox2.Controls.Add(this.pc_toggleadmin);
             this.groupBox2.Controls.Add(this.pc_forgetplayer);
             this.groupBox2.Controls.Add(this.pc_banplayer);
             this.groupBox2.Controls.Add(this.pc_kickplayer);
+            resources.ApplyResources(this.groupBox2, "groupBox2");
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.TabStop = false;
             // 
@@ -518,26 +489,24 @@
             // 
             // splitContainer3.Panel1
             // 
-            resources.ApplyResources(this.splitContainer3.Panel1, "splitContainer3.Panel1");
             this.splitContainer3.Panel1.Controls.Add(this.cpc_chat_tabs);
             // 
             // splitContainer3.Panel2
             // 
-            resources.ApplyResources(this.splitContainer3.Panel2, "splitContainer3.Panel2");
             this.splitContainer3.Panel2.Controls.Add(this.cpc_chat_send);
             this.splitContainer3.Panel2.Controls.Add(this.cpc_messagebox);
             // 
             // cpc_chat_tabs
             // 
-            resources.ApplyResources(this.cpc_chat_tabs, "cpc_chat_tabs");
             this.cpc_chat_tabs.Controls.Add(this.tabPage3);
+            resources.ApplyResources(this.cpc_chat_tabs, "cpc_chat_tabs");
             this.cpc_chat_tabs.Name = "cpc_chat_tabs";
             this.cpc_chat_tabs.SelectedIndex = 0;
             // 
             // tabPage3
             // 
-            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Controls.Add(this.cpc_chat_list);
+            resources.ApplyResources(this.tabPage3, "tabPage3");
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
@@ -567,13 +536,11 @@
             // 
             // splitContainer5.Panel1
             // 
-            resources.ApplyResources(this.splitContainer5.Panel1, "splitContainer5.Panel1");
             this.splitContainer5.Panel1.Controls.Add(this.splitContainer6);
             // 
             // splitContainer5.Panel2
             // 
-            resources.ApplyResources(this.splitContainer5.Panel2, "splitContainer5.Panel2");
-            this.splitContainer5.Panel2.Controls.Add(this.tabControl1);
+            this.splitContainer5.Panel2.Controls.Add(this.PluginSettingsFormPanel);
             // 
             // splitContainer6
             // 
@@ -582,13 +549,11 @@
             // 
             // splitContainer6.Panel1
             // 
-            resources.ApplyResources(this.splitContainer6.Panel1, "splitContainer6.Panel1");
             this.splitContainer6.Panel1.Controls.Add(this.pm_pluginbrowserbtn);
             this.splitContainer6.Panel1.Controls.Add(this.BTN_Plugins_Enable);
             // 
             // splitContainer6.Panel2
             // 
-            resources.ApplyResources(this.splitContainer6.Panel2, "splitContainer6.Panel2");
             this.splitContainer6.Panel2.Controls.Add(this.plugins_tab_pluginslist);
             // 
             // pm_pluginbrowserbtn
@@ -607,11 +572,11 @@
             // 
             // plugins_tab_pluginslist
             // 
-            resources.ApplyResources(this.plugins_tab_pluginslist, "plugins_tab_pluginslist");
             this.plugins_tab_pluginslist.AutoArrange = false;
             this.plugins_tab_pluginslist.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.nameColumn,
             this.stateColumn});
+            resources.ApplyResources(this.plugins_tab_pluginslist, "plugins_tab_pluginslist");
             this.plugins_tab_pluginslist.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.plugins_tab_pluginslist.HideSelection = false;
             this.plugins_tab_pluginslist.MultiSelect = false;
@@ -621,35 +586,6 @@
             this.plugins_tab_pluginslist.UseCompatibleStateImageBehavior = false;
             this.plugins_tab_pluginslist.View = System.Windows.Forms.View.Details;
             this.plugins_tab_pluginslist.SelectedIndexChanged += new System.EventHandler(this.plugins_tab_pluginslist_SelectedIndexChanged);
-            // 
-            // nameColumn
-            // 
-            resources.ApplyResources(this.nameColumn, "nameColumn");
-            // 
-            // stateColumn
-            // 
-            resources.ApplyResources(this.stateColumn, "stateColumn");
-            // 
-            // tabControl1
-            // 
-            resources.ApplyResources(this.tabControl1, "tabControl1");
-            this.tabControl1.Controls.Add(this.plugins_tab_informationTab);
-            this.tabControl1.Controls.Add(this.plugins_tab_settingsTab);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            // 
-            // plugins_tab_informationTab
-            // 
-            resources.ApplyResources(this.plugins_tab_informationTab, "plugins_tab_informationTab");
-            this.plugins_tab_informationTab.Name = "plugins_tab_informationTab";
-            this.plugins_tab_informationTab.UseVisualStyleBackColor = true;
-            // 
-            // plugins_tab_settingsTab
-            // 
-            resources.ApplyResources(this.plugins_tab_settingsTab, "plugins_tab_settingsTab");
-            this.plugins_tab_settingsTab.Controls.Add(this.PluginSettingsFormPanel);
-            this.plugins_tab_settingsTab.Name = "plugins_tab_settingsTab";
-            this.plugins_tab_settingsTab.UseVisualStyleBackColor = true;
             // 
             // PluginSettingsFormPanel
             // 
@@ -661,49 +597,40 @@
             resources.ApplyResources(this.splitContainer1, "splitContainer1");
             this.splitContainer1.Name = "splitContainer1";
             // 
-            // splitContainer1.Panel1
-            // 
-            resources.ApplyResources(this.splitContainer1.Panel1, "splitContainer1.Panel1");
-            // 
-            // splitContainer1.Panel2
-            // 
-            resources.ApplyResources(this.splitContainer1.Panel2, "splitContainer1.Panel2");
-            // 
             // Tabs
             // 
-            resources.ApplyResources(this.Tabs, "Tabs");
             this.Tabs.Controls.Add(this.ServerTab);
             this.Tabs.Controls.Add(this.PlayersAndChatTab);
             this.Tabs.Controls.Add(this.CommandVisualizerTab);
             this.Tabs.Controls.Add(this.PluginsTab);
+            resources.ApplyResources(this.Tabs, "Tabs");
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
             this.Tabs.Selected += new System.Windows.Forms.TabControlEventHandler(this.Tabs_Selected);
             // 
             // ServerTab
             // 
-            resources.ApplyResources(this.ServerTab, "ServerTab");
             this.ServerTab.Controls.Add(this.ServerContainer);
+            resources.ApplyResources(this.ServerTab, "ServerTab");
             this.ServerTab.Name = "ServerTab";
             this.ServerTab.UseVisualStyleBackColor = true;
             // 
             // PlayersAndChatTab
             // 
-            resources.ApplyResources(this.PlayersAndChatTab, "PlayersAndChatTab");
             this.PlayersAndChatTab.Controls.Add(this.ChatPlayerContainer);
+            resources.ApplyResources(this.PlayersAndChatTab, "PlayersAndChatTab");
             this.PlayersAndChatTab.Name = "PlayersAndChatTab";
             this.PlayersAndChatTab.UseVisualStyleBackColor = true;
             // 
             // CommandVisualizerTab
             // 
-            resources.ApplyResources(this.CommandVisualizerTab, "CommandVisualizerTab");
             this.CommandVisualizerTab.Controls.Add(this.tabControl2);
+            resources.ApplyResources(this.CommandVisualizerTab, "CommandVisualizerTab");
             this.CommandVisualizerTab.Name = "CommandVisualizerTab";
             this.CommandVisualizerTab.UseVisualStyleBackColor = true;
             // 
             // tabControl2
             // 
-            resources.ApplyResources(this.tabControl2, "tabControl2");
             this.tabControl2.Controls.Add(this.CV_PLAYERS_TAB);
             this.tabControl2.Controls.Add(this.CV_SYSTEMS_TAB);
             this.tabControl2.Controls.Add(this.CV_SHIPS_TAB);
@@ -711,6 +638,7 @@
             this.tabControl2.Controls.Add(this.CV_FLEET_TAB);
             this.tabControl2.Controls.Add(this.CV_ASTEROIDS_TAB);
             this.tabControl2.Controls.Add(this.CV_RIFTS_TAB);
+            resources.ApplyResources(this.tabControl2, "tabControl2");
             this.tabControl2.Name = "tabControl2";
             this.tabControl2.SelectedIndex = 0;
             // 
@@ -758,8 +686,8 @@
             // 
             // PluginsTab
             // 
-            resources.ApplyResources(this.PluginsTab, "PluginsTab");
             this.PluginsTab.Controls.Add(this.splitContainer5);
+            resources.ApplyResources(this.PluginsTab, "PluginsTab");
             this.PluginsTab.Name = "PluginsTab";
             this.PluginsTab.UseVisualStyleBackColor = true;
             // 
@@ -770,15 +698,15 @@
             // 
             // statusStrip
             // 
-            resources.ApplyResources(this.statusStrip, "statusStrip");
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.StatusBar});
+            resources.ApplyResources(this.statusStrip, "statusStrip");
             this.statusStrip.Name = "statusStrip";
             // 
             // StatusBar
             // 
-            resources.ApplyResources(this.StatusBar, "StatusBar");
             this.StatusBar.Name = "StatusBar";
+            resources.ApplyResources(this.StatusBar, "StatusBar");
             // 
             // development_label
             // 
@@ -788,7 +716,6 @@
             // 
             // ts_sc_ctxmenu
             // 
-            resources.ApplyResources(this.ts_sc_ctxmenu, "ts_sc_ctxmenu");
             this.ts_sc_ctxmenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ts_pc_startserver,
             this.ts_pc_stopserver,
@@ -796,34 +723,35 @@
             this.ts_pc_restartserver,
             this.ts_pc_closeirse});
             this.ts_sc_ctxmenu.Name = "contextMenuStrip1";
+            resources.ApplyResources(this.ts_sc_ctxmenu, "ts_sc_ctxmenu");
             // 
             // ts_pc_startserver
             // 
-            resources.ApplyResources(this.ts_pc_startserver, "ts_pc_startserver");
             this.ts_pc_startserver.Name = "ts_pc_startserver";
+            resources.ApplyResources(this.ts_pc_startserver, "ts_pc_startserver");
             this.ts_pc_startserver.Click += new System.EventHandler(this.server_config_startserver_Click);
             // 
             // ts_pc_stopserver
             // 
-            resources.ApplyResources(this.ts_pc_stopserver, "ts_pc_stopserver");
             this.ts_pc_stopserver.Name = "ts_pc_stopserver";
+            resources.ApplyResources(this.ts_pc_stopserver, "ts_pc_stopserver");
             this.ts_pc_stopserver.Click += new System.EventHandler(this.server_config_stopserver_Click);
             // 
             // toolStripSeparator1
             // 
-            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             this.toolStripSeparator1.Name = "toolStripSeparator1";
+            resources.ApplyResources(this.toolStripSeparator1, "toolStripSeparator1");
             // 
             // ts_pc_restartserver
             // 
-            resources.ApplyResources(this.ts_pc_restartserver, "ts_pc_restartserver");
             this.ts_pc_restartserver.Name = "ts_pc_restartserver";
+            resources.ApplyResources(this.ts_pc_restartserver, "ts_pc_restartserver");
             this.ts_pc_restartserver.Click += new System.EventHandler(this.ts_pc_restartserver_Click);
             // 
             // ts_pc_closeirse
             // 
-            resources.ApplyResources(this.ts_pc_closeirse, "ts_pc_closeirse");
             this.ts_pc_closeirse.Name = "ts_pc_closeirse";
+            resources.ApplyResources(this.ts_pc_closeirse, "ts_pc_closeirse");
             this.ts_pc_closeirse.Click += new System.EventHandler(this.ts_pc_closeirse_Click);
             // 
             // button1
@@ -894,8 +822,6 @@
             this.splitContainer6.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.plugins_tab_settingsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.Tabs.ResumeLayout(false);
@@ -945,10 +871,6 @@
         private System.Windows.Forms.TabPage CommandVisualizerTab;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button BTN_Plugins_Enable;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage plugins_tab_informationTab;
-        private System.Windows.Forms.TabPage plugins_tab_settingsTab;
-        private System.Windows.Forms.Panel PluginSettingsFormPanel;
         private System.Windows.Forms.TabControl server_server_Tabs;
         private System.Windows.Forms.TabPage ServerConfig;
         private System.Windows.Forms.PropertyGrid serverconfig_properties;
@@ -1000,6 +922,7 @@
         private System.Windows.Forms.Button pm_pluginbrowserbtn;
         private System.Windows.Forms.ComboBox sc_languageSelector;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel PluginSettingsFormPanel;
     }
 }
 

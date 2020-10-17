@@ -121,8 +121,6 @@ namespace IRSE.Managers.Events
 
         protected void Players_OnAddPlayer(Player obj)
         {
-            m_controllerManager.Chat.SendToAll(Config.Singleton.NotificationChatColor, "Player " + obj.Name + " joined the server", "All");
-
             Type type = typeof(ClientConnected);
 
             foreach (EventListener action in Events[type])
@@ -140,8 +138,6 @@ namespace IRSE.Managers.Events
 
         protected void Players_OnRemovePlayer(Player obj)
         {
-            m_controllerManager.Chat.SendToAll(Config.Singleton.NotificationChatColor, "Player " + obj.Name + " left the server", "All");
-
             Type type = typeof(ClientDisconnected);
             foreach (EventListener action in Events[type])
             {
