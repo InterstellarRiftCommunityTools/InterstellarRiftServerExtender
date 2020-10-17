@@ -153,7 +153,8 @@ namespace IRSE.Managers
                 // command loader
                 mainLog.Info("IRSE: Loading Game Console Commands..");
 
-                
+                ConsoleCommandManager.InitAndReplace(controllerManager);
+
                 // plugin loader
                 mainLog.Info("IRSE: Initializing Plugins...");
                 m_pluginManager.InitializeAllPlugins();
@@ -163,7 +164,7 @@ namespace IRSE.Managers
                 SetIsRunning(); // Server is running by now
                 SetIsStarting(false);
 
-                ConsoleCommandManager.InitAndReplace(controllerManager);
+                
 
                 Program.Wait = false;
 
