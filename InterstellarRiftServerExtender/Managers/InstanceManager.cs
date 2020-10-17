@@ -2,6 +2,7 @@
 using Game.Framework;
 using Game.Framework.Threading;
 using Game.GameStates;
+using Game.Server;
 using Game.Universe;
 using IRSE.Managers.Events;
 using IRSE.Modules;
@@ -10,10 +11,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace IRSE.Managers
 {
@@ -131,13 +134,13 @@ namespace IRSE.Managers
             }
         }
 
+        
         internal void Hook()
         {
             m_launchedTime = DateTime.Now;
             try
             {
-                Program.SetTitle(true);
-
+                
                 m_handlerManager = new HandlerManager(m_assembly, m_frameworkAssembly);
 
                 WaitForHandlers();
@@ -149,21 +152,23 @@ namespace IRSE.Managers
 
                 // command loader
                 mainLog.Info("IRSE: Loading Game Console Commands..");
-                ConsoleCommandManager.InitCommands(controllerManager);
-            
-                // start gamelogic coroutine
-                Program.ConsoleCoroutine = CommandSystem.Singleton.Logic(controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete);
 
-
+                
                 // plugin loader
                 mainLog.Info("IRSE: Initializing Plugins...");
                 m_pluginManager.InitializeAllPlugins();
 
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
-                Thread.Sleep(2000);
                 mainLog.Info("IRSE: Startup Procedure Complete!");
                 SetIsRunning(); // Server is running by now
                 SetIsStarting(false);
+
+                ConsoleCommandManager.InitAndReplace(controllerManager);
+
+                Program.Wait = false;
+
+                Program.SetTitle(true);
+
             }
             catch (Exception ex)
             {
@@ -171,7 +176,6 @@ namespace IRSE.Managers
                 mainLog.Info("IRSE: Haulting Server.. Major problem detected!!!!!!!! - Exception:");
                 mainLog.Error(ex.ToString());
 
-                Console.ReadLine();
                 Stop();
             }
         }
@@ -181,12 +185,11 @@ namespace IRSE.Managers
             if (IsRunning)
                 return;
 
-            String[] serverArgs = new String[]
-                {
-                    "-server",
-                };
-         
-            m_serverThread = ServerWrapper.Program.StartServer(serverArgs);
+            List<string> serverArgs = Program.CommandLineArgs.ToList();
+
+            serverArgs.Add("-server");
+            
+            m_serverThread = ServerWrapper.Program.StartServer(serverArgs.ToArray());
             m_serverWrapper.Init();
         }
 
@@ -208,8 +211,9 @@ namespace IRSE.Managers
                     PluginManager.ShutdownAllPlugins();
                     Console.WriteLine("Stopping server..");
                     ServerWrapper.Program.StopServer();
+                  
 
-                    m_serverThread.Abort();
+                    //m_serverThread.Abort();
                 }
                 catch (Exception)
                 {

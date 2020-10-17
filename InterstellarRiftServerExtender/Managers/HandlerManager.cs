@@ -16,7 +16,6 @@ namespace IRSE.Managers
         private static Logger mainLog; //mainLog.Error
         private readonly Assembly m_serverAssembly;
         private Assembly m_frameworkAssembly;
-        private Type m_gameStateType;
 
         #endregion Fields
 
