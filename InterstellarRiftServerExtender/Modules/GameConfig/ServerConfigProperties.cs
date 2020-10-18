@@ -19,7 +19,6 @@ namespace IRSE.Modules.GameConfig
         }
 
         #region Manual Properties
-
         [Category("Welcome message")]
         [Description("The color of the title of the welcome popup people will see when they connect to the server")]
         [Editor(typeof(ColorEditor), typeof(UITypeEditor))]

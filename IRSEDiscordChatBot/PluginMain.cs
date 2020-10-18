@@ -5,10 +5,8 @@ using IRSE.Managers;
 using IRSE.Managers.Events;
 using IRSE.Managers.Plugins;
 using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -21,16 +19,13 @@ namespace IRSEDiscordChatBot
         private static MyConfig MyConfig;
         private static Form form;
 
-
         /// <summary>
         /// T  his is pulled from IRSE to add the control to the plugin tab
         /// </summary>
         public Form PluginControlForm => form == null ? form = new Form1() : form;
 
-
         //// dont use constructors, use OnLoad
         //public PluginMain(){}
-            
 
         /// <summary>
         /// this is ran when IRSE loads plugins, construct your stuff here!
@@ -42,7 +37,6 @@ namespace IRSEDiscordChatBot
             {
                 MyConfig.FileName = Path.Combine(directory, "Config.xml");
                 MyConfig = new MyConfig();
-
 
                 debugMode = MyConfig.Settings.DebugMode;
             }
@@ -71,11 +65,28 @@ namespace IRSEDiscordChatBot
         {
             try
             {
-                new DiscordClient();
+                if (!MyConfig.Settings.Enabled)
+                {
+                    GetLogger.Warn("IRSEDiscordChatBot: Plugin Disabled");
+                    return;
+                }
 
-                DiscordClient.SocketClient.MessageReceived += SocketClient_MessageReceived;
+                if (string.IsNullOrEmpty(MyConfig.Settings.DiscordToken)
+                    || MyConfig.Settings.DiscordToken == "discordtokenhere"
+                    || string.IsNullOrEmpty(MyConfig.Settings.MainChannelID.ToString()))
+                {
+                    GetLogger.Warn("IRSEDiscordChatBot: Configuration is wrong, please correct the settings for Discord Chat Relay Plugin.");
+                    return;
+                }
 
-                DiscordClient.Instance.Start();
+                if (DiscordClient.Instance == null)
+                {
+                    new DiscordClient();
+
+                    DiscordClient.SocketClient.MessageReceived += SocketClient_MessageReceived;
+
+                    DiscordClient.Instance.Start();
+                }
             }
             catch (Exception ex1)
             {
@@ -90,7 +101,7 @@ namespace IRSEDiscordChatBot
         // argumentIDs - if there isn't an argument that suits you in intellisense , leave it like new SvCommandMethod.ArgumentID[] { }
 
         //[TalkCommand] if this is enabled, it will only work from within the game. remove the requiredRight section with this to make it ingame only
-        [SvCommandMethod(names:"discordsay", description: "Send message to discord bypassing game.", requiredRight: 1 , argumentIDs: new SvCommandMethod.ArgumentID[] { SvCommandMethod.ArgumentID.message })]     
+        [SvCommandMethod(names: "discordsay", description: "Send message to discord bypassing game.", requiredRight: 1, argumentIDs: new SvCommandMethod.ArgumentID[] { SvCommandMethod.ArgumentID.message })]
         public static void c_discordSay(object sender, List<string> parameters) // make sure this name is unique
         {
             // its best to do error catching if you can, if it doesn't need checking, wrap it anyways! dont break irse!
@@ -109,7 +120,7 @@ namespace IRSEDiscordChatBot
             }
             catch (Exception)
             {
-            }         
+            }
         }
 
         /// <summary>
@@ -119,7 +130,11 @@ namespace IRSEDiscordChatBot
         [IRSEEvent(EventType = typeof(ClientRespawn))]
         public void OnPacketRespawn(GenericEvent evt)
         {
-            if (MyConfig.Instance.Settings.PlayerRespawningMessage.StartsWith("null")) return;
+            if (!MyConfig.Settings.Enabled)
+                return;
+
+            if (MyConfig.Instance.Settings.PlayerRespawningMessage.StartsWith("null"))
+                return;
 
             if (debugMode)
                 Console.WriteLine($"<- Sending Respawn Message To Discord");
@@ -142,6 +157,9 @@ namespace IRSEDiscordChatBot
         [IRSEEvent(EventType = typeof(ClientConnected))]
         public void Players_OnAddPlayer(GenericEvent evt)
         {
+            if (!MyConfig.Settings.Enabled)
+                return;
+
             if (MyConfig.Instance.Settings.PlayerSpawningMessage.StartsWith("null")) return;
 
             if (debugMode)
@@ -165,6 +183,10 @@ namespace IRSEDiscordChatBot
         [IRSEEvent(EventType = typeof(ClientDisconnected))]
         public void Players_OnRemovePlayer(GenericEvent evt)
         {
+
+            if (!MyConfig.Settings.Enabled)
+                return;
+
             if (MyConfig.Instance.Settings.PlayerLeavingMessage.StartsWith("null")) return;
 
             if (debugMode)
@@ -188,6 +210,9 @@ namespace IRSEDiscordChatBot
         [IRSEEvent(EventType = typeof(ClientChatMessage))]
         public void OnPacketChatMessage(GenericEvent data)
         {
+            if (!MyConfig.Settings.Enabled)
+                return;
+
             if (MyConfig.Instance.Settings.MessageSentToDiscord.StartsWith("null")) return;
 
             try
@@ -217,6 +242,9 @@ namespace IRSEDiscordChatBot
 
         private Task SocketClient_MessageReceived(SocketMessage messageParam)
         {
+            if (!MyConfig.Settings.Enabled)
+                return null;
+
             var message = messageParam as SocketUserMessage;
             string outMsg = String.Empty;
 

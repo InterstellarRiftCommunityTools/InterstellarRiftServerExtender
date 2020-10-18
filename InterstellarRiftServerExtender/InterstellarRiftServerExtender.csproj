@@ -175,6 +175,7 @@
     <Compile Include="Modules\Config.cs" />
     <Compile Include="Modules\CrashDump.cs" />
     <Compile Include="Modules\FolderStructure.cs" />
+    <Compile Include="Modules\HarmonyPatches\CommandSystemPatch.cs" />
     <Compile Include="Modules\Localization.cs" />
     <Compile Include="Modules\PasswordEncoder.cs" />
     <Compile Include="Modules\GameConfig\ServerConfig.cs" />

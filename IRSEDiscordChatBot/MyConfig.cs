@@ -70,11 +70,11 @@ namespace IRSEDiscordChatBot
 
         public Settings()
         {
-            Enabled = true;
+            Enabled = false;
             DiscordToken = "discordtokenhere";
-            BotClientID = 0;
-            MainChannelID = 0;
-            CDCChannelID = 0;
+            BotClientID = 0ul;
+            MainChannelID = 0ul;
+            CDCChannelID = 0ul;
             DebugMode = false;
             PrintDiscordLogToConsole = true;
             PrintDiscordChatToConsole = true;

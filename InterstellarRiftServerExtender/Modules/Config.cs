@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using HarmonyLib;
+using System;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -10,14 +9,12 @@ using System.Xml.Serialization;
 
 namespace IRSE.Modules
 {
-
-
     [System.Runtime.Serialization.DataContract]
     public class Settings
     {
         private static NLog.Logger mainLog; //mainLog.Error
 
-        internal bool RestartNeeded = false;
+        public bool RestartNeeded = false;
 
         public Settings()
         {
@@ -30,23 +27,27 @@ namespace IRSE.Modules
             AutoRestartTime = 0;
             AnnounceRestartTime = true;
             EnableAutomaticUpdates = true;
-            EnableDevelopmentVersion = false;
             EnableAutomaticUpdates = true;
             CheckUpdatesTime = 60;
+
+            HashedSteamPassword = "";
+            HashedSteamUserName = "";
 
             manageSteamCmd = true;
             m_currentLanguage = "English (United States)";
 
             usePreReleaseVersions = EnableDevelopmentVersion;
+
+            DisableServerCommandAmbiguity = false;
+
+            EnableHarmonyDebug = false;
         }
 
-
         private string m_currentLanguage;
-        
+
         [System.Runtime.Serialization.DataMember]
         [Browsable(false)]
         [Description("The selected language for IRSE to use.")]
-
         [DisplayName("Selected Language - (Default: English )")]
         public string CurrentLanguage
         {
@@ -54,11 +55,45 @@ namespace IRSE.Modules
             set
             {
                 if (m_currentLanguage != value)
+                {
                     RestartNeeded = true;
-
-                m_currentLanguage = value;
+                    m_currentLanguage = value;
+                }
             }
         }
+
+        private bool manageSteamCmd = false;
+
+        [System.Runtime.Serialization.DataMember]
+        [Category("Steam CMD")]
+        [DisplayName("Manage Steam CMD - (Restart Required)")]
+        [Description("Let IRSE manage Interstellar Rift installations.")]
+        public bool ManageSteamCMD
+        {
+            get => manageSteamCmd;
+            set
+            {
+                if (manageSteamCmd != value)
+                {
+                    RestartNeeded = true;
+                    manageSteamCmd = value;
+                }
+            }
+        }
+
+        [System.Runtime.Serialization.DataMember]
+        [PasswordPropertyText(true)]
+        [Category("SteamCMD")]
+        [DisplayName("Steam Password")]
+        [Description("This login will only work on the system it was typed into\nYou must re-input steam details if the system was changed.")]
+        public string HashedSteamPassword { get; set; }
+
+        [System.Runtime.Serialization.DataMember]
+        [PasswordPropertyText(true)]
+        [Category("SteamCMD")]
+        [DisplayName("Steam Username")]
+        [Description("This login will only work on the system it was typed into\nYou must re-input steam details if the system was changed.")]
+        public string HashedSteamUserName { get; set; }
 
         [System.Runtime.Serialization.DataMember]
         [Category("Development")]
@@ -116,9 +151,11 @@ namespace IRSE.Modules
             set
             {
                 if (usePreReleaseVersions != value)
+                {
                     RestartNeeded = true;
 
-                usePreReleaseVersions = value;
+                    usePreReleaseVersions = value;
+                }
             }
         }
 
@@ -137,24 +174,24 @@ namespace IRSE.Modules
             "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public int CheckUpdatesTime { get; set; }
 
-        private bool manageSteamCmd;
+        [DisplayName("Disable Server Command Ambiguity")]
+        [Category("IR Custom Configuration Variables")]
+        [Description("Disables Server Command Ambiguity. Enable if using 7th Core's Script.")]
+        public bool DisableServerCommandAmbiguity { get; set; }
 
-        [System.Runtime.Serialization.DataMember]
-        [Category("Steam CMD")]
-        [DisplayName("Manage Steam CMD - (Restart Required)")]
-        [Description("Let IRSE manage Interstellar Rift installations.")]
-        public bool ManageSteamCMD
+        [DisplayName("Enable Harmony Debug")]
+        [Category("Development")]
+        [Description("Enable Harmony Debug, Enable this to generate harmony logs on your desktop.")]
+        public bool EnableHarmonyDebug
         {
-            get
-            {
-                return manageSteamCmd;
-            }
+            get => Harmony.DEBUG;
             set
             {
-                //if (manageSteamCmd != value)
-                    //RestartNeeded = true;
-
-                manageSteamCmd = value;
+                if (Harmony.DEBUG != value)
+                {
+                    RestartNeeded = true;
+                    Harmony.DEBUG = value;
+                }
             }
         }
     }
@@ -176,7 +213,6 @@ namespace IRSE.Modules
             set
             {
                 _settings = value;
-                SaveConfiguration();
             }
         }
 
@@ -185,6 +221,7 @@ namespace IRSE.Modules
             Instance = this;
             _settings = new Settings();
             LoadConfiguration();
+            _settings.RestartNeeded = false;
         }
 
         public bool SaveConfiguration()
@@ -203,7 +240,6 @@ namespace IRSE.Modules
 
                 WriteComments();
 
-                /*
                 if (_settings.RestartNeeded)
                 {
                     DialogResult result = MessageBox.Show("The setting you have changed requires a restart of IRSE. Press 'Yes' to restart now. Or 'No' if you plan to restart later.",
@@ -215,7 +251,6 @@ namespace IRSE.Modules
                         return true;
                     }
                 }
-                */
 
                 return true;
             }

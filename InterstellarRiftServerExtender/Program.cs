@@ -1,5 +1,4 @@
-﻿using Game.Framework;
-using HarmonyLib;
+﻿using HarmonyLib;
 using IRSE.GUI.Forms;
 using IRSE.Managers;
 using IRSE.Modules;
@@ -7,7 +6,6 @@ using NLog;
 using NLog.Config;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -28,6 +26,7 @@ namespace IRSE
 
         public const int VK_RETURN = 0x0D;
         public const int WM_KEYDOWN = 0x100;
+
         public static IntPtr HWnd;
 
         private static Config m_config;
@@ -41,8 +40,6 @@ namespace IRSE
         private static NLog.Logger mainLog;
         public static string[] CommandLineArgs = new string[50];
 
-        public static Dictionary<string, Action<string[]>> IRSEConsoleCommands = new Dictionary<string, Action<string[]>>();
-
         private static bool debugMode = true;
         private static ExtenderGui m_form;
 
@@ -51,6 +48,7 @@ namespace IRSE
         public static bool GUIDisabled => Environment.UserInteractive;
 
         public static IEnumerator ConsoleCoroutine;
+        //public static IEnumerator GameConsoleCoroutine;
 
         public static bool PendingServerStart;
         private static bool _useGui;
@@ -68,17 +66,14 @@ namespace IRSE
             }
         }
 
-        public static Localization Localization{ get{ return m_localization; } internal set { m_localization = value; } }
+        public static bool Wait { get; set; }
+        public static Localization Localization { get { return m_localization; } internal set { m_localization = value; } }
         public static Program Instance { get; private set; }
         public static ExtenderGui GUI { get; private set; }
-
         public static Harmony Harmony { get; private set; }
-
         public static Assembly EntryAssembly => Assembly.GetEntryAssembly();
         public static Version Version => EntryAssembly.GetName().Version;
-
         public static string ForGameVersion => EntryAssembly.GetCustomAttributes(typeof(SupportedGameAssemblyVersion), false).Cast<SupportedGameAssemblyVersion>().First().someText;
-
         public static String VersionString => Version.ToString(4) + $" Branch: {ThisAssembly.Git.Branch}";
         public static String WindowTitle => string.Format("IsR Server Extender V{0}", VersionString);
 
@@ -124,7 +119,6 @@ namespace IRSE
 
             m_localization.Load(m_config.Settings.CurrentLanguage);
 
-
             AppDomain.CurrentDomain.AssemblyResolve += (sender, rArgs) =>
             {
                 Assembly executingAssembly = Assembly.GetExecutingAssembly();
@@ -135,7 +129,6 @@ namespace IRSE
                 if (assemblyName.CultureInfo != null && assemblyName.CultureInfo.Equals(CultureInfo.InvariantCulture) == false)
                     pathh = String.Format(@"{0}\{1}", assemblyName.CultureInfo, pathh);
 
-               
                 // get binaries in plugins
                 String modPath = Path.Combine(FolderStructure.IRSEFolderPath, "plugins");
                 String[] subDirectories = Directory.GetDirectories(modPath);
@@ -154,11 +147,9 @@ namespace IRSE
                     }
                 }
 
-
                 pathh = "IRSE.Resources." + pathh;
                 using (Stream stream = executingAssembly.GetManifestResourceStream(pathh))
                 {
-
                     if (stream == null) return null;
 
                     var assemblyRawBytes = new byte[stream.Length];
@@ -170,7 +161,7 @@ namespace IRSE
 
             mainLog = LogManager.GetCurrentClassLogger();
 
-            if(Program.Localization.Sentences.Count == 0)
+            if (Program.Localization.Sentences.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Missing Language Resources! Please make sure all files are installed!");
@@ -208,9 +199,13 @@ namespace IRSE
         private void Run(string[] args)
         {
             //Harmony
-            Harmony.DEBUG = Dev;
+            if (Harmony.DEBUG)
+                Console.WriteLine("IRSE: Harmony Debug enabled, logging will be in the file 'harmony.log.txt' on your desktop.");
+
+            Console.WriteLine("Initializing Harmony Patches...");
             Harmony = new Harmony("com.tse.irse");
             Harmony.PatchAll();
+            Console.WriteLine();
 
             // This is for args that should be used before IRSE loads
             bool noUpdateIRSE = false;
@@ -325,6 +320,59 @@ namespace IRSE
             ReadConsoleCommands(args);
         }
 
+        private void Instance_OnServerStarted()
+        {
+            mainLog.Warn(string.Format(Program.Localization.Sentences["GameConsoleEnabled"]));
+        }
+
+        private static void StartServer()
+        {
+            if (!ServerInstance.Instance.IsRunning)
+            {
+                Wait = true;
+
+                ConsoleCommandManager.DisableHandlers();
+                ServerInstance.Instance.Start();
+            }
+            else
+                Console.WriteLine(string.Format(Program.Localization.Sentences["ServerIsAlreadyRunning"]));
+        }
+
+        public static void CloseIRSE()
+        {
+            mainLog.Warn(string.Format(Program.Localization.Sentences["StopRunningServers"]));
+            if (ServerInstance.Instance != null)
+                ServerInstance.Instance.Stop();
+
+            Process.GetCurrentProcess().Kill();
+        }
+
+        internal static void Restart()
+        {
+            if (ServerInstance.Instance != null)
+            {
+                if (ServerInstance.Instance.IsRunning)
+                {
+                    if (ServerInstance.Instance != null)
+                    {
+                        ServerInstance.Instance.Stop();
+                        SpinWait.SpinUntil(() => !ServerInstance.Instance.IsRunning, 2000);
+                    }
+                }
+            }
+
+            var thisProcess = Process.GetCurrentProcess();
+            var startInfo = new ProcessStartInfo();
+            startInfo.FileName = thisProcess.MainModule.FileName;
+            startInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            startInfo.Arguments = string.Join(" ", CommandLineArgs);
+            startInfo.WindowStyle = thisProcess.StartInfo.WindowStyle;
+
+            var proc = Process.Start(startInfo);
+
+            thisProcess.Kill();
+        }
+
         #region GUI
 
         /// <summary>
@@ -404,50 +452,6 @@ namespace IRSE
 
         #endregion GUI
 
-        internal static void Restart()
-        {
-            if (ServerInstance.Instance != null)
-            {
-                if (ServerInstance.Instance.IsRunning)
-                {
-                    if (ServerInstance.Instance != null)
-                    {
-                        ServerInstance.Instance.Stop();
-                        SpinWait.SpinUntil(() => !ServerInstance.Instance.IsRunning, 2000);
-                    }
-                }
-            }
-
-            var thisProcess = Process.GetCurrentProcess();
-            var startInfo = new ProcessStartInfo();
-            startInfo.FileName = thisProcess.MainModule.FileName;
-            startInfo.WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            startInfo.Arguments = string.Join(" ", CommandLineArgs);
-            startInfo.WindowStyle = thisProcess.StartInfo.WindowStyle;
-
-            var proc = Process.Start(startInfo);
-
-            thisProcess.Kill();
-        }
-
-        public void BuildConsoleCommands()
-        {
-            IRSEConsoleCommands["help"] = (args) =>
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine(string.Format(Program.Localization.Sentences["HelpCommand"]));
-                Console.WriteLine(string.Format(Program.Localization.Sentences["OpenGUICommand"]));
-                Console.WriteLine(string.Format(Program.Localization.Sentences["StartCommand"]));
-                Console.WriteLine(string.Format(Program.Localization.Sentences["StopCommand"]));
-                Console.WriteLine(string.Format(Program.Localization.Sentences["RestartCommand"]));
-                Console.WriteLine(string.Format(Program.Localization.Sentences["CheckUpdateCommand"]));
-                Console.WriteLine(string.Format(Program.Localization.Sentences["ForceUpdateCommand"]));
-                Console.ResetColor();
-            };
-
-        }
-
-        public static bool Wait { get; set; }
         /// <summary>
         /// This contains the console commands
         /// </summary>
@@ -455,17 +459,11 @@ namespace IRSE
         {
             Wait = false;
 
-            CommandSystem.Singleton = new CommandSystem();
+            ConsoleCommandManager.InitHandlers();
 
-            Game.Server.SvCommands.InitCommandHooks();
-            ConsoleCommandManager.InitIRSECommands(CommandSystem.Singleton);
+            Program.ConsoleCoroutine = ConsoleCommandManager.IRSECommandSystem
+                .Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete || args.Contains("-noConsoleAutoComplete"));
 
-            CommandSystem.Singleton.OutputHandler += new EventHandler<string>((object caller, string msg) => Console.WriteLine(msg));
-
-            Program.ConsoleCoroutine =
-                CommandSystem.Singleton.Logic((object)null, Game.Configuration.Globals.NoConsoleAutoComplete || args.Contains("-noConsoleAutoComplete"));
-
-            HWnd = Process.GetCurrentProcess().MainWindowHandle;
             while (true)
             {
                 if (PendingServerStart)
@@ -473,31 +471,12 @@ namespace IRSE
                     PendingServerStart = false;
                     StartServer();
                 }
-             
+
                 if (!Wait)
                     ConsoleCoroutine.MoveNext();
 
-                Thread.Sleep(50);                     
+                Thread.Sleep(50);
             }
-        }
-
-        private void Instance_OnServerStarted()
-        {
-            mainLog.Warn(string.Format(Program.Localization.Sentences["GameConsoleEnabled"]));            
-        }
-
-        private static void StartServer()
-        {
-            if (!ServerInstance.Instance.IsRunning)
-            {
-                Wait = true;
-               
-                CommandSystem.Singleton.OutputHandler -= new EventHandler<string>((object caller, string msg) => Console.WriteLine(msg));
-                CommandSystem.Singleton = new CommandSystem();
-                ServerInstance.Instance.Start();
-            }
-            else
-                Console.WriteLine(string.Format(Program.Localization.Sentences["ServerIsAlreadyRunning"]));
         }
 
         [DllImport("User32.Dll", EntryPoint = "PostMessageA")]
@@ -518,15 +497,6 @@ namespace IRSE
             CTRL_CLOSE_EVENT = 2,
             CTRL_LOGOFF_EVENT = 5,
             CTRL_SHUTDOWN_EVENT = 6,
-        }
-
-        public static void CloseIRSE()
-        {
-            mainLog.Warn(string.Format(Program.Localization.Sentences["StopRunningServers"]));
-            if (ServerInstance.Instance != null)
-                ServerInstance.Instance.Stop();
-
-            Process.GetCurrentProcess().Kill();
         }
 
         private static bool Handler(CtrlType sig)

@@ -35,47 +35,53 @@ namespace IRSE.Modules
         private bool errored = true;
         private int count = 0;
 
-        public bool HandleLogin() {
+        public bool AskToManage() {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("|-------------------------------------------------------------------------|");
-            Console.WriteLine("INTERSTELLAR RIFT SERVER EXTENDER STEAM MANAGER.");
-            Console.WriteLine("|-------------------------------------------------------------------------|");
-            Console.WriteLine("Interstellar Rift Dedicated server requires you own the game on steam.");
-            Console.WriteLine();
-            Console.WriteLine("You can input your steam login by following the prompts.");
-            Console.WriteLine();
-            Console.WriteLine("SteamCMD itself will ask for your SteamGuard code. This is needed only once.");
-            Console.WriteLine();
-            Console.WriteLine("IRSE will store your password securely on your system if you agree to it. ");
-            Console.WriteLine("");
-            Console.WriteLine("This will allow IRSE to manage your IR installation to keep it updated.");
-            Console.WriteLine("|-------------------------------------------------------------------------|");
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("If you don't agree to having IRSE manage installations. There's a batch file");
-            Console.WriteLine("Press Q now to close IRSE so you can move irse.exe to an existing installation of Interstellar Rift.");
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Press S if you would like IRSE to manage IR updates.");
+            Console.WriteLine(
+            "|--------------------------------------------------------------------------|\n" +
+            "|             INTERSTELLAR RIFT SERVER EXTENDER STEAM MANAGER.             |\n" +
+            "|--------------------------------------------------------------------------|\n" +
+            "| Interstellar Rift Dedicated server requires you own the game on steam.   |\n" +
+            "| You can input your steam login by following the prompts.                 |\n" +
+            "| IRSE will store your password securely on your system if you agree.      |\n" +
+            "| This will allow IRSE to manage your IR installation to keep it updated.  |\n" +
+            "| This feature is optional, you will need to manage updates yourself.      |\n" +
+            "|--------------------------------------------------------------------------|\n\n" );
 
-            // quit if they dont agree
-            if (Console.ReadKey().Key == ConsoleKey.Q)
+            Console.ForegroundColor = ConsoleColor.Green;           
+            Console.WriteLine("Press Y if you would like IRSE to manage IR updates.");
+            Console.WriteLine("Press Q if you would like to handle it yourself.");
+            Console.ResetColor();
+
+            switch (Console.ReadKey().Key)
             {
-                Config.Instance.Settings.ManageSteamCMD = false;
-                Config.Instance.SaveConfiguration();
-                Environment.Exit(0);
+                case ConsoleKey.Q:
+                    Config.Instance.Settings.ManageSteamCMD = false;
+                    Config.Instance.SaveConfiguration();
+                        break;
+                case ConsoleKey.Y:
+                    Config.Instance.Settings.ManageSteamCMD = true;
+                    Config.Instance.SaveConfiguration();
+                    return true;                 
             }
-
-
-            Console.ReadLine();
-
-
 
             return false;
         }
 
+        public bool HandleLogin()
+        {
+            return false;
+        }
+
+        
+
 
         public bool GetSteamCMD()
         {
-         
+
+            if (!AskToManage())
+                return false;
+
 
             if (!AutoUpdateIR)
             {

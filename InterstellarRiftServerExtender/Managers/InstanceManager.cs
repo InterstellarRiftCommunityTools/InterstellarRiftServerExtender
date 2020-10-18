@@ -97,7 +97,6 @@ namespace IRSE.Managers
 
             m_launchedTime = DateTime.MinValue;
             m_serverThread = null;
-            
 
             // Wrap IR.exe
             m_assembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IR.exe"));
@@ -134,26 +133,25 @@ namespace IRSE.Managers
             }
         }
 
-        
         internal void Hook()
         {
             m_launchedTime = DateTime.Now;
             try
             {
-                
                 m_handlerManager = new HandlerManager(m_assembly, m_frameworkAssembly);
 
                 WaitForHandlers();
 
-                Game.Server.ControllerManager controllerManager = m_handlerManager.ControllerManager;
+                ControllerManager controllerManager = m_handlerManager.ControllerManager;
 
                 // Intercept events to copy and invoke
                 EventManager.Instance.Intercept(controllerManager);
 
-                // command loader
+                // ir command loader
                 mainLog.Info("IRSE: Loading Game Console Commands..");
-
                 ConsoleCommandManager.InitAndReplace(controllerManager);
+                Program.ConsoleCoroutine = ConsoleCommandManager.IRSECommandSystem
+                    .Logic(controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete || Program.CommandLineArgs.Contains("-noConsoleAutoComplete"));
 
                 // plugin loader
                 mainLog.Info("IRSE: Initializing Plugins...");
@@ -161,15 +159,13 @@ namespace IRSE.Managers
 
                 // Wait 5 seconds before activating ServerInstance.Instance.IsRunning
                 mainLog.Info("IRSE: Startup Procedure Complete!");
-                SetIsRunning(); // Server is running by now
-                SetIsStarting(false);
-
-                
 
                 Program.Wait = false;
 
-                Program.SetTitle(true);
+                SetIsRunning(); // Server is running by now
+                SetIsStarting(false);
 
+                Program.SetTitle(true);
             }
             catch (Exception ex)
             {
@@ -189,17 +185,15 @@ namespace IRSE.Managers
             List<string> serverArgs = Program.CommandLineArgs.ToList();
 
             serverArgs.Add("-server");
-            
+
             m_serverThread = ServerWrapper.Program.StartServer(serverArgs.ToArray());
             m_serverWrapper.Init();
         }
 
         public void Stop()
         {
-
-            if (ServerInstance.Instance.IsRunning)
+            if (IsRunning)
             {
-
                 Console.WriteLine("Shutting Down IR.");
                 Thread.Sleep(2000);
                 SetIsRunning(false);
@@ -212,16 +206,11 @@ namespace IRSE.Managers
                     PluginManager.ShutdownAllPlugins();
                     Console.WriteLine("Stopping server..");
                     ServerWrapper.Program.StopServer();
-                  
-
-                    //m_serverThread.Abort();
                 }
                 catch (Exception)
                 {
-                    // as long as the server saves, who cares
                 }
             }
-
         }
 
         internal void Save()
