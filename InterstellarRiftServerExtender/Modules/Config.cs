@@ -27,7 +27,7 @@ namespace IRSE.Modules
             AutoRestartTime = 0;
             AnnounceRestartTime = true;
             EnableAutomaticUpdates = true;
-            EnableAutomaticUpdates = true;
+            EnableExtenderAutomaticUpdates = true;
             CheckUpdatesTime = 60;
 
             HashedSteamPassword = "";

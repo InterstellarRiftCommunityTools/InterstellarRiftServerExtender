@@ -208,54 +208,36 @@ namespace IRSE
             Console.WriteLine();
 
             // This is for args that should be used before IRSE loads
-            bool noUpdateIRSE = false;
-            bool noUpdateIR = false;
-            bool usePrereleaseVersions = false;
-            bool autoStart = false;
-            bool autoRestart = false;
+
             _useGui = true;
             Console.ForegroundColor = ConsoleColor.Green;
-            foreach (string arg in args)
+
+            if (args.Contains("-nogui"))
             {
-                if (arg.Equals("-noupdateirse"))
-                    noUpdateIRSE = true;
-
-                if (arg.Equals("-noupdateir"))
-                    noUpdateIR = true;
-
-                if (arg.Equals("-usedevversion"))
-                    usePrereleaseVersions = true;
-
-                if (arg.Equals("-nogui"))
-                    _useGui = false;
-
-                if (arg.Equals("-autostart"))
-                    autoStart = true;
-
-                if (arg.Equals("-autorestart"))
-                    autoRestart = true;
+                _useGui = false;
             }
 
-            if (usePrereleaseVersions || Config.Settings.EnableDevelopmentVersion)
+            if (args.Contains("-usedevversion") || Config.Settings.EnableDevelopmentVersion)
             {
                 Console.WriteLine(string.Format(Program.Localization.Sentences["UseDevVersion"]));
             }
 
-            if (noUpdateIRSE || !Config.Settings.EnableExtenderAutomaticUpdates)
+            if (args.Contains("-noupdateirse") || !Config.Settings.EnableExtenderAutomaticUpdates)
             {
                 UpdateManager.EnableAutoUpdates = false;
                 Console.WriteLine(string.Format(Program.Localization.Sentences["NoUpdate"]));
                 Console.WriteLine();
             }
 
-            if (noUpdateIR || !Config.Settings.EnableAutomaticUpdates)
+            if (args.Contains("-noupdateir") || !Config.Settings.EnableAutomaticUpdates)
             {
                 SteamCMD.AutoUpdateIR = false;
                 Console.WriteLine(string.Format(Program.Localization.Sentences["NoUpdateIR"]));
             }
 
-            if (autoRestart || !Config.Settings.AutoRestartsEnable)
+            if (args.Contains("-autorestart") || Config.Settings.AutoRestartsEnable)
             {
+                UpdateManager.EnableAutoRestarts = true;
                 Console.WriteLine(string.Format("IRSE: (Arg: -autorestart is set) IRSE Will auto restart when it needs to."));
             }
 
@@ -317,7 +299,7 @@ namespace IRSE
             Console.Write("help\n\n");
             Console.ResetColor();
 
-            if (autoStart || Config.Settings.AutoStartEnable)
+            if (args.Contains("-autostart") || Config.Settings.AutoStartEnable)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(string.Format(Program.Localization.Sentences["AutoStart"]));
