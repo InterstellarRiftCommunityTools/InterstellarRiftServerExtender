@@ -45,7 +45,7 @@ namespace IRSE
 
         public Version CurrentGameVerson { get; }
 
-        public static bool GUIDisabled => Environment.UserInteractive;
+        public static bool GUIDisabled => !Environment.UserInteractive;
 
         public static IEnumerator ConsoleCoroutine;
         //public static IEnumerator GameConsoleCoroutine;
@@ -212,6 +212,7 @@ namespace IRSE
             bool noUpdateIR = false;
             bool usePrereleaseVersions = false;
             bool autoStart = false;
+            bool autoRestart = false;
             _useGui = true;
             Console.ForegroundColor = ConsoleColor.Green;
             foreach (string arg in args)
@@ -230,6 +231,9 @@ namespace IRSE
 
                 if (arg.Equals("-autostart"))
                     autoStart = true;
+
+                if (arg.Equals("-autorestart"))
+                    autoRestart = true;
             }
 
             if (usePrereleaseVersions || Config.Settings.EnableDevelopmentVersion)
@@ -248,6 +252,11 @@ namespace IRSE
             {
                 SteamCMD.AutoUpdateIR = false;
                 Console.WriteLine(string.Format(Program.Localization.Sentences["NoUpdateIR"]));
+            }
+
+            if (autoRestart || !Config.Settings.AutoRestartsEnable)
+            {
+                Console.WriteLine(string.Format("IRSE: (Arg: -autorestart is set) IRSE Will auto restart when it needs to."));
             }
 
             Console.WriteLine();
