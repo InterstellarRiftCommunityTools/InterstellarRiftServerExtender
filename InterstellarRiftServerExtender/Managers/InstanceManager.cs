@@ -150,6 +150,7 @@ namespace IRSE.Managers
                 // ir command loader
                 mainLog.Info("IRSE: Loading Game Console Commands..");
                 ConsoleCommandManager.InitAndReplace(controllerManager);
+
                 Program.ConsoleCoroutine = ConsoleCommandManager.IRSECommandSystem
                     .Logic(controllerManager, Game.Configuration.Globals.NoConsoleAutoComplete || Program.CommandLineArgs.Contains("-noConsoleAutoComplete"));
 
@@ -190,7 +191,7 @@ namespace IRSE.Managers
             m_serverWrapper.Init();
         }
 
-        public void Stop()
+        public void Stop(bool killProcess = false)
         {
             if (IsRunning)
             {
@@ -206,6 +207,8 @@ namespace IRSE.Managers
                     PluginManager.ShutdownAllPlugins();
                     Console.WriteLine("Stopping server..");
                     ServerWrapper.Program.StopServer();
+
+                    if (killProcess) Process.GetCurrentProcess().Kill();
                 }
                 catch (Exception)
                 {

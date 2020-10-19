@@ -339,8 +339,6 @@ namespace IRSE
             if (!ServerInstance.Instance.IsRunning)
             {
                 Wait = true;
-
-                ConsoleCommandManager.DisableHandlers();
                 ServerInstance.Instance.Start();
             }
             else
@@ -351,9 +349,7 @@ namespace IRSE
         {
             mainLog.Warn(string.Format(Program.Localization.Sentences["StopRunningServers"]));
             if (ServerInstance.Instance != null)
-                ServerInstance.Instance.Stop();
-
-            Process.GetCurrentProcess().Kill();
+                ServerInstance.Instance.Stop(true);
         }
 
         internal static void Restart()

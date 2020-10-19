@@ -108,7 +108,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
-    <EmbeddedResource Include="Resources\NLog.dll" />
+    <EmbeddedResource Include="Resources\NLog.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Resources\Octokit.dll" />
     <None Include="App.config" />
     <Content Include="Assets\irse_icon.ico" />

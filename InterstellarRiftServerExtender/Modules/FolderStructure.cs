@@ -48,6 +48,10 @@ namespace IRSE.Modules
                         string path = string.Empty;
                         switch (Path.GetExtension(resource))
                         {
+                            case ".dll":
+                                path = ExtenderGlobals.GetFolderPath(IRSEFolderName.Bin);
+                                break;
+
                             case ".ini":
                             case ".config":
                             case ".json":

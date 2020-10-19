@@ -99,16 +99,6 @@ namespace IRSE.Managers
             IRSECommandSystem.ExecuteHandler += new CommandSystem.ExecuteHandlerDelegate(i_executeHandler);
         }
 
-        public static void DisableHandlers()
-        {
-            IRSECommandSystem.OutputHandler -= new EventHandler<string>(i_outputHandler);
-            IRSECommandSystem.SecurityHandler -= new Func<object, int, bool>(i_securityHandler);
-            IRSECommandSystem.ErrorHandler -= new CommandSystem.ErrorHandlerDelegate(i_errorHandler);
-            IRSECommandSystem.InputHandler -= new CommandSystem.InputDelegate(i_inputHandler);
-            IRSECommandSystem.ExecuteHandler -= new CommandSystem.ExecuteHandlerDelegate(i_executeHandler);
-            //singleton = null;
-        }
-
         private static bool i_securityHandler(object sender, int requiredRights)
         {
             return true;
