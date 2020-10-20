@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using IRSe.Modules;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -14,6 +15,7 @@ namespace IRSE.Modules
     {
         private static NLog.Logger mainLog; //mainLog.Error
 
+        [NonSerialized]
         public bool RestartNeeded = false;
 
         public Settings()
@@ -33,6 +35,8 @@ namespace IRSE.Modules
             HashedSteamPassword = "";
             HashedSteamUserName = "";
 
+            NeedsSteamGuard = true;
+
             manageSteamCmd = true;
             m_currentLanguage = "English (United States)";
 
@@ -41,7 +45,15 @@ namespace IRSE.Modules
             DisableServerCommandAmbiguity = false;
 
             EnableHarmonyDebug = false;
+
+            DeclinedSteamCMDManagement = false;
         }
+
+        [System.Runtime.Serialization.DataMember]
+        [Browsable(false)]
+        [DisplayName("Declined SteamCMD Management- (Default: False )")]
+        [Description("Change to true if you would like to have IRSE manage IR Installations/Updates")]
+        public bool DeclinedSteamCMDManagement { get; set; }
 
         private string m_currentLanguage;
 
@@ -82,18 +94,23 @@ namespace IRSE.Modules
         }
 
         [System.Runtime.Serialization.DataMember]
-        [PasswordPropertyText(true)]
+        [Browsable(false)]
         [Category("SteamCMD")]
         [DisplayName("Steam Password")]
         [Description("This login will only work on the system it was typed into\nYou must re-input steam details if the system was changed.")]
         public string HashedSteamPassword { get; set; }
 
         [System.Runtime.Serialization.DataMember]
-        [PasswordPropertyText(true)]
+        [Browsable(false)]
         [Category("SteamCMD")]
         [DisplayName("Steam Username")]
         [Description("This login will only work on the system it was typed into\nYou must re-input steam details if the system was changed.")]
         public string HashedSteamUserName { get; set; }
+
+        [System.Runtime.Serialization.DataMember]
+        [Browsable(false)]
+        [Category("SteamCMD")]
+        public bool NeedsSteamGuard { get; set; }
 
         [System.Runtime.Serialization.DataMember]
         [Category("Development")]
@@ -224,7 +241,7 @@ namespace IRSE.Modules
             _settings.RestartNeeded = false;
         }
 
-        public bool SaveConfiguration()
+        public bool SaveConfiguration(bool ignoreRestart = false)
         {
             try
             {
@@ -240,16 +257,9 @@ namespace IRSE.Modules
 
                 WriteComments();
 
-                if (_settings.RestartNeeded)
+                if (_settings.RestartNeeded && !ignoreRestart)
                 {
-                    DialogResult result = MessageBox.Show("The setting you have changed requires a restart of IRSE. Press 'Yes' to restart now. Or 'No' if you plan to restart later.",
-                 "Restart Needed",
-                 MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
-                    if (result == DialogResult.Yes)
-                    {
-                        Program.Restart();
-                        return true;
-                    }
+                    Program.Restart(true);
                 }
 
                 return true;

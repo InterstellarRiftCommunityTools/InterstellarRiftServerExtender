@@ -9,16 +9,56 @@ namespace IRSe.Modules
 {
     public class PasswordEncoder
     {
-        string mEncryptedPassword;
+        private string mEncryptedPassword;
+
         #region DONT CHANGE ANYTHING IN THIS
+
         // Change the two values below to be something other than the example.
         // Once changed and in use, do not change the value below again or you
         // won't be able to decrypt previously stored passwords.
-        string mByteArray = "&%^&#*#TSE^#&*IRSE*#HJGH^UO%$##";  // DONT EVER CHANGE WILL BREAK PEOPLES IRSE
-        byte[] mInitializationVector = { 0x01, 0xad, 0x89, 0x90, 0xAB, 0xf7, 0xEF, 0x57 }; // DONT EVER CHANGE WILL BREAK PEOPLES IRSE
+        private string mByteArray = "&%^&#*#TSE^#&*IRSE*#HJGH^UO%$##";  // DONT EVER CHANGE WILL BREAK PEOPLES IRSE
+
+        private byte[] mInitializationVector = { 0x01, 0xad, 0x89, 0x90, 0xAB, 0xf7, 0xEF, 0x57 }; // DONT EVER CHANGE WILL BREAK PEOPLES IRSE
+
         #endregion DONT CHANGE ANYTHING IN THIS
+
         public PasswordEncoder()
         {
+            string appdata = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+            string path = Path.Combine(appdata, "IRSE");
+
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            string file = Path.Combine(path, "HASH");
+
+            if (File.Exists(file))
+                mByteArray = File.ReadAllText(file);
+            else
+            {
+                mByteArray = RandomString(512);
+                File.WriteAllText(file, mByteArray);
+            }
+        }
+
+        private static string RandomString(int length)
+        {
+            const string valid = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLM[][{}';;NOPQRSTUVWXYZ1234567890";
+            StringBuilder res = new StringBuilder();
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            {
+                byte[] uintBuffer = new byte[sizeof(uint)];
+
+                while (length-- > 0)
+                {
+                    rng.GetBytes(uintBuffer);
+                    uint num = BitConverter.ToUInt32(uintBuffer, 0);
+                    res.Append(valid[(int)(num % (uint)valid.Length)]);
+                }
+            }
+
+            return res.ToString();
         }
 
         public PasswordEncoder(string inPassword)
@@ -57,8 +97,11 @@ namespace IRSe.Modules
             return DecryptWithByteArray(mEncryptedPassword, mByteArray);
         }
 
-        private string DecryptWithByteArray(string strText, string strEncrypt)
+        public string DecryptWithByteArray(string strText, string strEncrypt = "")
         {
+            if (string.IsNullOrEmpty(strEncrypt))
+                strEncrypt = mByteArray;
+
             try
             {
                 byte[] tmpKey = new byte[20];

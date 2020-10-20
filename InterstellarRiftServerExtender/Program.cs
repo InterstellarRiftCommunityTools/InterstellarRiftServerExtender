@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using IRSe.Modules;
 using IRSE.GUI.Forms;
 using IRSE.Managers;
 using IRSE.Modules;
@@ -48,7 +49,6 @@ namespace IRSE
         public static bool GUIDisabled => !Environment.UserInteractive;
 
         public static IEnumerator ConsoleCoroutine;
-        //public static IEnumerator GameConsoleCoroutine;
 
         public static bool PendingServerStart;
         private static bool _useGui;
@@ -106,6 +106,8 @@ namespace IRSE
             SetTitle();
 
             new FolderStructure().Build();
+
+            SteamCMD.PasswordEncoder = new PasswordEncoder();
 
             m_config = new Config();
             debugMode = m_config.Settings.DebugMode;
@@ -183,7 +185,9 @@ namespace IRSE
             }
             Console.WriteLine();
 
-            if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "IR.exe")))
+            new SteamCMD().GetSteamCMD();
+
+            if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "Build", "IR.exe")))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(string.Format(Program.Localization.Sentences["IRNotFound"]));
@@ -243,8 +247,6 @@ namespace IRSE
 
             Console.WriteLine();
             Console.ResetColor();
-
-            //new SteamCMD().GetSteamCMD();
 
             // Run anything that doesn't require the loading of IR references above here
 
@@ -334,8 +336,40 @@ namespace IRSE
                 ServerInstance.Instance.Stop(true);
         }
 
-        internal static void Restart()
+        internal static void Restart(bool prompt = true, bool consoleOnly = false)
         {
+            if (prompt)
+            {
+                if (_useGui && !consoleOnly)
+                {
+                    DialogResult result = MessageBox.Show(
+                        "IRSE has requested a Restart.\nPress 'Yes' to restart now. Or 'No' if you would like to restart later.",
+                        "IRSE Restart Requested.",
+                         MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                    if (result == DialogResult.No)
+                        return;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("IRSE Restart Requested.");
+                    Console.WriteLine("Press Y to proceed. Press N if you would like to restart later.");
+                    Console.WriteLine();
+                    Console.ResetColor();
+
+                    switch (Console.ReadKey(true).Key)
+                    {
+                        case ConsoleKey.Y:
+                            break;
+
+                        case ConsoleKey.N:
+                            Config.Instance.Settings.ManageSteamCMD = true;
+                            Config.Instance.Settings.DeclinedSteamCMDManagement = false;
+                            Config.Instance.SaveConfiguration(true);
+                            return;
+                    }
+                }
+            }
             if (ServerInstance.Instance != null)
             {
                 if (ServerInstance.Instance.IsRunning)

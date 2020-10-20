@@ -1,4 +1,5 @@
 ﻿using Game.Server;
+using IRSE.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,17 @@ namespace IRSE.Managers.ConsoleCommands
         {
             UpdateManager.GUIMode = false;
             UpdateManager.Instance.CheckForUpdates(true).GetAwaiter().GetResult();
+        }
+
+        [SvCommandMethod("resetsteamcmd", "Run this to restart the steamcmd checking prompts.", 3, new SvCommandMethod.ArgumentID[] { })]
+        public static void c_resetSteamCMD(object caller, List<string> parameters)
+        {
+            Config.Instance.Settings.DeclinedSteamCMDManagement = false;
+            Config.Instance.Settings.HashedSteamUserName = "";
+            Config.Instance.Settings.HashedSteamPassword = "";
+
+            Config.Instance.SaveConfiguration(true);
+            Program.Restart(true, true);
         }
 
         [SvCommandMethod("irsecheckupdate", "Checks for IRSE updates. Prompts user with new update details.", 3, new SvCommandMethod.ArgumentID[] { })]
