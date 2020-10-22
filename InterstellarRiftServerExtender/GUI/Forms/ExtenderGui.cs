@@ -38,15 +38,16 @@ namespace IRSE.GUI.Forms
 
         public void SetCulture(string cultureName)
         {
-
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultures(CultureTypes.AllCultures)
                 .Where(r => r.EnglishName == cultureName).FirstOrDefault();
 
             var resources = new ComponentResourceManager(this.GetType());
-            GetChildren(this).ToList().ForEach(c => {
+            GetChildren(this).ToList().ForEach(c =>
+            {
                 resources.ApplyResources(c, c.Name);
             });
         }
+
         public IEnumerable<Control> GetChildren(Control control)
         {
             var controls = control.Controls.Cast<Control>();
@@ -108,8 +109,7 @@ namespace IRSE.GUI.Forms
             }
 
             server_hesNewsLabel.Text =
-                "Welcome to IRSE!\nIt's Almost Ready!!\n" +
-                "Woot!";
+                "Hello! Thank you for downloading IRSE!\nPlease report your findings on the discord!";
 
             PluginsRefreshTimer.Enabled = true;
             PluginsRefreshTimer.Interval = (1000); // 1 secs
@@ -117,7 +117,6 @@ namespace IRSE.GUI.Forms
             {
                 UpdatePluginTab();
             };
-
         }
 
         private void Instance_OnServerStarting()
@@ -132,7 +131,6 @@ namespace IRSE.GUI.Forms
 
         private void Instance_OnServerStarted()
         {
-            
             Invoke(new MethodInvoker(delegate
             {
                 AddChatLine(Program.Localization.Sentences["ServerOnlineChat"]);
@@ -140,7 +138,7 @@ namespace IRSE.GUI.Forms
                 DisableControls(false);
 
                 PlayersRefreshTimer.Enabled = true;
-                
+
                 PlayersRefreshTimer.Interval = (1000); // 1 secs
                 PlayersRefreshTimer.Tick += delegate (object sender, EventArgs e)
                 {
@@ -181,7 +179,6 @@ namespace IRSE.GUI.Forms
         {
             if (server_server_Tabs.SelectedTab.Name == "ServerConfig")
             {
-
                 Game.Configuration.ServerConfig.Singleton.Save();
                 StatusBar.Text = Program.Localization.Sentences["ServerConfigSaved"];
             }
@@ -204,7 +201,7 @@ namespace IRSE.GUI.Forms
                 Game.Configuration.ServerConfig.Load();
                 serverconfig_properties.SelectedObject = ServerConfigProperties.Instance;
 
-                serverconfig_properties.Refresh();              
+                serverconfig_properties.Refresh();
                 StatusBar.Text = Program.Localization.Sentences["ReloadedServerConfig"];
             }
             else if (server_server_Tabs.SelectedTab.Name == "ExtenderConfig")
@@ -550,8 +547,6 @@ namespace IRSE.GUI.Forms
 
                     if (!plugins_tab_pluginslist.Items.ContainsKey(item.Name))
                         plugins_tab_pluginslist.Items.Add(item);
-
-
                 }
 
                 foreach (ListViewItem item in plugins_tab_pluginslist.Items)
@@ -587,7 +582,6 @@ namespace IRSE.GUI.Forms
             }
             catch (Exception)
             {
-                
             }
         }
 
@@ -607,7 +601,6 @@ namespace IRSE.GUI.Forms
 
                 if (pluginType == null)
                     return;
-
 
                 PropertyInfo info = pluginType.GetProperty("PluginControlForm");
                 if (info != null)// Form view
@@ -653,18 +646,23 @@ namespace IRSE.GUI.Forms
 
         private void Instance_OnUpdateChecked(Octokit.Release release)
         {
+            if (UpdateManager.WaitingForRestart)
+            {
+                StatusBar.Text = "An update is already in progress, Please restart IRSE.";
+                return;
+            }
+
             if (!UpdateManager.HasUpdate)
             {
-
                 StatusBar.Text = Program.Localization.Sentences["GuiRunningLatest"];
                 return;
             }
 
             var result = MessageBox.Show(string.Format(
-               Program.Localization.Sentences["GuiNewVersion"], 
-                UpdateManager.NewVersionNumber, 
-                release.Name, 
-                release.Assets.FirstOrDefault().DownloadCount, 
+               Program.Localization.Sentences["GuiNewVersion"],
+                UpdateManager.NewVersionNumber,
+                release.Name,
+                release.Assets.FirstOrDefault().DownloadCount,
                 release.Assets.First().CreatedAt.ToLocalTime(),
                 release.Body),
                 Program.Localization.Sentences["GuiIRSEUpdater"],
@@ -715,7 +713,6 @@ namespace IRSE.GUI.Forms
 
         private void ts_pc_restartserver_Click(object sender, EventArgs e)
         {
-
             if (!AreYouSure(Program.Localization.Sentences["RestartIRSE"]))
                 return;
 
@@ -734,7 +731,7 @@ namespace IRSE.GUI.Forms
         {
             Process.Start("http://patreon.com/irse");
         }
-      
+
         private void pm_pluginbrowserbtn_Click(object sender, EventArgs e)
         {
             BrowserForm.Visible = true;
@@ -745,7 +742,7 @@ namespace IRSE.GUI.Forms
             string language = (string)sc_languageSelector.SelectedItem;
 
             if (Config.Instance.Settings.CurrentLanguage != language)
-                Config.Instance.Settings.CurrentLanguage = language;       
+                Config.Instance.Settings.CurrentLanguage = language;
         }
     }
 }

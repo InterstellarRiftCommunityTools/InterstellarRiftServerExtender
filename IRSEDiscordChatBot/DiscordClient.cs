@@ -24,7 +24,6 @@ namespace IRSEDiscordChatBot
             {
                 Instance = this;
 
-
                 Services = ConfigureServices();
                 SocketClient = Services.GetRequiredService<DiscordSocketClient>();
 
@@ -58,13 +57,11 @@ namespace IRSEDiscordChatBot
             {
                 if (!botStarted)
                 {
-
                     SocketClient.Connected += _client_Connected;
                     SocketClient.Log += _client_Log;
                     SocketClient.LoggedIn += _client_LoggedIn;
 
                     Services.GetRequiredService<CommandService>().Log += _client_Log;
-
 
                     try
                     {
@@ -112,6 +109,9 @@ namespace IRSEDiscordChatBot
 
         internal static async void SendMessageToChannel(ulong channelID, string message)
         {
+            if (!MyConfig.Instance.Settings.Enabled || !botStarted)
+                return;
+
             try
             {
                 await (SocketClient.GetChannel(channelID) as IMessageChannel).SendMessageAsync(message);
@@ -124,6 +124,9 @@ namespace IRSEDiscordChatBot
 
         internal static async void SendMessageToMainChannel(string message)
         {
+            if (!MyConfig.Instance.Settings.Enabled || !botStarted)
+                return;
+
             try
             {
                 await (SocketClient.GetChannel(MyConfig.Instance.Settings.MainChannelID) as IMessageChannel).SendMessageAsync(message);

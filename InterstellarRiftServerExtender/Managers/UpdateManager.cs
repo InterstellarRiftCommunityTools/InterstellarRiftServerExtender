@@ -34,9 +34,13 @@ namespace IRSE.Managers
         public List<FileInfo> CurrentFileList = new List<FileInfo>();
 
         public static bool EnableAutoUpdates = true;
+        public static bool EnableAutoRestarts = false;
         public static bool GUIMode = false;
         public static bool HasUpdate = false;
         public static Version NewVersionNumber = new Version();
+
+        public static bool UpdaterDone = false;
+        public static bool WaitingForRestart = false;
 
         public UpdateManager()
         {
@@ -63,7 +67,6 @@ namespace IRSE.Managers
             }
 
             CheckForUpdates().GetAwaiter().GetResult();
-            
         }
 
         public async Task CheckForUpdates(bool forceUpdate = false)
@@ -92,6 +95,8 @@ namespace IRSE.Managers
                     client.DownloadDataAsync(new Uri(m_developmentRelease.Assets.FirstOrDefault().BrowserDownloadUrl));
                 else
                     client.DownloadDataAsync(new Uri(m_currentRelease.Assets.FirstOrDefault().BrowserDownloadUrl));
+
+                while (!UpdaterDone) ;
 
                 return true;
             }
@@ -124,8 +129,36 @@ namespace IRSE.Managers
                 if (!GUIMode)
                 {
                     ApplyUpdate();
-                    Console.WriteLine("IRSE:  Update has been applied. Please restart IRSE.exe to finish the update!");
+                    Console.WriteLine("IRSE:  Update has been applied.");
+
+                    if (Config.Instance.Settings.AutoRestartsEnable)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("IRSE:  Auto-Restarts enabled. Restarting...");
+                        Program.Restart();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("IRSE:  Press Y to restart IRSE. or N if you want to restart later.");
+                        Console.ResetColor();
+
+                        switch (Console.ReadKey().Key)
+                        {
+                            case ConsoleKey.Y:
+                                Program.Restart();
+                                break;
+
+                            case ConsoleKey.N:
+                                break;
+
+                            default:
+                                break;
+                        }
+                    }
                 }
+
+                UpdaterDone = true;
             }
             catch (Exception ex)
             {
@@ -161,8 +194,8 @@ namespace IRSE.Managers
                     }
                 }
 
-                //if (Config.Instance.Settings.AutoRestartsEnable && !GUIMode)
-                // IRSE.Restart();
+                if (EnableAutoRestarts)
+                    Program.Restart();
 
                 OnUpdateApplied?.Invoke(m_useDevRelease ? m_developmentRelease : m_currentRelease);
 
@@ -181,16 +214,17 @@ namespace IRSE.Managers
             {
                 if (!GUIMode) Console.WriteLine("Checking for IRSE updates...");
 
-                if (m_useDevRelease && m_developmentRelease == null) {                  
+                if (m_useDevRelease && m_developmentRelease == null)
+                {
                     Console.WriteLine("No Development Updates Exist");
                     return false;
                 }
-                    
-                if (!m_useDevRelease && m_currentRelease == null) {
+
+                if (!m_useDevRelease && m_currentRelease == null)
+                {
                     Console.WriteLine("No Updates Exist");
                     return false;
                 }
-
 
                 string devText = (m_useDevRelease ? "Development Version" : "");
 
@@ -206,7 +240,14 @@ namespace IRSE.Managers
                 if (m_useDevRelease)
                     localRelease = m_developmentRelease;
 
-                HasUpdate = (checkedVersion > Program.Version || forceUpdate);
+                if (WaitingForRestart)
+                {
+                    OnUpdateChecked?.Invoke(null);
+                    Console.WriteLine("IRSE: An update is already in-progress. Please restart IRSE with 'irserestart' to use the new features.");
+                    return true;
+                }
+
+                HasUpdate = (checkedVersion > Program.Version);
 
                 if (GUIMode)
                 {
@@ -216,8 +257,6 @@ namespace IRSE.Managers
 
                 if (HasUpdate)
                 {
-                    
-
                     Console.WriteLine($"IRSE:  A new {devText} version of IRSE has been detected.\r\n");
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine($"Name: { localRelease.Name }");
@@ -226,61 +265,69 @@ namespace IRSE.Managers
                     if (localRelease.Assets.Count > 0) Console.WriteLine($"Published Date: { localRelease.Assets.First().CreatedAt.ToLocalTime() }\r\n");
                     Console.ResetColor();
 
-                    if (!EnableAutoUpdates)
-                    {
-                        Console.WriteLine("Would you like to see the changes? (y/n)");
-
-                        if (Console.ReadKey().Key == ConsoleKey.Y)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Yellow;
-                            Console.WriteLine("\r\nChanges:\r\n" + localRelease.Body);
-                            Console.ResetColor();
-                        }
-
-                        if (m_useDevRelease)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("WARNING: Be absolutely sure that your server is backed up!");
-                            Console.WriteLine("WARNING: Development Versions CAN break your server!\r\n");
-                            Console.WriteLine($"Press Y to continue, or N to quit. (y/n)");
-                            Console.ResetColor();
-
-                            if (Console.ReadKey().Key == ConsoleKey.Y)
-                            {
-                                Console.WriteLine("\r\nWould you like to update with the development version now? (y/n)");
-
-                                if (Console.ReadKey().Key == ConsoleKey.Y)
-                                {
-                                    Console.WriteLine("\r\n");
-                                    DownloadLatestRelease(true);
-                                    return true;
-                                }
-                            }
-                            else if (Console.ReadKey().Key == ConsoleKey.N)
-                            {
-                                Console.WriteLine($"Canceling this {devText} update for now");
-                                return false;
-                            }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Would you like to update now? (y/n)");
-
-                            if (Console.ReadKey().Key == ConsoleKey.Y)
-                            {
-                                Console.WriteLine("\r\n");
-                                DownloadLatestRelease();
-                                return true;
-                            }
-                        }
-
-                        Console.WriteLine("IRSE:  Skipping update.. We'll ask next time you restart IRSE!");
-                    }
-                    else
+                    if (EnableAutoUpdates || forceUpdate)
                     {
                         Console.WriteLine("IRSE: Auto updating");
                         DownloadLatestRelease(m_useDevRelease);
+                        return true;
                     }
+
+                    Console.WriteLine("Would you like to see the changes? (y/n)");
+
+                    if (Console.ReadKey(true).Key == ConsoleKey.Y)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("\r\nChanges:\r\n" + localRelease.Body);
+                        Console.ResetColor();
+                    }
+
+                    if (m_useDevRelease)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("WARNING: Be absolutely sure that your server is backed up!");
+                        Console.WriteLine("WARNING: Development Versions CAN break your server!\r\n");
+                        Console.WriteLine($"Press Y to continue, or N to quit. (y/n)");
+                        Console.ResetColor();
+
+                        if (Console.ReadKey(true).Key == ConsoleKey.Y)
+                        {
+                            Console.WriteLine("\r\nWould you like to update with the development version now? (y/n)");
+
+                            switch (Console.ReadKey(true).Key)
+                            {
+                                case ConsoleKey.Y:
+                                    Console.WriteLine("\r\n");
+                                    DownloadLatestRelease(true);
+                                    return true;
+
+                                case ConsoleKey.N:
+                                    Console.WriteLine("IRSE:  Skipping update.. We'll ask next time you restart IRSE!");
+                                    return false;
+                            }
+                        }
+                        else if (Console.ReadKey(true).Key == ConsoleKey.N)
+                        {
+                            Console.WriteLine("IRSE:  Skipping update.. We'll ask next time you restart IRSE!");
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Would you like to update now? (y/n)");
+
+                        switch (Console.ReadKey(true).Key)
+                        {
+                            case ConsoleKey.Y:
+                                Console.WriteLine("\r\n");
+                                DownloadLatestRelease();
+                                return true;
+
+                            case ConsoleKey.N:
+                                Console.WriteLine("IRSE:  Skipping update.. We'll ask next time you restart IRSE!");
+                                return false;
+                        }
+                    }
+
                     return true;
                 }
                 else
@@ -298,15 +345,13 @@ namespace IRSE.Managers
         public async Task GetLatestReleaseInfo()
         {
             try
-            {               
+            {
                 m_currentRelease = await _git.Repository.Release.GetLatest(Organization, Repository).ConfigureAwait(false);
 
                 var releases = await _git.Repository.Release.GetAll(Organization, Repository).ConfigureAwait(false);
                 m_developmentRelease = releases.FirstOrDefault(x => x.Prerelease == true);
-                
-
             }
-            catch(NotFoundException)
+            catch (NotFoundException)
             {
                 Console.WriteLine("Repository or Releases Not found error, check the organization and repository settings and that releases exist.");
             }
@@ -315,9 +360,6 @@ namespace IRSE.Managers
                 Console.WriteLine("Update Failed (GetLatestReleaseInfo)" + ex.ToString());
             }
         }
-
-
-
 
         public delegate void UpdateEventHandler(Release release);
 

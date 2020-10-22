@@ -9,7 +9,13 @@ namespace IRSE
     public enum ServerFolderName
     {
         Base,
-        Data
+        AppData,
+        Backups,
+        Dumps,
+        Logs,
+        Server,
+        UserDB,
+        Workshop
     }
 
     /// <summary>
@@ -17,7 +23,8 @@ namespace IRSE
     /// </summary>
     public enum ServerFileName
     {
-        IRConfig
+        IRConfig,
+        GameDB,
     }
 
     #endregion Server Name Enums
@@ -41,7 +48,8 @@ namespace IRSE
     public enum IRSEFileName
     {
         NLogConfig,
-        Config
+        Config,
+        Exe
     }
 
     #endregion IRSE Name Enums
@@ -50,14 +58,21 @@ namespace IRSE
     {
         #region Server Folder Name Fields
 
-        public static readonly string ServerBaseFolderName = "";
-        public static readonly string ServerDataFolderName = "%APPDATA%/InterstellarRift";
+        public static readonly string ServerBaseFolder = "InterstellarRift";
+        public static readonly string ServerDataFolderName = "InterstellarRift";
+        public static readonly string ServerBackupsFolderName = "backups";
+        public static readonly string ServerDumpsFolderName = "Dumps";
+        public static readonly string ServerLogsFolderName = "Logs";
+        public static readonly string ServerServerFolderName = "server";
+        public static readonly string ServerUserDBFolderName = "userdb";
+        public static readonly string ServerWorkshopFolderName = "workshop";
 
         #endregion Server Folder Name Fields
 
         #region Server File Name Fields
 
         public static readonly string IRConfigFileName = "server.json";
+        public static readonly string IRGameDBFileName = "game.db";
 
         #endregion Server File Name Fields
 
@@ -82,29 +97,33 @@ namespace IRSE
 
         #region FilePath Methods
 
-        public static string GetFilePath(ServerFileName serverFileName, bool fullPath = true)
+        public static string GetFilePath(ServerFileName serverFileName)
         {
             string file = "";
             switch (serverFileName)
             {
+                case ServerFileName.GameDB:
+                    file = Path.Combine(GetFolderPath(ServerFolderName.AppData), IRGameDBFileName);
+                    break;
+
                 case ServerFileName.IRConfig:
-                    file = Path.Combine(GetFolderPath(ServerFolderName.Base, fullPath), IRConfigFileName);
+                    file = Path.Combine(GetFolderPath(ServerFolderName.AppData), IRConfigFileName);
                     break;
             }
             return file;
         }
 
-        public static string GetFilePath(IRSEFileName IRSEFileName, bool fullPath = true)
+        public static string GetFilePath(IRSEFileName IRSEFileName)
         {
             string file = "";
             switch (IRSEFileName)
             {
                 case IRSEFileName.Config:
-                    file = Path.Combine(GetFolderPath(IRSEFolderName.Config, fullPath), IRSEConfigFileName);
+                    file = Path.Combine(GetFolderPath(IRSEFolderName.Config), IRSEConfigFileName);
                     break;
 
                 case IRSEFileName.NLogConfig:
-                    file = Path.Combine(GetFolderPath(IRSEFolderName.Config, fullPath), NLogConfigFileName);
+                    file = Path.Combine(GetFolderPath(IRSEFolderName.Config), NLogConfigFileName);
                     break;
             }
             return file;
@@ -114,27 +133,51 @@ namespace IRSE
 
         #region FolderPath Methods
 
-        public static string GetFolderPath(ServerFolderName serverFolderName, bool fullPath = false)
+        public static string GetFolderPath(ServerFolderName serverFolderName)
         {
             string path = "";
             switch (serverFolderName)
             {
                 case ServerFolderName.Base:
-                    path = ServerBaseFolderName;
+                    path = Path.Combine(Path.GetDirectoryName(Program.EntryAssembly.Location));
                     break;
 
-                case ServerFolderName.Data:
-                    path = Path.Combine(IRSERootFolderName, ServerDataFolderName);
+                case ServerFolderName.AppData:
+                    path = Path.Combine(ServerBaseFolder, ServerDataFolderName);
+                    break;
+
+                case ServerFolderName.Backups:
+                    path = Path.Combine(ServerBaseFolder, ServerBackupsFolderName);
+                    break;
+
+                case ServerFolderName.Dumps:
+                    path = Path.Combine(ServerBaseFolder, ServerDumpsFolderName);
+                    break;
+
+                case ServerFolderName.Logs:
+                    path = Path.Combine(ServerBaseFolder, ServerLogsFolderName);
+                    break;
+
+                case ServerFolderName.Server:
+                    path = Path.Combine(ServerBaseFolder, ServerServerFolderName);
+                    break;
+
+                case ServerFolderName.UserDB:
+                    path = Path.Combine(ServerBaseFolder, ServerUserDBFolderName);
+                    break;
+
+                case ServerFolderName.Workshop:
+                    path = Path.Combine(ServerBaseFolder, ServerWorkshopFolderName);
+                    break;
+
+                default:
                     break;
             }
-
-            return fullPath ? Path.Combine(ServerBaseFolderName, path) : path;
+            return path;
         }
 
-        public static string GetFolderPath(IRSEFolderName IRSEFolder, bool fullPath = false)
+        public static string GetFolderPath(IRSEFolderName IRSEFolder)
         {
-            string fullBasePath = FolderStructure.RootFolderPath;
-
             string path = "";
             switch (IRSEFolder)
             {
@@ -166,7 +209,7 @@ namespace IRSE
                     path = Path.Combine(IRSERootFolderName, IRSEUpdatesFolderName);
                     break;
             }
-            return fullPath ? Path.Combine(fullBasePath, path) : path;
+            return Path.Combine(FolderStructure.RootFolderPath, path);
         }
 
         #endregion FolderPath Methods

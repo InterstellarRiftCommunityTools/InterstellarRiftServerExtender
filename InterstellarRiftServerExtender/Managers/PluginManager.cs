@@ -57,7 +57,7 @@ namespace IRSE.Managers
 
             //mainLog.Warn(String.Format("Loading {0} Plugins!", m_discoveredPlugins.Count));
             foreach (PluginInfo Plugin in m_discoveredPlugins)
-            {                
+            {
                 LoadPlugin(Plugin);
             }
         }
@@ -69,9 +69,8 @@ namespace IRSE.Managers
             try
             {
                 Plugin.MainClass = (PluginBase)Activator.CreateInstance(Plugin.MainClassType);
-                
+
                 Plugin.MainClass.OnLoad(Plugin.Directory);
-                
             }
             catch (Exception ex)
             {
@@ -97,7 +96,7 @@ namespace IRSE.Managers
                     {
                         SetupTypes(Plugin);
 
-                        ConsoleCommandManager.InitPluginCommands(ConsoleCommandManager.IRCommandSystem, Plugin);
+                        ConsoleCommandManager.InitPluginCommands(ConsoleCommandManager.IRSECommandSystem, Plugin);
 
                         Plugin.MainClass.Init();
 
@@ -118,7 +117,6 @@ namespace IRSE.Managers
                 mainLog.Warn(string.Format(Program.Localization.Sentences["FailedInitPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
             }
             m_loadedPlugins.Find(p => p.MainClass.Enabled == PluginInitialized);
-            
         }
 
         public void ShutdownAllPlugins()
@@ -150,7 +148,6 @@ namespace IRSE.Managers
                 }
                 catch (Exception ex)
                 {
-
                     mainLog.Error(string.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugin.Assembly.GetName().Name, ex.ToString()));
                 }
                 m_loadedPlugins.Remove(Plugin);
@@ -171,7 +168,7 @@ namespace IRSE.Managers
                         return;
                     }
                     if (pb.GetName.ToLower() == Plugin)
-                    {                                                     
+                    {
                         mainLog.Warn(String.Format(Program.Localization.Sentences["ShutdownPlugin"], Plugininfo.Assembly.GetName().Name));
 
                         pb.DisablePlugin(false);
@@ -295,7 +292,6 @@ namespace IRSE.Managers
                 plugin.Assembly = libraryAssembly;
                 plugin.Directory = Path.GetDirectoryName(library);
 
-
                 Type[] PluginTypes = libraryAssembly.GetExportedTypes();
 
                 foreach (Type PluginType in PluginTypes)
@@ -305,7 +301,7 @@ namespace IRSE.Managers
                         //mainLog.Warn("Loading Plugin Located at " + library);
 
                         PluginAttribute attr = PluginType.GetCustomAttribute<PluginAttribute>();
-                    
+
                         plugin.MainClassType = PluginType;
                         plugin.Name = attr.Name;
                         continue;
@@ -339,7 +335,7 @@ namespace IRSE.Managers
 
             EventManager.Instance.Events[type].Add(listener);
 
-           // mainLog.Info("Found Event Function : " + parameters[0].ParameterType.Name + " For EventType : " + type.Name);
+            // mainLog.Info("Found Event Function : " + parameters[0].ParameterType.Name + " For EventType : " + type.Name);
             return plugin;
         }
 
@@ -356,8 +352,6 @@ namespace IRSE.Managers
                 return false;
             }
         }
-
-
 
         #endregion Methods
     }

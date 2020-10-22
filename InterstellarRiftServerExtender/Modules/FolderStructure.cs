@@ -14,7 +14,6 @@ namespace IRSE.Modules
 
         public FolderStructure()
         {
-
             _assembly = Assembly.GetExecutingAssembly();
 
             List<string> directories = new List<string>();
@@ -49,10 +48,14 @@ namespace IRSE.Modules
                         string path = string.Empty;
                         switch (Path.GetExtension(resource))
                         {
+                            case ".dll":
+                                path = ExtenderGlobals.GetFolderPath(IRSEFolderName.Bin);
+                                break;
+
                             case ".ini":
                             case ".config":
                             case ".json":
-                                path = ExtenderGlobals.GetFolderPath(IRSEFolderName.Config, false);
+                                path = ExtenderGlobals.GetFolderPath(IRSEFolderName.Config);
                                 break;
 
                             default:

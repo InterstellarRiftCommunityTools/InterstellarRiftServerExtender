@@ -83,11 +83,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="Resources\CefSharp.BrowserSubprocess.Core.dll" />
-    <None Include="Resources\CefSharp.Core.dll" />
-    <None Include="Resources\CefSharp.dll" />
-    <None Include="Resources\CefSharp.WinForms.dll" />
-    <None Include="Resources\MarkdownDeep.dll" />
+    <EmbeddedResource Include="Resources\0Harmony.dll" />
+    <EmbeddedResource Include="Resources\MarkdownDeep.dll" />
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.ru-RU.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -111,9 +108,11 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Resources\Newtonsoft.Json.dll" />
-    <None Include="Resources\NLog.dll" />
-    <None Include="Resources\Octokit.dll" />
+    <EmbeddedResource Include="Resources\Newtonsoft.Json.dll" />
+    <EmbeddedResource Include="Resources\NLog.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Octokit.dll" />
     <None Include="App.config" />
     <Content Include="Assets\irse_icon.ico" />
     <EmbeddedResource Include="Assets\patreon.png" />
@@ -129,7 +128,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Resources\log4net.config" />
-    <None Include="Resources\NLog.config" />
+    <EmbeddedResource Include="Resources\NLog.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\Chat.cs" />
@@ -175,6 +174,7 @@
     <Compile Include="Modules\Config.cs" />
     <Compile Include="Modules\CrashDump.cs" />
     <Compile Include="Modules\FolderStructure.cs" />
+    <Compile Include="Modules\HarmonyPatches\CommandSystemPatch.cs" />
     <Compile Include="Modules\Localization.cs" />
     <Compile Include="Modules\PasswordEncoder.cs" />
     <Compile Include="Modules\GameConfig\ServerConfig.cs" />
