@@ -1,4 +1,5 @@
-﻿using Game.Framework;
+﻿using Game.Configuration;
+using Game.Framework;
 using Game.Server;
 using IRSE.Managers.ConsoleCommands;
 using IRSE.Managers.Plugins;
@@ -13,6 +14,7 @@ namespace IRSE.Managers
 {
     internal class ConsoleCommandManager
     {
+        private static readonly Logger log = (Logger)Logger.Get(MethodBase.GetCurrentMethod().DeclaringType.ToString());
         public static CommandSystem IRSECommandSystem { get; private set; }
 
         public static void InitExtendedIRCommands(CommandSystem commandSystem, ControllerManager controllers)
@@ -101,16 +103,33 @@ namespace IRSE.Managers
 
         private static bool i_securityHandler(object sender, int requiredRights)
         {
-            return true;
+            if (!(sender is Player))
+            {
+                if ((requiredRights & SvCommandMethod.ChatOnly) == SvCommandMethod.ChatOnly)
+                    return false;
+                if (requiredRights == 4)
+                    return false; // for now
+                if (requiredRights == 5) // server side irse commands
+                    return sender is ControllerManager;
+                return true;
+            }
+            requiredRights = requiredRights << 1 >> 1;
+            return ((Player)sender).serverRights >= (ServerRights)requiredRights;
         }
 
         private static void i_errorHandler(object caller, string command, string message)
         {
-            IRSECommandSystem.OutputHandler(caller, message);
+            i_outputHandler(caller, message);
+            if (!(caller is ControllerManager) || command.Length == 0)
+                return;
+            log.Info("Attempted to execute the following command: " + command, "Admin Commands");
         }
 
         private static void i_executeHandler(object caller, string command)
         {
+            if (!(caller is ControllerManager) || command.Length == 0)
+                return;
+            log.Info("Executed the following command: " + command, "Admin Commands");
         }
 
         private static void i_outputHandler(object caller, string message)

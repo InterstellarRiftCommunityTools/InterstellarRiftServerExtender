@@ -83,6 +83,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Resources\0Harmony.dll" />
     <EmbeddedResource Include="Resources\MarkdownDeep.dll" />
     <EmbeddedResource Include="GUI\Forms\Browser\BrowserForm.ru-RU.resx">
       <DependentUpon>BrowserForm.cs</DependentUpon>

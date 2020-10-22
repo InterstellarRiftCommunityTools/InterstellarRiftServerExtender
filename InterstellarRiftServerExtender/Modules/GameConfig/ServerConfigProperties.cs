@@ -11,7 +11,7 @@ namespace IRSE.Modules.GameConfig
 {
     public class ServerConfigProperties
     {
-        private static ServerConfigProperties m_instance; 
+        private static ServerConfigProperties m_instance;
         public static ServerConfigProperties Instance => m_instance == null ? m_instance = new ServerConfigProperties() : m_instance;
 
         public ServerConfigProperties()
@@ -19,6 +19,7 @@ namespace IRSE.Modules.GameConfig
         }
 
         #region Manual Properties
+
         [Category("Welcome message")]
         [Description("The color of the title of the welcome popup people will see when they connect to the server")]
         [Editor(typeof(ColorEditor), typeof(UITypeEditor))]
@@ -65,9 +66,15 @@ namespace IRSE.Modules.GameConfig
             set { ServerConfig.Singleton.FactionStarterShips = value; }
         }
 
-        #endregion Manual Properties
+        [DisplayName("Enable Command Ambiguity Checks")]
+        [Category("Server Settings[LINUX]")]
+        [Description("Enables Server Command Ambiguity Checks. Disable if using 7th Core's Script.")]
+        public bool EnableCommandAmbiguityChecks
+        { get { return ServerConfig.Singleton.EnableCommandAmbiguityChecks; } set { ServerConfig.Singleton.EnableCommandAmbiguityChecks = value; } }
 
-        //---<STARTGEN>---
+    #endregion Manual Properties
+
+    //---<STARTGEN>---
         [DisplayName("Server Name")]
         [Category("Server Settings")]
         [Description("The name that will advertise the server in the server list")]
@@ -130,7 +137,7 @@ namespace IRSE.Modules.GameConfig
 
         [DisplayName("Create Ghost Clients")]
         [Category("Ghost Clients")]
-        [Description("(DISABLED. IRSE STARTS THEM) Whether or not the server will run separate processes so it can save without stalling.")]
+        [Description("Whether or not ther server will run separate processes so it can save without stalling.")]
         public System.Boolean CreateGhostClients
         { get { return ServerConfig.Singleton.CreateGhostClients; } set { ServerConfig.Singleton.CreateGhostClients = value; } }
 

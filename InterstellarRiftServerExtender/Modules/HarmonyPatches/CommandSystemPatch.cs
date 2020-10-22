@@ -12,21 +12,6 @@ using IRSE.Managers;
 namespace IRSE.Modules.HarmonyPatches
 {
     /// <summary>
-    /// This class is supposed to help 7th cores script enter commands.
-    /// </summary>
-    [HarmonyPatch(typeof(CommandSystem), "RemoveAmbiguityStep")]
-    internal static class RemoveAmbiguityStep
-    {
-        private static void Prefix(object sender, CommandArgument[] args, List<string> newValues, int i, CommandSystem.AmbiguityResultDelegate resultCallback)
-        {
-            //if (Config.Instance.Settings.DisableServerCommandAmbiguity)
-            //{
-            //}
-            FileLog.Log($"Sender: {sender} Args: [{args.Join()}] Values: [{newValues.Join()}] I: {i}");
-        }
-    }
-
-    /// <summary>
     /// This class is stopping the internal command hooks from creating handlers as i handle that to insert my own commands.
     /// </summary>
     [HarmonyPatch(typeof(SvCommands), "InitCommandHooks")]

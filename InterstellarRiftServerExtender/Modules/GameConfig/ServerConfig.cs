@@ -126,7 +126,7 @@ namespace IRSE.Modules.GameConfig
                 "}\n" +
                 "\n";
 
-            File.WriteAllText(@"F:\Wrex\Desktop\New folder\ServerConfigProperties.cs", scriptTop + code + scriptBottom);
+            File.WriteAllText(@"F:\Wrex\Desktop\ServerConfigProperties.cs", scriptTop + code + scriptBottom);
 
             return false;
         }

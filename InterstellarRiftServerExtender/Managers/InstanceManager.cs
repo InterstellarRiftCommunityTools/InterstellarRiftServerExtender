@@ -99,10 +99,10 @@ namespace IRSE.Managers
             m_serverThread = null;
 
             // Wrap IR.exe
-            m_assembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Build", "IR.exe"));
+            m_assembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "IR.exe"));
 
             // Wrap Aluna Framework as GameState was moved here.
-            m_frameworkAssembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Build", "AlunaNetFramework.dll"));
+            m_frameworkAssembly = Assembly.LoadFrom(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AlunaNetFramework.dll"));
 
             // Wrap both assemblies
             m_serverWrapper = new ServerWrapper(m_assembly, m_frameworkAssembly);

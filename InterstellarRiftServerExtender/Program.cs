@@ -86,8 +86,8 @@ namespace IRSE
             _handler += new EventHandler(Handler);
             SetConsoleCtrlHandler(_handler, true);
 
-            if (!Dev)
-                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
+            //if (!Dev)
+            //AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CrashDump.CurrentDomain_UnhandledException);
 
             CurrentGameVerson = SteamCMD.GetGameVersion();
             Console.Title = WindowTitle;
@@ -185,9 +185,15 @@ namespace IRSE
             }
             Console.WriteLine();
 
-            new SteamCMD().GetSteamCMD();
+            if (args.Contains("-noupdateir") || !Config.Settings.EnableAutomaticUpdates)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine(string.Format(Program.Localization.Sentences["NoUpdateIR"]));
+            }
+            else
+                new SteamCMD().GetSteamCMD();
 
-            if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "Build", "IR.exe")))
+            if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "IR.exe")))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine(string.Format(Program.Localization.Sentences["IRNotFound"]));
@@ -202,19 +208,9 @@ namespace IRSE
         // this is where stuff goes!
         private void Run(string[] args)
         {
-            //Harmony
-            if (Harmony.DEBUG)
-                Console.WriteLine("IRSE: Harmony Debug enabled, logging will be in the file 'harmony.log.txt' on your desktop.");
-
-            Console.WriteLine("Initializing Harmony Patches...");
-            Harmony = new Harmony("com.tse.irse");
-            Harmony.PatchAll();
-            Console.WriteLine();
-
             // This is for args that should be used before IRSE loads
 
             _useGui = true;
-            Console.ForegroundColor = ConsoleColor.Green;
 
             if (args.Contains("-nogui"))
             {
@@ -233,12 +229,6 @@ namespace IRSE
                 Console.WriteLine();
             }
 
-            if (args.Contains("-noupdateir") || !Config.Settings.EnableAutomaticUpdates)
-            {
-                SteamCMD.AutoUpdateIR = false;
-                Console.WriteLine(string.Format(Program.Localization.Sentences["NoUpdateIR"]));
-            }
-
             if (args.Contains("-autorestart") || Config.Settings.AutoRestartsEnable)
             {
                 UpdateManager.EnableAutoRestarts = true;
@@ -249,6 +239,15 @@ namespace IRSE
             Console.ResetColor();
 
             // Run anything that doesn't require the loading of IR references above here
+
+            //Harmony
+            if (Harmony.DEBUG)
+                Console.WriteLine("IRSE: Harmony Debug enabled, logging will be in the file 'harmony.log.txt' on your desktop.");
+
+            Console.WriteLine("Initializing Harmony Patches...");
+            Harmony = new Harmony("com.tse.irse");
+            Harmony.PatchAll();
+            Console.WriteLine();
 
             m_serverInstance = new ServerInstance();
 
@@ -308,6 +307,9 @@ namespace IRSE
                 Console.ResetColor();
                 StartServer();
             }
+
+            // run only when they change properties to update the non manual section of ServerConfigProperties
+            //new Modules.GameConfig.ServerConfigConverter().BuildAndUpdateConfigProperties();
 
             //console logic for commands
             ReadConsoleCommands(args);

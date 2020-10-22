@@ -42,8 +42,6 @@ namespace IRSE.Modules
 
             usePreReleaseVersions = EnableDevelopmentVersion;
 
-            DisableServerCommandAmbiguity = false;
-
             EnableHarmonyDebug = false;
 
             DeclinedSteamCMDManagement = false;
@@ -191,10 +189,6 @@ namespace IRSE.Modules
             "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public int CheckUpdatesTime { get; set; }
 
-        [DisplayName("Disable Server Command Ambiguity")]
-        [Category("IR Custom Configuration Variables")]
-        [Description("Disables Server Command Ambiguity. Enable if using 7th Core's Script.")]
-        public bool DisableServerCommandAmbiguity { get; set; }
 
         [DisplayName("Enable Harmony Debug")]
         [Category("Development")]
