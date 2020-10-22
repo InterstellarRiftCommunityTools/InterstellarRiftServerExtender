@@ -38,7 +38,6 @@ namespace IRSE
 
         private static Thread uiThread;
 
-        private static NLog.Logger mainLog;
         public static string[] CommandLineArgs = new string[50];
 
         private static bool debugMode = true;
@@ -101,23 +100,18 @@ namespace IRSE
         [MTAThread]
         private static void Main(string[] args)
         {
+            new FolderStructure().Build();
+
             CommandLineArgs = args;
 
             SetTitle();
-
-            new FolderStructure().Build();
 
             SteamCMD.PasswordEncoder = new PasswordEncoder();
 
             m_config = new Config();
             debugMode = m_config.Settings.DebugMode;
 
-            string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
-            LogManager.Configuration = new XmlLoggingConfiguration(configPath);
-
             m_localization = new Localization();
-
-            Console.WriteLine(m_config.Settings.CurrentLanguage);
 
             m_localization.Load(m_config.Settings.CurrentLanguage);
 
@@ -161,8 +155,6 @@ namespace IRSE
                 }
             };
 
-            mainLog = LogManager.GetCurrentClassLogger();
-
             if (Program.Localization.Sentences.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -190,8 +182,8 @@ namespace IRSE
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine(string.Format(Program.Localization.Sentences["NoUpdateIR"]));
             }
-            else
-                new SteamCMD().GetSteamCMD();
+            //else
+            //new SteamCMD().GetSteamCMD();
 
             if (!File.Exists(Path.Combine(FolderStructure.RootFolderPath, "IR.exe")))
             {
@@ -209,6 +201,9 @@ namespace IRSE
         private void Run(string[] args)
         {
             // This is for args that should be used before IRSE loads
+
+            string configPath = ExtenderGlobals.GetFilePath(IRSEFileName.NLogConfig);
+            LogManager.Configuration = new XmlLoggingConfiguration(configPath);
 
             _useGui = true;
 
@@ -317,7 +312,7 @@ namespace IRSE
 
         private void Instance_OnServerStarted()
         {
-            mainLog.Warn(string.Format(Program.Localization.Sentences["GameConsoleEnabled"]));
+            Console.WriteLine(string.Format(Program.Localization.Sentences["GameConsoleEnabled"]));
         }
 
         private static void StartServer()
@@ -333,7 +328,7 @@ namespace IRSE
 
         public static void CloseIRSE()
         {
-            mainLog.Warn(string.Format(Program.Localization.Sentences["StopRunningServers"]));
+            Console.WriteLine(string.Format(Program.Localization.Sentences["StopRunningServers"]));
             if (ServerInstance.Instance != null)
                 ServerInstance.Instance.Stop(true);
         }
