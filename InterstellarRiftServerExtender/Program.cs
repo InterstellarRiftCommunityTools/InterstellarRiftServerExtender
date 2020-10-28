@@ -74,6 +74,7 @@ namespace IRSE
         public static Assembly EntryAssembly => Assembly.GetEntryAssembly();
         public static Version Version => EntryAssembly.GetName().Version;
         public static string ForGameVersion => EntryAssembly.GetCustomAttributes(typeof(SupportedGameAssemblyVersion), false).Cast<SupportedGameAssemblyVersion>().First().someText;
+        public static string MinGameVersion => EntryAssembly.GetCustomAttributes(typeof(MinimumGameAssemblyVersion), false).Cast<MinimumGameAssemblyVersion>().First().someText;
         public static String VersionString => Version.ToString(4) + $" Branch: {ThisAssembly.Git.Branch}";
         public static String WindowTitle => string.Format("IsR Server Extender V{0}", VersionString);
 
@@ -168,13 +169,10 @@ namespace IRSE
             Console.WriteLine(string.Format(Program.Localization.Sentences["Initialization"], Version));
 
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"Repo URL: {ThisAssembly.Git.RepositoryUrl}");
             Console.WriteLine($"Git Branch: {ThisAssembly.Git.Branch}");
             if (Dev)
             {
                 Console.WriteLine($"Git Commit Date: {ThisAssembly.Git.CommitDate}");
-                Console.WriteLine($"Git Commit: {ThisAssembly.Git.Commit}");
-                Console.WriteLine($"Git SHA: {ThisAssembly.Git.Sha}");
             }
             Console.WriteLine();
 
@@ -250,10 +248,6 @@ namespace IRSE
             ThisGameVersion = m_serverInstance.Assembly.GetName().Version.ToString();
 
             Console.ForegroundColor = ConsoleColor.White;
-            Console.Write(string.Format(Program.Localization.Sentences["ForGameVersion"]));
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write(ForGameVersion + "\n");
-            Console.ForegroundColor = ConsoleColor.White;
             Console.Write(string.Format(Program.Localization.Sentences["ThisGameVersion"]));
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(ThisGameVersion + "\n");
@@ -262,7 +256,7 @@ namespace IRSE
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write(SteamCMD.GetGameVersion() + "\n");
             Console.ForegroundColor = ConsoleColor.White;
-
+            Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Yellow;
             if (new Version(ThisGameVersion) < SteamCMD.GetGameVersion())
             {
@@ -271,7 +265,20 @@ namespace IRSE
 
             if (new Version(ForGameVersion) < new Version(ThisGameVersion))
             {
-                Console.WriteLine(string.Format(Program.Localization.Sentences["IRNewer"]));
+                Console.Write("This version of IR is past what this IRSE was built on.  ");
+
+                if (new Version(ThisGameVersion) < new Version(MinGameVersion))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("It's REQUIRED that you update your version of IRSE to avoid crashes and/or errors. Please update to the latest IRSE");
+                }
+                else
+                {
+                    Console.Write("It's suggested that you check for IRSE updates as soon as you can, though its not required until you experience problems.");
+                }
+                Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine("Remember that IRSE is in testing currently, It's recommended that you update to each and every IRSE release until we have a master release! (Aka non development!) ");
             }
 
             Console.WriteLine();
@@ -538,6 +545,21 @@ namespace IRSE
         }
 
         public SupportedGameAssemblyVersion(string txt)
+        {
+            someText = txt;
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Assembly)]
+    public class MinimumGameAssemblyVersion : Attribute
+    {
+        public string someText;
+
+        public MinimumGameAssemblyVersion() : this(string.Empty)
+        {
+        }
+
+        public MinimumGameAssemblyVersion(string txt)
         {
             someText = txt;
         }

@@ -62,15 +62,15 @@ namespace IRSE.Managers
                 CurrentFileList.Add(currentFile);
             }
 
-            CheckForUpdates().GetAwaiter().GetResult();
+            CheckForUpdates(false, true).GetAwaiter().GetResult();
         }
 
-        public async Task CheckForUpdates(bool forceUpdate = false)
+        public async Task CheckForUpdates(bool forceUpdate = false, bool onlyCheck = false)
         {
             try
             {
                 await GetLatestReleaseInfo();
-                CheckVersion(forceUpdate);
+                CheckVersion(forceUpdate, onlyCheck);
             }
             catch (Exception ex)
             {
@@ -204,7 +204,7 @@ namespace IRSE.Managers
             return false;
         }
 
-        public bool CheckVersion(bool forceUpdate = false)
+        public bool CheckVersion(bool forceUpdate = false, bool onlyCheck = false)
         {
             try
             {
@@ -260,6 +260,12 @@ namespace IRSE.Managers
                     if (localRelease.Assets.Count > 0) Console.WriteLine($"Total Downloads: { localRelease.Assets.First().DownloadCount }");
                     if (localRelease.Assets.Count > 0) Console.WriteLine($"Published Date: { localRelease.Assets.First().CreatedAt.ToLocalTime() }\r\n");
                     Console.ResetColor();
+
+                    if (onlyCheck || !forceUpdate)
+                    {
+                        Console.WriteLine("Run checkupdate for more information or run forceupdate to just update!");
+                        return true;
+                    }
 
                     if (EnableAutoUpdates || forceUpdate)
                     {

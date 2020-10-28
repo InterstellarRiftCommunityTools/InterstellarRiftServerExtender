@@ -35,3 +35,4 @@ using IRSE;
 [assembly: AssemblyVersion("0.1.7.2")]
 [assembly: AssemblyFileVersion("0.1.7.2")]
 [assembly: SupportedGameAssemblyVersion("1.0.0.90")]
+[assembly: MinimumGameAssemblyVersion("1.0.0.90")] // only change this on game breaking irse bugs

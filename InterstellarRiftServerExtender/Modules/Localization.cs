@@ -16,7 +16,7 @@ namespace IRSE.Modules
         };
 
         public static string PathFolder = Path.Combine(FolderStructure.IRSEFolderPath, "localization");
-        public static Version Version = new Version("0.0.0.7");
+        public static Version Version = new Version("0.0.0.10");
         private Dictionary<string, string> m_sentences = new Dictionary<string, string>();
         private static NLog.Logger mainLog;
 
@@ -43,6 +43,8 @@ namespace IRSE.Modules
 
         public void Load(string languageName)
         {
+            Localization.CreateDefault(); // just create the file each time to avoid needing to update the file as well
+
             string fileName;
 
             try
@@ -103,8 +105,8 @@ namespace IRSE.Modules
                 resXresourceWriter.AddResource("ForGameVersion", "For Game Version: ");
                 resXresourceWriter.AddResource("ThisGameVersion", "This Game Version: ");
                 resXresourceWriter.AddResource("OnlineGameVersion", "Online Game Version: ");
-                resXresourceWriter.AddResource("NewIRVersion", "There is a new version of Interstellar Rift! Update your IR Installation!");
-                resXresourceWriter.AddResource("IRNewer", "Interstellar Rifts Version is newer than what this version of IRSE Supports, Check for IRSE updates!");
+                resXresourceWriter.AddResource("NewIRVersion", "There is a new version of Interstellar Rift! Update your IR Installation for new IR features!");
+                resXresourceWriter.AddResource("IRNewer", "Interstellar Rift version was updated past what this IRSE was built on. Note: Updating IRSE isn't always needed. It's only required when the minimum required version is raised!");
                 // Program.cs - Console Commands
                 resXresourceWriter.AddResource("LoadingGUI", "Loading GUI...");
                 resXresourceWriter.AddResource("HelpCommand", "help - this page ;)");
