@@ -45,6 +45,8 @@ namespace IRSE.Modules
             EnableHarmonyDebug = false;
 
             DeclinedSteamCMDManagement = false;
+
+            FirstRun = true;
         }
 
         [System.Runtime.Serialization.DataMember]

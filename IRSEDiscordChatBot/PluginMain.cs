@@ -97,7 +97,7 @@ namespace IRSEDiscordChatBot
 
         // These commands are implemented into IR's command system, using their system as well!
         // names: The names and aliases of your command, please prefix them with something unique to your plugin.
-        // requiredRight:  1 is anyone, 3 is Admin/Console
+        // requiredRight:  1 is anyone, 3 is Admin, 5 is Console Only
         // argumentIDs - if there isn't an argument that suits you in intellisense , leave it like new SvCommandMethod.ArgumentID[] { }
 
         //[TalkCommand] if this is enabled, it will only work from within the game. remove the requiredRight section with this to make it ingame only
@@ -183,7 +183,6 @@ namespace IRSEDiscordChatBot
         [IRSEEvent(EventType = typeof(ClientDisconnected))]
         public void Players_OnRemovePlayer(GenericEvent evt)
         {
-
             if (!MyConfig.Settings.Enabled)
                 return;
 
