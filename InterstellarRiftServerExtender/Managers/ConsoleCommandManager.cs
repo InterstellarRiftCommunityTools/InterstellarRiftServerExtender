@@ -110,7 +110,7 @@ namespace IRSE.Managers
                 if (requiredRights == 4)
                     return false; // for now
                 if (requiredRights == 5) // server side irse commands
-                    return sender is ControllerManager;
+                    return (sender is ControllerManager || sender is null);
                 return true;
             }
             requiredRights = requiredRights << 1 >> 1;

@@ -19,16 +19,12 @@ namespace IRSE.Managers
 
         private GitHubClient _git = new GitHubClient(new ProductHeaderValue("InterstellarRiftServerExtender"));
         private const string UpdateFileName = "update.zip";
-
-        private Release m_currentRelease;
-        private Release m_developmentRelease;
         private bool m_useDevRelease = Config.Instance.Settings.EnableDevelopmentVersion;
 
-        private static UpdateManager m_instance;
-        public static UpdateManager Instance => m_instance;
+        public static UpdateManager Instance { get; private set; }
 
-        public Release CurrentRelease => m_currentRelease;
-        public Release DevelopmentRelease => m_developmentRelease;
+        public Release CurrentRelease { get; private set; }
+        public Release DevelopmentRelease { get; private set; }
 
         public List<FileInfo> FileList = new List<FileInfo>();
         public List<FileInfo> CurrentFileList = new List<FileInfo>();
@@ -46,7 +42,7 @@ namespace IRSE.Managers
         {
             mainLog = NLog.LogManager.GetCurrentClassLogger();
 
-            m_instance = this;
+            Instance = this;
 
             ServicePointManager.DefaultConnectionLimit = 10;
 
@@ -92,9 +88,9 @@ namespace IRSE.Managers
                 client.DownloadDataCompleted += new DownloadDataCompletedEventHandler(ReleaseDownloaded);
 
                 if (getDevelopmentVersion)
-                    client.DownloadDataAsync(new Uri(m_developmentRelease.Assets.FirstOrDefault().BrowserDownloadUrl));
+                    client.DownloadDataAsync(new Uri(DevelopmentRelease.Assets.FirstOrDefault().BrowserDownloadUrl));
                 else
-                    client.DownloadDataAsync(new Uri(m_currentRelease.Assets.FirstOrDefault().BrowserDownloadUrl));
+                    client.DownloadDataAsync(new Uri(CurrentRelease.Assets.FirstOrDefault().BrowserDownloadUrl));
 
                 while (!UpdaterDone) ;
 
@@ -124,7 +120,7 @@ namespace IRSE.Managers
                 foreach (string file in Directory.GetFiles(updatePath, "*", SearchOption.AllDirectories))
                     FileList.Add(new FileInfo(file));
 
-                OnUpdateDownloaded?.Invoke(m_useDevRelease ? m_developmentRelease : m_currentRelease);
+                OnUpdateDownloaded?.Invoke(m_useDevRelease ? DevelopmentRelease : CurrentRelease);
 
                 if (!GUIMode)
                 {
@@ -197,7 +193,7 @@ namespace IRSE.Managers
                 if (EnableAutoRestarts)
                     Program.Restart();
 
-                OnUpdateApplied?.Invoke(m_useDevRelease ? m_developmentRelease : m_currentRelease);
+                OnUpdateApplied?.Invoke(m_useDevRelease ? DevelopmentRelease : CurrentRelease);
 
                 return true;
             }
@@ -214,13 +210,13 @@ namespace IRSE.Managers
             {
                 if (!GUIMode) Console.WriteLine("Checking for IRSE updates...");
 
-                if (m_useDevRelease && m_developmentRelease == null)
+                if (m_useDevRelease && DevelopmentRelease == null)
                 {
                     Console.WriteLine("No Development Updates Exist");
                     return false;
                 }
 
-                if (!m_useDevRelease && m_currentRelease == null)
+                if (!m_useDevRelease && CurrentRelease == null)
                 {
                     Console.WriteLine("No Updates Exist");
                     return false;
@@ -228,17 +224,17 @@ namespace IRSE.Managers
 
                 string devText = (m_useDevRelease ? "Development Version" : "");
 
-                var checkedVersion = new Version(m_currentRelease?.TagName);
+                var checkedVersion = new Version(CurrentRelease?.TagName);
 
                 if (m_useDevRelease)
-                    checkedVersion = new Version(m_developmentRelease?.TagName);
+                    checkedVersion = new Version(DevelopmentRelease?.TagName);
 
                 NewVersionNumber = checkedVersion;
 
-                Release localRelease = m_currentRelease;
+                Release localRelease = CurrentRelease;
 
                 if (m_useDevRelease)
-                    localRelease = m_developmentRelease;
+                    localRelease = DevelopmentRelease;
 
                 if (WaitingForRestart)
                 {
@@ -346,10 +342,10 @@ namespace IRSE.Managers
         {
             try
             {
-                m_currentRelease = await _git.Repository.Release.GetLatest(Organization, Repository).ConfigureAwait(false);
+                CurrentRelease = await _git.Repository.Release.GetLatest(Organization, Repository).ConfigureAwait(false);
 
                 var releases = await _git.Repository.Release.GetAll(Organization, Repository).ConfigureAwait(false);
-                m_developmentRelease = releases.FirstOrDefault(x => x.Prerelease == true);
+                DevelopmentRelease = releases.FirstOrDefault(x => x.Prerelease == true);
             }
             catch (NotFoundException)
             {
