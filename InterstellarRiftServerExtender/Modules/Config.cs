@@ -189,7 +189,6 @@ namespace IRSE.Modules
             "Used for automatic updates and releasing IRSE's resources after a set time.")]
         public int CheckUpdatesTime { get; set; }
 
-
         [DisplayName("Enable Harmony Debug")]
         [Category("Development")]
         [Description("Enable Harmony Debug, Enable this to generate harmony logs on your desktop.")]
@@ -205,6 +204,8 @@ namespace IRSE.Modules
                 }
             }
         }
+
+        public bool FirstRun { get; set; }
     }
 
     /// <summary>

@@ -93,14 +93,6 @@
             this.ServerTab = new System.Windows.Forms.TabPage();
             this.PlayersAndChatTab = new System.Windows.Forms.TabPage();
             this.CommandVisualizerTab = new System.Windows.Forms.TabPage();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.CV_PLAYERS_TAB = new System.Windows.Forms.TabPage();
-            this.CV_SYSTEMS_TAB = new System.Windows.Forms.TabPage();
-            this.CV_SHIPS_TAB = new System.Windows.Forms.TabPage();
-            this.CV_CREW_TAB = new System.Windows.Forms.TabPage();
-            this.CV_FLEET_TAB = new System.Windows.Forms.TabPage();
-            this.CV_ASTEROIDS_TAB = new System.Windows.Forms.TabPage();
-            this.CV_RIFTS_TAB = new System.Windows.Forms.TabPage();
             this.PluginsTab = new System.Windows.Forms.TabPage();
             this.label4 = new System.Windows.Forms.Label();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
@@ -157,8 +149,6 @@
             this.Tabs.SuspendLayout();
             this.ServerTab.SuspendLayout();
             this.PlayersAndChatTab.SuspendLayout();
-            this.CommandVisualizerTab.SuspendLayout();
-            this.tabControl2.SuspendLayout();
             this.PluginsTab.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.ts_sc_ctxmenu.SuspendLayout();
@@ -624,65 +614,9 @@
             // 
             // CommandVisualizerTab
             // 
-            this.CommandVisualizerTab.Controls.Add(this.tabControl2);
             resources.ApplyResources(this.CommandVisualizerTab, "CommandVisualizerTab");
             this.CommandVisualizerTab.Name = "CommandVisualizerTab";
             this.CommandVisualizerTab.UseVisualStyleBackColor = true;
-            // 
-            // tabControl2
-            // 
-            this.tabControl2.Controls.Add(this.CV_PLAYERS_TAB);
-            this.tabControl2.Controls.Add(this.CV_SYSTEMS_TAB);
-            this.tabControl2.Controls.Add(this.CV_SHIPS_TAB);
-            this.tabControl2.Controls.Add(this.CV_CREW_TAB);
-            this.tabControl2.Controls.Add(this.CV_FLEET_TAB);
-            this.tabControl2.Controls.Add(this.CV_ASTEROIDS_TAB);
-            this.tabControl2.Controls.Add(this.CV_RIFTS_TAB);
-            resources.ApplyResources(this.tabControl2, "tabControl2");
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.SelectedIndex = 0;
-            // 
-            // CV_PLAYERS_TAB
-            // 
-            resources.ApplyResources(this.CV_PLAYERS_TAB, "CV_PLAYERS_TAB");
-            this.CV_PLAYERS_TAB.Name = "CV_PLAYERS_TAB";
-            this.CV_PLAYERS_TAB.UseVisualStyleBackColor = true;
-            // 
-            // CV_SYSTEMS_TAB
-            // 
-            resources.ApplyResources(this.CV_SYSTEMS_TAB, "CV_SYSTEMS_TAB");
-            this.CV_SYSTEMS_TAB.Name = "CV_SYSTEMS_TAB";
-            this.CV_SYSTEMS_TAB.UseVisualStyleBackColor = true;
-            // 
-            // CV_SHIPS_TAB
-            // 
-            resources.ApplyResources(this.CV_SHIPS_TAB, "CV_SHIPS_TAB");
-            this.CV_SHIPS_TAB.Name = "CV_SHIPS_TAB";
-            this.CV_SHIPS_TAB.UseVisualStyleBackColor = true;
-            // 
-            // CV_CREW_TAB
-            // 
-            resources.ApplyResources(this.CV_CREW_TAB, "CV_CREW_TAB");
-            this.CV_CREW_TAB.Name = "CV_CREW_TAB";
-            this.CV_CREW_TAB.UseVisualStyleBackColor = true;
-            // 
-            // CV_FLEET_TAB
-            // 
-            resources.ApplyResources(this.CV_FLEET_TAB, "CV_FLEET_TAB");
-            this.CV_FLEET_TAB.Name = "CV_FLEET_TAB";
-            this.CV_FLEET_TAB.UseVisualStyleBackColor = true;
-            // 
-            // CV_ASTEROIDS_TAB
-            // 
-            resources.ApplyResources(this.CV_ASTEROIDS_TAB, "CV_ASTEROIDS_TAB");
-            this.CV_ASTEROIDS_TAB.Name = "CV_ASTEROIDS_TAB";
-            this.CV_ASTEROIDS_TAB.UseVisualStyleBackColor = true;
-            // 
-            // CV_RIFTS_TAB
-            // 
-            resources.ApplyResources(this.CV_RIFTS_TAB, "CV_RIFTS_TAB");
-            this.CV_RIFTS_TAB.Name = "CV_RIFTS_TAB";
-            this.CV_RIFTS_TAB.UseVisualStyleBackColor = true;
             // 
             // PluginsTab
             // 
@@ -827,8 +761,6 @@
             this.Tabs.ResumeLayout(false);
             this.ServerTab.ResumeLayout(false);
             this.PlayersAndChatTab.ResumeLayout(false);
-            this.CommandVisualizerTab.ResumeLayout(false);
-            this.tabControl2.ResumeLayout(false);
             this.PluginsTab.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
@@ -895,14 +827,6 @@
         private System.Windows.Forms.TextBox cpc_chat_list;
         private System.Windows.Forms.Button cpc_chat_send;
         private System.Windows.Forms.TextBox cpc_messagebox;
-        private System.Windows.Forms.TabControl tabControl2;
-        private System.Windows.Forms.TabPage CV_PLAYERS_TAB;
-        private System.Windows.Forms.TabPage CV_SYSTEMS_TAB;
-        private System.Windows.Forms.TabPage CV_SHIPS_TAB;
-        private System.Windows.Forms.TabPage CV_CREW_TAB;
-        private System.Windows.Forms.TabPage CV_FLEET_TAB;
-        private System.Windows.Forms.TabPage CV_ASTEROIDS_TAB;
-        private System.Windows.Forms.TabPage CV_RIFTS_TAB;
         private System.Windows.Forms.ListView sc_playerbans_listview;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;

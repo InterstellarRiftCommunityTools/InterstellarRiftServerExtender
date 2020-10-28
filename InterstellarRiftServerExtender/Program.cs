@@ -16,6 +16,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 using Localization = IRSE.Modules.Localization;
+using System.Collections.Generic;
 
 namespace IRSE
 {
@@ -38,7 +39,7 @@ namespace IRSE
 
         private static Thread uiThread;
 
-        public static string[] CommandLineArgs = new string[50];
+        public static List<string> CommandLineArgs = new List<string>();
 
         private static bool debugMode = true;
         private static ExtenderGui m_form;
@@ -100,9 +101,9 @@ namespace IRSE
         [MTAThread]
         private static void Main(string[] args)
         {
-            new FolderStructure().Build();
+            CommandLineArgs = args.ToList();
 
-            CommandLineArgs = args;
+            new FolderStructure().Build();
 
             SetTitle();
 

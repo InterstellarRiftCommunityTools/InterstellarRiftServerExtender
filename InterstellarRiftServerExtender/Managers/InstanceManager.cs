@@ -183,7 +183,7 @@ namespace IRSE.Managers
             if (IsRunning)
                 return;
 
-            List<string> serverArgs = Program.CommandLineArgs.ToList();
+            List<string> serverArgs = Program.CommandLineArgs;
 
             serverArgs.Add("-server");
 
